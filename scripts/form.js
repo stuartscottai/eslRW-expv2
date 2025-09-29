@@ -15,6 +15,37 @@ export const ratingFieldsData = [
   { id: "exam-performance", label: "Exam Performance" }
 ];
 
+// ------- Language list used by Step 1 dropdown -------
+export const LANGUAGES = [
+  "English",
+  "Spanish",
+  "Catalan",
+  "French",
+  "German",
+  "Italian",
+  "Portuguese",
+  "Dutch",
+  "Polish",
+  "Arabic",
+  "Chinese (Simplified)",
+  "Chinese (Traditional)",
+  "Japanese",
+  "Korean"
+];
+
+export function populateLanguageSelect() {
+  const sel = document.getElementById('language');
+  if (!sel) return;
+  sel.innerHTML = ""; // clear any placeholder options
+  LANGUAGES.forEach((label, i) => {
+    const opt = document.createElement('option');
+    opt.value = label;
+    opt.textContent = label;
+    if (i === 0) opt.selected = true; // default to first (English)
+    sel.appendChild(opt);
+  });
+}
+
 export const areasToImproveData = [
   "grammar","vocabulary","Use of English","Reading","Listening","Writing",
   "Speaking fluency","Pronunciation","Spelling","Participation","Paying attention",
