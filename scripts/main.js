@@ -12,7 +12,8 @@ import {
   updateSelectedDisplay,
   characterMultiselect,
   areasMultiselect,
-  ratingFieldsData
+  ratingFieldsData,
+  populateLanguageSelect 
 } from './form.js';
 
 import {
@@ -427,6 +428,7 @@ function assignElements() {
 
 // --- BOOT ---
 document.addEventListener('DOMContentLoaded', () => {
+  populateLanguageSelect(); // fill the Step-1 Language dropdown
   assignElements();
   if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
   populateFormFields();
