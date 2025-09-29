@@ -257,32 +257,62 @@ async function handleSendMessage() {
 }
 
 function getStudentDataSummary() {
-  const lang = document.getElementById('language').value;
-  const tone = document.getElementById('report-tone').value;
-  const name = document.getElementById('name').value;
-  const gender = document.getElementById('gender').value;
+  // Step 1 (pre-form) constants
+  const lang        = document.getElementById('language').value;
+  const register    = document.getElementById('report-register').value;
+  const tone        = document.getElementById('report-tone').value;
   const perspective = document.getElementById('report-perspective').value;
-  const trimester = document.getElementById('trimester').value;
-  const chars = Array.from(document.getElementById('characterOptions').querySelectorAll('input:checked')).map(cb => cb.value).join(', ');
-  const areas = Array.from(document.getElementById('areasOptions').querySelectorAll('input:checked')).map(cb => cb.value).join(', ');
-  const notes = document.getElementById('other-points').value;
-  const salutation = document.getElementById('salutation').value;
-  let ratings = "";
-  ratingFieldsData.forEach(f => { ratings += `${f.label} Rating (0-10): ${document.getElementById(f.id).value}\n`; });
+  const outputLen   = document.getElementById('output-length').value;
+  const trimester   = document.getElementById('trimester').value;
 
-  return `Language: ${lang}\nReport Tone: ${tone}\nStudent Name: ${name}\nGender: ${gender} \nReport Perspective: ${perspective} \nTrimester: ${trimester}\nCharacter Attributes: ${chars || 'N/A'}\n${ratings.trim()}\nAreas to Improve: ${areas || 'N/A'}\nOther Points/Additional Notes: ${notes || 'N/A'}\nHoliday Salutation Theme: ${salutation}`;
+  // Step 2 variables
+  const name   = document.getElementById('name').value;
+  const gender = document.getElementById('gender').value;
+
+  const chars = Array.from(
+    document.getElementById('characterOptions').querySelectorAll('input:checked')
+  ).map(cb => cb.value).join(', ');
+
+  const areas = Array.from(
+    document.getElementById('areasOptions').querySelectorAll('input:checked')
+  ).map(cb => cb.value).join(', ');
+
+  const notes = document.getElementById('other-points')?.value || '';
+  const salutation = document.getElementById('salutation')?.value || '';
+
+  let ratings = "";
+  ratingFieldsData.forEach(f => {
+    const val = document.getElementById(f.id).value;
+    ratings += `${f.label} Rating (0-10): ${val}\n`;
+  });
+
+  // Keep the text format your prompts already expect
+  return (
+`Language: ${lang}
+Register: ${register}
+Tone: ${tone}
+Perspective: ${perspective}
+Output Length: ${outputLen}
+Trimester: ${trimester}
+Student Name: ${name}
+Gender: ${gender}
+${ratings}Character Attributes: ${chars || 'N/A'}
+Areas to Improve: ${areas || 'N/A'}
+Other Notes: ${notes || 'N/A'}
+Holiday Salutation Theme: ${salutation}`
+  );
 }
 
-// UPDATED: fully clear everything, including ratings, and jump to Step 1 (in step mode)
+// UPDATED: clear Step 2 only and jump to Step 2 (keep Step 1 "pre-report" constants)
 function clearForm() {
-  // Reset the top-level form
-  document.getElementById('student-form').reset();
+  // Reset ONLY the Step 2 form (student details + ratings + checkboxes, etc.)
+  document.getElementById('student-form')?.reset();
 
-  // Uncheck all checkboxes in multiselects
+  // Uncheck all checkboxes in multiselects (Step 2)
   document.querySelectorAll('#characterOptions input[type="checkbox"]').forEach(cb => cb.checked = false);
   document.querySelectorAll('#areasOptions input[type="checkbox"]').forEach(cb => cb.checked = false);
 
-  // Reset ALL selects in Step 2 (ratings, character, areas, salutation, etc.)
+  // Reset selects in Step 2 (ratings, character, areas, salutation, etc.)
   document.querySelectorAll('#step2 select').forEach(sel => { sel.selectedIndex = 0; });
 
   // Explicitly clear multi-selects (if any)
@@ -290,7 +320,7 @@ function clearForm() {
     Array.from(sel.options).forEach(o => (o.selected = false));
   });
 
-  // Clear "Other Points" if present
+  // Clear "Other Points" if present (Step 2)
   const otherPoints = document.getElementById('other-points');
   if (otherPoints) otherPoints.value = '';
 
@@ -309,37 +339,39 @@ function clearForm() {
   autoResizeTextarea(reportOutput);
   autoResizeTextarea(strategiesOutput);
 
+  // Reset chat state
   activeChatTextarea = null;
   chatInput.value = "";
   chatMessages.innerHTML = "";
 
-  // Optional: clear any cached state
-  try { localStorage.removeItem('eslState'); } catch {}
+  // IMPORTANT: Do NOT clear Step 1 state; leave any cached "pre-report" settings intact.
+  // (If you previously used localStorage for those, don't remove it here.)
+  // try { localStorage.removeItem('eslState'); } catch {}
 
-  // If in step mode, go back to Step 1
+  // If in step mode, go to Step 2 (index 1)
   const inStepMode = (typeof window.isStepMode === 'function')
     ? window.isStepMode()
     : !document.getElementById('stepper-controls')?.classList.contains('hidden');
 
   if (inStepMode) {
     if (typeof window.goToStep === 'function') {
-      window.goToStep(0);
+      window.goToStep(1); // <-- Step 2
     } else {
-      document.getElementById('step1')?.classList.remove('hidden');
-      document.getElementById('step2')?.classList.add('hidden');
+      document.getElementById('step1')?.classList.add('hidden');
+      document.getElementById('step2')?.classList.remove('hidden');
       document.getElementById('step3')?.classList.add('hidden');
       const indicator = document.getElementById('step-indicator');
-      if (indicator) indicator.textContent = 'Step 1 of 3';
+      if (indicator) indicator.textContent = 'Step 2 of 3';
     }
   }
 
-  // Clear both histories
+  // Clear both histories (outputs)
   resetHistory('report');
   resetHistory('strategies');
 
   updateStep3Actions();
   updateChatTargetToggle();
-  showToast("Form cleared successfully!", 'success');
+  showToast("Form cleared. Pre-report criteria kept. Ready for the next student!", 'success');
 }
 
 // --- NEW: Step-3 mini action bar logic ---
