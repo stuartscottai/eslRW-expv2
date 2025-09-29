@@ -131,9 +131,26 @@ async function handleGenerateReport() {
   reportSection.classList.remove('hidden');
   chatSection.classList.add('hidden');
   reportOutput.value = "Generating AI report, please wait...";
+
+  // Build the student summary as before
   const studentData = getStudentDataSummary();
+
+  // NEW: build a short preamble so Gemini writes in the chosen language/style/length
+  const lang      = document.getElementById('language').value;
+  const register  = document.getElementById('report-register').value;
+  const tone      = document.getElementById('report-tone').value;
+  const outLen    = document.getElementById('output-length').value;
+
+  const languageInstruction = `Write the entire output in ${lang}. Use natural, idiomatic ${lang}, including headings and labels.`;
+  const styleInstruction    = `Use a ${register.toLowerCase()} register with a ${tone.replaceAll(/([A-Z])/g, ' $1').trim().toLowerCase()} tone.`;
+  const lengthInstruction   = `Aim for a ${outLen.toLowerCase()} length.`;
+
+  const preamble = [languageInstruction, styleInstruction, lengthInstruction].join('\n');
+  const finalInput = `${preamble}\n\n${studentData}`;
+
   try {
-    const success = await callGeminiAPI(SYSTEM_PROMPT_FOR_MAIN_REPORT, studentData, reportOutput);
+    // Pass finalInput (preamble + student data) to the API
+    const success = await callGeminiAPI(SYSTEM_PROMPT_FOR_MAIN_REPORT, finalInput, reportOutput);
     showToast(success ? "Report generated!" : "Error generating report.", success ? 'success' : 'error');
     copyReportButton.disabled = !success;
     if (success) {
@@ -158,6 +175,7 @@ async function handleGenerateReport() {
   }
 }
 
+
 async function handleGetStrategies() {
   if (!document.getElementById('name').value.trim()) {
     showToast("Student's name is required.", "error");
@@ -167,15 +185,31 @@ async function handleGetStrategies() {
   strategiesSection.classList.remove('hidden');
   chatSection.classList.add('hidden');
   strategiesOutput.value = "Generating strategies, please wait...";
+
+  // Build the student summary as before
   const studentData = getStudentDataSummary();
+
+  // NEW: same preamble so strategies also follow language/style/length
+  const lang      = document.getElementById('language').value;
+  const register  = document.getElementById('report-register').value;
+  const tone      = document.getElementById('report-tone').value;
+  const outLen    = document.getElementById('output-length').value;
+
+  const languageInstruction = `Write the entire output in ${lang}. Use natural, idiomatic ${lang}, including headings and labels.`;
+  const styleInstruction    = `Use a ${register.toLowerCase()} register with a ${tone.replaceAll(/([A-Z])/g, ' $1').trim().toLowerCase()} tone.`;
+  const lengthInstruction   = `Aim for a ${outLen.toLowerCase()} length.`;
+
+  const preamble = [languageInstruction, styleInstruction, lengthInstruction].join('\n');
+  const finalInput = `${preamble}\n\n${studentData}`;
+
   try {
-    const success = await callGeminiAPI(SYSTEM_PROMPT_FOR_STRATEGIES, studentData, strategiesOutput);
+    const success = await callGeminiAPI(SYSTEM_PROMPT_FOR_STRATEGIES, finalInput, strategiesOutput);
     showToast(success ? "Strategies generated!" : "Error generating strategies.", success ? 'success' : 'error');
     copyStrategiesButton.disabled = !success;
     if (success) {
       strategiesOutput.value = stripMarkdown(strategiesOutput.value);
       autoResizeTextarea(strategiesOutput);
-  }
+    }
 
     if (success) {
       activeChatTextarea = strategiesOutput; // default chat target to Strategies
@@ -193,6 +227,7 @@ async function handleGetStrategies() {
     updateChatTargetToggle();
   }
 }
+
 
 function startChat() {
   chatSection.classList.remove('hidden');
