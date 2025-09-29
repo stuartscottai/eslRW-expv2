@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ESL Report Writer – App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/style.css">
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-blue-50 text-slate-800">
+
+  <!-- Top nav -->
+  <header class="bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center">
+        <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
+      </a>
+      <nav class="flex items-center gap-6">
+        <a href="index.html" class="text-slate-600 hover:text-slate-900">Home</a>
+        <a href="app.html" class="text-slate-900 font-medium">Report Writer</a>
+        <a href="how-to.html" class="text-slate-600 hover:text-slate-900">How to use</a>
+      </nav>
+      <a href="app.html" class="hidden sm:inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
+        Get started
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative z-0">
+    <img src="/public/hero-bg.jpg" alt="Hero"
+         class="w-full h-[260px] md:h-[320px] object-cover object-center">
+    <div class="absolute inset-0 bg-slate-900/40"></div>
+
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      <img src="/public/logo.png" alt="ESL Report Writer Logo"
+           class="h-24 md:h-32 w-auto drop-shadow-lg">
+      <div class="mt-3 text-white text-lg md:text-xl font-medium drop-shadow">
+        Create polished ESL reports in minutes
+      </div>
+    </div>
+  </section>
+
+  <!-- Card -->
+  <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
+    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div class="flex items-center gap-3">
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-orange-500"></span>
+          <span class="text-slate-800 font-semibold">Report Builder</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-slate-600">View:</span>
+          <button id="mode-steps" class="px-3 py-1.5 rounded-md text-sm font-medium hover:bg-slate-100 text-slate-700 border">Step by step</button>
+          <button id="mode-single" class="px-3 py-1.5 rounded-md text-sm font-medium bg-orange-500 text-white shadow">Single page</button>
+        </div>
+
+      </div>
+
+      <!-- Builder -->
+      <div id="builder-wrapper" class="space-y-8">
+        <!-- STEP 1 -->
+        <section id="step1" class="space-y-6">
+          <h2 class="text-xl font-semibold text-slate-800">Provide initial report information</h2>
+
+          <form id="student-form" class="space-y-8">
+            <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+              <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="language" class="block font-medium text-slate-700 mb-1">Language:</label>
+                    <select id="language" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                      <option value="English">English</option>
+                      <option value="Spanish">Spanish</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="report-tone" class="block font-medium text-slate-700 mb-1">Report Tone:</label>
+                    <select id="report-tone" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                      <option value="Neutral">Neutral (Standard)</option>
+                      <option value="FriendlyConstructive">Friendly &amp; Constructive</option>
+                      <option value="EmpatheticSupportive">Empathetic &amp; Supportive</option>
+                      <option value="ConciseDirect">Concise &amp; Direct</option>
+                      <option value="GrowthOriented">Growth-Oriented</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="name" class="block font-medium text-slate-700 mb-1">Name:</label>
+                  <input type="text" id="name" placeholder="Enter student's name" required
+                    class="w-full p-3 border border-slate-300 rounded-lg shadow-sm bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <label for="gender" class="block font-medium text-slate-700 mb-1">Gender:</label>
+                    <select id="gender" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+                      <option value="Boy">Boy</option>
+                      <option value="Girl">Girl</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="report-perspective" class="block font-medium text-slate-700 mb-1">Perspective:</label>
+                    <select id="report-perspective" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+                      <option value="ThirdPerson">Third Person</option>
+                      <option value="SecondPerson">Second Person</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="trimester" class="block font-medium text-slate-700 mb-1">Trimester:</label>
+                    <select id="trimester" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3 (End of Year)">3 (End of Year)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- STEP 2 -->
+        <section id="step2" class="space-y-6">
+          <h2 class="text-xl font-semibold text-slate-800">
+            Provide information about the student's performance
+          </h2>
+
+         <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+  <!-- Let form.js render here; NOT hidden -->
+  <div id="dynamic-form-fields"
+       class="space-y-6 md:grid md:grid-cols-2 md:gap-6 md:space-y-0"></div>
+</div>
+
+          <div class="flex flex-col sm:flex-row justify-center pt-3 gap-3">
+            <button type="button" id="generate-report-button"
+              class="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+              <span id="generate-report-button-text">Generate Full Report</span>
+              <div id="loading-spinner-report" class="loader hidden ml-2"></div>
+            </button>
+
+            <button type="button" id="get-strategies-button"
+              class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+              <span id="get-strategies-button-text">✨ Get Improvement Ideas</span>
+              <div id="loading-spinner-strategies" class="loader hidden ml-2"></div>
+            </button>
+
+            <button type="button" id="clear-form-button"
+              class="w-full sm:w-auto bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+              Clear Form &amp; Start New
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section id="step3" class="space-y-8">
+          <section id="report-section" class="hidden">
+            <h2 class="text-xl font-semibold text-slate-800 mb-3">Generated Student Report</h2>
+            <!-- Step 3 mini actions (only shown in Step-by-step mode) -->
+          <div id="step3-actions" class="hidden mb-3 flex flex-col sm:flex-row gap-3">
+            <button type="button" id="get-strategies-button-step3"
+              class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+              ✨ Get Improvement Ideas
+            </button>
+
+            <button type="button" id="clear-form-button-step3"
+              class="w-full sm:w-auto bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+              Clear Form &amp; Start New
+            </button>
+          </div>
+            <textarea id="report-output"
+              class="w-full min-h-[120px] p-4 border border-slate-200 rounded-lg bg-slate-50 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+              placeholder="Your AI-generated student report will appear here..."></textarea>
+            <div class="mt-3 flex flex-col sm:flex-row justify-between items-center gap-3">
+              <div class="flex gap-3 w-full sm:w-auto">
+                <button id="undo-report-button"
+                  class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled>Undo edit</button>
+
+                <button id="redo-report-button"
+                  class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled>Redo edit</button>
+              </div>
+
+              <button id="copy-report-button"
+                class="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                Copy Report
+              </button>
+            </div>
+
+
+          </section>
+
+          <section id="strategies-section" class="hidden">
+            <h2 class="text-xl font-semibold text-slate-800 mb-3">✨ Suggested Improvement Strategies</h2>
+            <textarea id="strategies-output"
+              class="w-full min-h-[100px] p-4 border border-slate-200 rounded-lg bg-slate-50 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+              placeholder="AI-generated improvement strategies will appear here..."></textarea>
+            <div class="mt-3 flex flex-col sm:flex-row justify-between items-center gap-3">
+              <div class="flex gap-3 w-full sm:w-auto">
+                <button id="undo-strategies-button"
+                  class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled>Undo edit</button>
+
+                <button id="redo-strategies-button"
+                  class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled>Redo edit</button>
+              </div>
+
+              <button id="copy-strategies-button"
+                class="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                Copy Suggestions
+              </button>
+            </div>
+
+
+          </section>
+
+          <section id="chat-section" class="hidden bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <h2 class="text-xl font-semibold text-slate-800 mb-4">Edit with AI</h2>
+            <!-- Edit target toggle: only shown when both outputs exist -->
+<div id="chat-target-toggle" class="hidden mb-4">
+  <div class="inline-flex rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden">
+    <button type="button" id="chat-target-report"
+      class="px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100 focus:outline-none">
+      Edit: Report
+    </button>
+    <button type="button" id="chat-target-strategies"
+      class="px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100 focus:outline-none border-l border-slate-200">
+      Edit: Strategies
+    </button>
+  </div>
+</div>
+
+            <div id="chat-messages" class="h-64 overflow-y-auto p-4 bg-white rounded-lg border border-gray-200 mb-4 flex flex-col space-y-3"></div>
+            <div class="flex items-center space-x-2">
+              <textarea id="chat-input" rows="1" placeholder="Type your edit instructions here..." class="flex-grow p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+              <button id="send-chat-button" class="bg-orange-600 text-white p-3 rounded-full shadow-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">➤</button>
+            </div>
+          </section>
+        </section>
+      </div>
+
+      <div id="stepper-controls" class="hidden pt-2 flex items-center justify-between">
+        <button id="step-prev" class="inline-flex items-center gap-2 text-slate-700 hover:text-slate-900 px-3 py-2 rounded-md border">
+          ← Previous
+        </button>
+        <div class="text-sm text-slate-500"><span id="step-indicator">Step 1 of 3</span></div>
+        <button id="step-next" class="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md shadow">
+          Next →
+        </button>
+      </div>
+    </main>
+
+    <footer class="text-center mt-10 mb-6">
+      <p class="text-sm text-slate-500">&copy; <span id="currentYear"></span> ESL Report Writer. Powered by Gemini.</p>
+    </footer>
+  </div>
+  
+<!-- Usage widget -->
+<div id="usageWidget" style="position:fixed; right:12px; bottom:12px; z-index:9999; background:#ffffff; border:1px solid #ddd; border-radius:10px; padding:8px 12px; box-shadow:0 6px 18px rgba(0,0,0,0.08); font:14px/1.2 system-ui, sans-serif;">
+  <strong>Gemini calls</strong>: <span id="usageCounter">This month: 0/1500</span>
+</div>
+<div id="toast-notification" class="toast"><span id="toast-message"></span></div>
+
+<!-- Scripts -->
+<script type="module" src="/scripts/main.js"></script>
+<script type="module" src="/scripts/layout.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const y = document.getElementById('currentYear');
+    if (y) y.textContent = new Date().getFullYear();
+  });
+</script>
+</body>
+</html>
