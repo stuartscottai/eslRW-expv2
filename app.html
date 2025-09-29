@@ -62,66 +62,85 @@
       <!-- Builder -->
       <div id="builder-wrapper" class="space-y-8">
         <!-- STEP 1 -->
-        <section id="step1" class="space-y-6">
-          <h2 class="text-xl font-semibold text-slate-800">Provide initial report information</h2>
+<section id="step1" class="space-y-6">
+  <h2 class="text-xl font-semibold text-slate-800">Pre-report criteria</h2>
 
-          <form id="student-form" class="space-y-8">
-            <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
-              <div class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label for="language" class="block font-medium text-slate-700 mb-1">Language:</label>
-                    <select id="language" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
-                      <option value="English">English</option>
-                      <option value="Spanish">Spanish</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="report-tone" class="block font-medium text-slate-700 mb-1">Report Tone:</label>
-                    <select id="report-tone" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
-                      <option value="Neutral">Neutral (Standard)</option>
-                      <option value="FriendlyConstructive">Friendly &amp; Constructive</option>
-                      <option value="EmpatheticSupportive">Empathetic &amp; Supportive</option>
-                      <option value="ConciseDirect">Concise &amp; Direct</option>
-                      <option value="GrowthOriented">Growth-Oriented</option>
-                    </select>
-                  </div>
-                </div>
+  <!-- NOTE: this used to be id="student-form". We rename it to pre-form so
+       clearing the form won't reset these constants. -->
+  <form id="pre-form" class="space-y-8">
+    <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+      <div class="space-y-6">
 
-                <div>
-                  <label for="name" class="block font-medium text-slate-700 mb-1">Name:</label>
-                  <input type="text" id="name" placeholder="Enter student's name" required
-                    class="w-full p-3 border border-slate-300 rounded-lg shadow-sm bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
-                </div>
+        <!-- Row 1: Language + Trimester -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="language" class="block font-medium text-slate-700 mb-1">Language:</label>
+            <select id="language" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+              <option value="English">English</option>
+              <option value="Spanish">Spanish</option>
+            </select>
+          </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <label for="gender" class="block font-medium text-slate-700 mb-1">Gender:</label>
-                    <select id="gender" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
-                      <option value="Boy">Boy</option>
-                      <option value="Girl">Girl</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="report-perspective" class="block font-medium text-slate-700 mb-1">Perspective:</label>
-                    <select id="report-perspective" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
-                      <option value="ThirdPerson">Third Person</option>
-                      <option value="SecondPerson">Second Person</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="trimester" class="block font-medium text-slate-700 mb-1">Trimester:</label>
-                    <select id="trimester" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3 (End of Year)">3 (End of Year)</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </section>
+          <div>
+            <label for="trimester" class="block font-medium text-slate-700 mb-1">Trimester:</label>
+            <select id="trimester" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3 (End of Year)">3 (End of Year)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 2: Register + Tone -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="report-register" class="block font-medium text-slate-700 mb-1">Report Register:</label>
+            <select id="report-register" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+              <option value="Neutral">Neutral (standard)</option>
+              <option value="Formal">Formal</option>
+              <option value="Informal">Informal</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="report-tone" class="block font-medium text-slate-700 mb-1">Report Tone:</label>
+            <select id="report-tone" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+              <option value="Neutral">Neutral (Standard)</option>
+              <option value="FriendlyConstructive">Friendly &amp; Constructive</option>
+              <option value="EmpatheticSupportive">Empathetic &amp; Supportive</option>
+              <option value="ConciseDirect">Concise &amp; Direct</option>
+              <option value="GrowthOriented">Growth-Oriented</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 3: Perspective + Output length -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="report-perspective" class="block font-medium text-slate-700 mb-1">Perspective:</label>
+            <select id="report-perspective" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+              <option value="I + 2nd person">I + 2nd person</option>
+              <option value="I + 3rd person">I + 3rd person</option>
+              <option value="We + 2nd person">We + 2nd person</option>
+              <option value="We + 3rd person">We + 3rd person</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="output-length" class="block font-medium text-slate-700 mb-1">Output length:</label>
+            <select id="output-length" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+              <option value="Short">Short</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Long">Long</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</section>
+
 
         <!-- STEP 2 -->
         <section id="step2" class="space-y-6">
@@ -129,11 +148,37 @@
             Provide information about the student's performance
           </h2>
 
-         <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
-  <!-- Let form.js render here; NOT hidden -->
-  <div id="dynamic-form-fields"
-       class="space-y-6 md:grid md:grid-cols-2 md:gap-6 md:space-y-0"></div>
-</div>
+        <!-- We put Step 2 inputs inside #student-form so clearing only resets these -->
+<form id="student-form">
+  <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+    <div class="space-y-6">
+
+      <!-- NEW: Name + Gender row (before ratings) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="name" class="block font-medium text-slate-700 mb-1">Name:</label>
+          <input type="text" id="name" placeholder="Enter student's name" required
+                 class="w-full p-3 border border-slate-300 rounded-lg shadow-sm bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+        </div>
+
+        <div>
+          <label for="gender" class="block font-medium text-slate-700 mb-1">Gender:</label>
+          <select id="gender" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+            <option value="Male">Male (he/him)</option>
+            <option value="Female">Female (she/her)</option>
+            <option value="Non-binary">Non-binary (they/them)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Existing dynamic fields (ratings left; traits/areas right) -->
+      <div id="dynamic-form-fields"
+           class="space-y-6 md:grid md:grid-cols-2 md:gap-6 md:space-y-0"></div>
+
+    </div>
+  </div>
+</form>
+
 
           <div class="flex flex-col sm:flex-row justify-center pt-3 gap-3">
             <button type="button" id="generate-report-button"
