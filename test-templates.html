@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template System Test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+    <h1 class="text-2xl font-bold mb-6">Template System Test Page</h1>
+    
+    <div class="space-y-4">
+      <div class="p-4 bg-blue-50 rounded border border-blue-200">
+        <h2 class="font-semibold mb-2">Current Status:</h2>
+        <div id="status"></div>
+      </div>
+
+      <div class="p-4 bg-green-50 rounded border border-green-200">
+        <h2 class="font-semibold mb-2">Active Template:</h2>
+        <div id="active-template"></div>
+      </div>
+
+      <div class="p-4 bg-yellow-50 rounded border border-yellow-200">
+        <h2 class="font-semibold mb-2">Template Details:</h2>
+        <pre id="template-details" class="text-sm overflow-auto"></pre>
+      </div>
+
+      <div class="flex gap-3">
+        <button onclick="testStorage()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Test Storage
+        </button>
+        <button onclick="resetTemplates()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+          Reset to Default
+        </button>
+        <button onclick="showStats()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+          Show Stats
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { 
+      initializeTemplates, 
+      getActiveTemplate, 
+      getAllTemplates,
+      getTemplateStats,
+      resetToDefaults
+    } from './scripts/templates.js';
+
+    // Initialize
+    initializeTemplates();
+    updateDisplay();
+
+    function updateDisplay() {
+      const active = getActiveTemplate();
+      const all = getAllTemplates();
+      const stats = getTemplateStats();
+
+      document.getElementById('status').innerHTML = `
+        <p>✅ Template system initialized</p>
+        <p>📊 Total templates: ${all.length}</p>
+      `;
+
+      document.getElementById('active-template').innerHTML = `
+        <p><strong>Name:</strong> ${active.name}</p>
+        <p><strong>Description:</strong> ${active.description}</p>
+        <p><strong>Rating Fields:</strong> ${active.ratingFields.length}</p>
+        <p><strong>Character Options:</strong> ${active.characterOptions.length}</p>
+        <p><strong>Improvement Areas:</strong> ${active.areasToImprove.length}</p>
+      `;
+
+      document.getElementById('template-details').textContent = JSON.stringify(active, null, 2);
+    }
+
+    window.testStorage = function() {
+      const all = getAllTemplates();
+      alert(`Found ${all.length} template(s) in storage:\n\n${all.map(t => `- ${t.name}`).join('\n')}`);
+      updateDisplay();
+    };
+
+    window.resetTemplates = function() {
+      if (confirm('Reset to default template only?')) {
+        resetToDefaults();
+        alert('✅ Templates reset!');
+        updateDisplay();
+      }
+    };
+
+    window.showStats = function() {
+      const stats = getTemplateStats();
+      alert(`Template Statistics:\n\n` +
+            `Total: ${stats.totalTemplates}\n` +
+            `Custom: ${stats.customTemplates}\n` +
+            `Locked: ${stats.lockedTemplates}\n` +
+            `Active: ${stats.activeTemplate}`);
+    };
+
+    // Listen for template changes
+    window.addEventListener('template-changed', (e) => {
+      console.log('Template changed:', e.detail.template.name);
+      updateDisplay();
+    });
+
+    window.addEventListener('templates-updated', () => {
+      console.log('Templates updated');
+      updateDisplay();
+    });
+  </script>
+</body>
+</html>
