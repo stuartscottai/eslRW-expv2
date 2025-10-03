@@ -82,49 +82,70 @@ function handleTemplateChange(event) {
  * @returns {boolean} True if should proceed with switch
  */
 function confirmTemplateSwitch() {
-  // Check if name field has content
+  let hasData = false;
+
+  // 1. Check name field
   const nameField = document.getElementById('name');
-  if (nameField && nameField.value.trim() !== '') {
-    return confirm('Switching templates will clear the current form. Continue?');
+  if (nameField && nameField.value && nameField.value.trim() !== '') {
+    console.log('🔍 Data found: Name field has content');
+    hasData = true;
   }
 
-  // Check if any rating has been changed from default (0)
+  // 2. Check rating dropdowns (only those in dynamic fields)
   const dynamicFields = document.getElementById('dynamic-form-fields');
-  if (dynamicFields) {
-    const selects = dynamicFields.querySelectorAll('select');
-    for (const select of selects) {
-      // Only warn if value is not "0" (default)
-      if (select.value && select.value !== '0') {
-        return confirm('Switching templates will clear the current form. Continue?');
+  if (dynamicFields && !hasData) {
+    const ratingSelects = dynamicFields.querySelectorAll('select');
+    for (const select of ratingSelects) {
+      const value = select.value;
+      // Check if it's been changed from "0" (default)
+      if (value && value !== '0') {
+        console.log('🔍 Data found: Rating changed to', value, 'in', select.id);
+        hasData = true;
+        break;
       }
     }
   }
 
-  // Check if any character checkboxes are checked
-  const characterOptions = document.getElementById('characterOptions');
-  if (characterOptions) {
-    const characterChecked = characterOptions.querySelectorAll('input:checked');
-    if (characterChecked.length > 0) {
-      return confirm('Switching templates will clear the current form. Continue?');
+  // 3. Check character checkboxes
+  if (!hasData) {
+    const characterOptions = document.getElementById('characterOptions');
+    if (characterOptions) {
+      const checked = characterOptions.querySelectorAll('input[type="checkbox"]:checked');
+      if (checked.length > 0) {
+        console.log('🔍 Data found:', checked.length, 'character traits selected');
+        hasData = true;
+      }
     }
   }
 
-  // Check if any areas checkboxes are checked
-  const areasOptions = document.getElementById('areasOptions');
-  if (areasOptions) {
-    const areasChecked = areasOptions.querySelectorAll('input:checked');
-    if (areasChecked.length > 0) {
-      return confirm('Switching templates will clear the current form. Continue?');
+  // 4. Check improvement areas checkboxes
+  if (!hasData) {
+    const areasOptions = document.getElementById('areasOptions');
+    if (areasOptions) {
+      const checked = areasOptions.querySelectorAll('input[type="checkbox"]:checked');
+      if (checked.length > 0) {
+        console.log('🔍 Data found:', checked.length, 'improvement areas selected');
+        hasData = true;
+      }
     }
   }
 
-  // Check if "Other Points" has content
-  const otherPoints = document.getElementById('other-points');
-  if (otherPoints && otherPoints.value.trim() !== '') {
+  // 5. Check "Other Points" text field
+  if (!hasData) {
+    const otherPoints = document.getElementById('other-points');
+    if (otherPoints && otherPoints.value && otherPoints.value.trim() !== '') {
+      console.log('🔍 Data found: Other points has content');
+      hasData = true;
+    }
+  }
+
+  // If data was found, show confirmation
+  if (hasData) {
     return confirm('Switching templates will clear the current form. Continue?');
   }
 
-  // No data entered, safe to switch without warning
+  // No data found, safe to switch
+  console.log('✅ No data found, switching templates without warning');
   return true;
 }
 
