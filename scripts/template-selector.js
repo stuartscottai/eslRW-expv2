@@ -91,13 +91,14 @@ function confirmTemplateSwitch() {
     hasData = true;
   }
 
-  // 2. Check rating dropdowns (only those in dynamic fields)
-  const dynamicFields = document.getElementById('dynamic-form-fields');
-  if (dynamicFields && !hasData) {
-    const ratingSelects = dynamicFields.querySelectorAll('select');
+  // 2. Check rating dropdowns (0-10 scales only, not salutation)
+  // We check the left column (perf-left) which contains only ratings
+  const perfLeft = document.getElementById('perf-left');
+  if (perfLeft && !hasData) {
+    const ratingSelects = perfLeft.querySelectorAll('select');
     for (const select of ratingSelects) {
       const value = select.value;
-      // Check if it's been changed from "0" (default)
+      // Check if it's been changed from "0" (default for ratings)
       if (value && value !== '0') {
         console.log('🔍 Data found: Rating changed to', value, 'in', select.id);
         hasData = true;
