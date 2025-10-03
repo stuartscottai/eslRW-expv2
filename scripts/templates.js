@@ -21,14 +21,15 @@ const STORAGE_KEY = 'esl_report_templates';
 const ACTIVE_TEMPLATE_KEY = 'esl_active_template';
 
 // ============================================================
-// DEFAULT TEMPLATE (Your Current ESL Form)
+// PRE-MADE TEMPLATES
 // ============================================================
+
 const DEFAULT_ESL_TEMPLATE = {
   id: "default-esl",
-  name: "ESL Teacher Report (Default)",
+  name: "ESL Teacher Report",
   description: "Standard ESL student assessment with progress, behaviour, and language skills",
   isDefault: true,
-  isLocked: true, // Can't be deleted or edited
+  isLocked: true,
   ratingFields: [
     { id: "progress", label: "Progress" },
     { id: "behaviour", label: "Behaviour" },
@@ -48,6 +49,109 @@ const DEFAULT_ESL_TEMPLATE = {
     "Participation", "Paying attention", "Sitting still", 
     "Completing classwork", "Completing homework", "Speak less Spanish", 
     "Motivation", "Focus/Concentration"
+  ],
+  languages: [
+    "English", "Spanish", "Catalan", "French", "German", "Italian", 
+    "Portuguese", "Dutch", "Polish", "Arabic", "Chinese (Simplified)", 
+    "Chinese (Traditional)", "Japanese", "Korean"
+  ],
+  createdDate: Date.now()
+};
+
+const GENERAL_ACADEMIC_TEMPLATE = {
+  id: "general-academic",
+  name: "General Academic Report",
+  description: "Suitable for any subject teacher - focuses on academic performance and study skills",
+  isDefault: false,
+  isLocked: true,
+  ratingFields: [
+    { id: "academic-performance", label: "Academic Performance" },
+    { id: "homework-quality", label: "Homework Quality" },
+    { id: "class-participation", label: "Class Participation" },
+    { id: "study-skills", label: "Study Skills" },
+    { id: "time-management", label: "Time Management" }
+  ],
+  characterOptions: [
+    "hard-working", "friendly", "attentive", "lively", "active", "quiet", 
+    "energetic", "studious", "sociable", "motivated", "respectful", 
+    "confident", "organised", "positive", "focused", "determined", 
+    "disinterested", "demotivated", "lazy", "shy"
+  ],
+  areasToImprove: [
+    "Understanding concepts", "Completing assignments", "Active participation",
+    "Note-taking", "Test preparation", "Asking questions", "Time management",
+    "Organization skills", "Following instructions", "Working independently",
+    "Group work", "Meeting deadlines", "Attention to detail", "Critical thinking",
+    "Self-assessment", "Seeking help when needed"
+  ],
+  languages: [
+    "English", "Spanish", "Catalan", "French", "German", "Italian", 
+    "Portuguese", "Dutch", "Polish", "Arabic", "Chinese (Simplified)", 
+    "Chinese (Traditional)", "Japanese", "Korean"
+  ],
+  createdDate: Date.now()
+};
+
+const PRIMARY_SCHOOL_TEMPLATE = {
+  id: "primary-school",
+  name: "Primary School Report",
+  description: "Designed for elementary/primary teachers - covers developmental areas and foundational skills",
+  isDefault: false,
+  isLocked: true,
+  ratingFields: [
+    { id: "reading-skills", label: "Reading Skills" },
+    { id: "math-skills", label: "Math Skills" },
+    { id: "social-skills", label: "Social Skills" },
+    { id: "physical-development", label: "Physical Development" },
+    { id: "creativity", label: "Creativity" }
+  ],
+  characterOptions: [
+    "hard-working", "friendly", "attentive", "lively", "active", "quiet", 
+    "energetic", "studious", "sociable", "motivated", "respectful", 
+    "confident", "organised", "positive", "focused", "determined", 
+    "disinterested", "demotivated", "lazy", "shy"
+  ],
+  areasToImprove: [
+    "Reading comprehension", "Phonics", "Writing skills", "Number recognition",
+    "Basic math operations", "Sharing with others", "Taking turns", "Listening skills",
+    "Following directions", "Fine motor skills", "Gross motor skills", "Concentration",
+    "Completing tasks", "Speaking clearly", "Expressing ideas", "Problem solving",
+    "Independence", "Tidying up"
+  ],
+  languages: [
+    "English", "Spanish", "Catalan", "French", "German", "Italian", 
+    "Portuguese", "Dutch", "Polish", "Arabic", "Chinese (Simplified)", 
+    "Chinese (Traditional)", "Japanese", "Korean"
+  ],
+  createdDate: Date.now()
+};
+
+const BEHAVIOUR_FOCUSED_TEMPLATE = {
+  id: "behaviour-focused",
+  name: "Behaviour-Focused Report",
+  description: "For homeroom teachers and counselors - emphasizes social behavior and classroom conduct",
+  isDefault: false,
+  isLocked: true,
+  ratingFields: [
+    { id: "classroom-behavior", label: "Classroom Behavior" },
+    { id: "respect-for-others", label: "Respect for Others" },
+    { id: "following-rules", label: "Following Rules" },
+    { id: "self-control", label: "Self-Control" },
+    { id: "cooperation", label: "Cooperation" }
+  ],
+  characterOptions: [
+    "hard-working", "friendly", "attentive", "lively", "active", "quiet", 
+    "energetic", "studious", "sociable", "motivated", "respectful", 
+    "confident", "organised", "positive", "focused", "determined", 
+    "disinterested", "demotivated", "lazy", "shy"
+  ],
+  areasToImprove: [
+    "Listening to others", "Raising hand before speaking", "Staying in seat",
+    "Respecting personal space", "Using kind words", "Managing frustration",
+    "Accepting consequences", "Being honest", "Helping classmates", "Sharing materials",
+    "Waiting patiently", "Controlling impulses", "Resolving conflicts peacefully",
+    "Following directions first time", "Respecting teacher authority", "Taking responsibility",
+    "Accepting feedback", "Managing emotions"
   ],
   languages: [
     "English", "Spanish", "Catalan", "French", "German", "Italian", 
