@@ -1,57 +1,55 @@
-// scripts/form.js
+// scripts/form.js - UPDATED to use template system
 
-// --- DATA FOR DYNAMIC FIELDS ---
-export const characterOptionsData = [
-  "hard-working","friendly","attentive","lively","active","quiet","energetic",
-  "studious","sociable","motivated","respectful","confident","organised",
-  "positive","focused","determined","disinterested","demotivated","lazy","shy"
-];
-
-export const ratingFieldsData = [
-  { id: "progress",         label: "Progress" },
-  { id: "behaviour",        label: "Behaviour" },
-  { id: "participation",    label: "Participation" },
-  { id: "english-level",    label: "English Level" },
-  { id: "exam-performance", label: "Exam Performance" }
-];
+import { getActiveTemplate } from './templates.js';
 
 // ------- Language list used by Step 1 dropdown -------
-export const LANGUAGES = [
-  "English",
-  "Spanish",
-  "Catalan",
-  "French",
-  "German",
-  "Italian",
-  "Portuguese",
-  "Dutch",
-  "Polish",
-  "Arabic",
-  "Chinese (Simplified)",
-  "Chinese (Traditional)",
-  "Japanese",
-  "Korean"
-];
+// This will now be loaded from the active template
+export let LANGUAGES = [];
 
 export function populateLanguageSelect() {
   const sel = document.getElementById('language');
   if (!sel) return;
+  
+  // Get languages from active template
+  const template = getActiveTemplate();
+  LANGUAGES = template.languages || ["English", "Spanish"]; // Fallback if missing
+  
   sel.innerHTML = ""; // clear any placeholder options
   LANGUAGES.forEach((label, i) => {
     const opt = document.createElement('option');
     opt.value = label;
     opt.textContent = label;
-    if (i === 0) opt.selected = true; // default to first (English)
+    if (i === 0) opt.selected = true; // default to first
     sel.appendChild(opt);
   });
 }
 
-export const areasToImproveData = [
-  "grammar","vocabulary","Use of English","Reading","Listening","Writing",
-  "Speaking fluency","Pronunciation","Spelling","Participation","Paying attention",
-  "Sitting still","Completing classwork","Completing homework","Speak less Spanish",
-  "Motivation","Focus/Concentration"
-];
+// ------- Template-based data (loaded dynamically) -------
+export let characterOptionsData = [];
+export let ratingFieldsData = [];
+export let areasToImproveData = [];
+
+// Function to load data from active template
+function loadTemplateData() {
+  const template = getActiveTemplate();
+  
+  characterOptionsData = template.characterOptions || [];
+  ratingFieldsData = template.ratingFields || [];
+  areasToImproveData = template.areasToImprove || [];
+  
+  console.log('✅ Loaded template data:', template.name);
+}
+
+// Load template data when module loads
+loadTemplateData();
+
+// Listen for template changes and reload data
+window.addEventListener('template-changed', () => {
+  console.log('🔄 Template changed, reloading form...');
+  loadTemplateData();
+  populateLanguageSelect();
+  populateFormFields();
+});
 
 // Multiselect containers (live bindings exported for use in main.js)
 export let characterMultiselect = null;
@@ -86,6 +84,9 @@ export function populateFormFields() {
   const root = document.getElementById("dynamic-form-fields");
   if (!root) return;
 
+  // Reload template data in case it changed
+  loadTemplateData();
+
   // Two static columns so order is deterministic
   root.innerHTML = `
     <div id="perf-left"  class="space-y-6"></div>
@@ -95,7 +96,7 @@ export function populateFormFields() {
   const left  = document.getElementById("perf-left");
   const right = document.getElementById("perf-right");
 
-  // LEFT: all ratings (0–10)
+  // LEFT: all ratings (0–10) from template
   ratingFieldsData.forEach(field => {
     left.insertAdjacentHTML("beforeend", `
       <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
@@ -209,4 +210,3 @@ export function updateSelectedDisplay(checkboxContainer, selectedSpan) {
 if (typeof window !== "undefined") {
   window.__showCheckboxes = showCheckboxes;
 }
-
