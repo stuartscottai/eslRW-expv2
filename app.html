@@ -65,11 +65,24 @@
 <section id="step1" class="space-y-6">
   <h2 class="text-xl font-semibold text-slate-800">Pre-report criteria</h2>
 
-  <!-- NOTE: this used to be id="student-form". We rename it to pre-form so
-       clearing the form won't reset these constants. -->
   <form id="pre-form" class="space-y-8">
     <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
       <div class="space-y-6">
+
+        <!-- NEW: Template Selector Row -->
+        <div class="grid grid-cols-1 gap-6 pb-4 border-b border-slate-300">
+          <div>
+            <label for="template-selector" class="block font-medium text-slate-700 mb-1">
+              Report Template:
+            </label>
+            <select id="template-selector" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+              <!-- Options populated by JavaScript -->
+            </select>
+            <p class="text-xs text-slate-500 mt-1" id="template-description">
+              <!-- Description populated by JavaScript -->
+            </p>
+          </div>
+        </div>
 
         <!-- Row 1: Language + Trimester -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -320,5 +333,7 @@
     if (y) y.textContent = new Date().getFullYear();
   });
 </script>
+</body>
+</html>
 </body>
 </html>
