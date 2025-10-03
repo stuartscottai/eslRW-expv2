@@ -173,24 +173,42 @@ export function initializeTemplates() {
   const existing = localStorage.getItem(STORAGE_KEY);
   
   if (!existing) {
-    // First time - save default template
-    const templates = [DEFAULT_ESL_TEMPLATE];
+    // First time - save all 4 templates
+    const templates = [
+      DEFAULT_ESL_TEMPLATE,
+      GENERAL_ACADEMIC_TEMPLATE,
+      PRIMARY_SCHOOL_TEMPLATE,
+      BEHAVIOUR_FOCUSED_TEMPLATE
+    ];
     localStorage.setItem(STORAGE_KEY, JSON.stringify(templates));
     localStorage.setItem(ACTIVE_TEMPLATE_KEY, DEFAULT_ESL_TEMPLATE.id);
-    console.log('✅ Templates initialized with default ESL template');
+    console.log('✅ Templates initialized with 4 pre-made templates');
   } else {
-    // Check if default template exists, if not add it
+    // Check if all default templates exist, add any missing ones
     const templates = JSON.parse(existing);
-    const hasDefault = templates.some(t => t.id === 'default-esl');
+    const templateIds = templates.map(t => t.id);
     
-    if (!hasDefault) {
-      templates.unshift(DEFAULT_ESL_TEMPLATE); // Add to beginning
+    const defaultTemplates = [
+      DEFAULT_ESL_TEMPLATE,
+      GENERAL_ACADEMIC_TEMPLATE,
+      PRIMARY_SCHOOL_TEMPLATE,
+      BEHAVIOUR_FOCUSED_TEMPLATE
+    ];
+    
+    let added = false;
+    defaultTemplates.forEach(defaultTemplate => {
+      if (!templateIds.includes(defaultTemplate.id)) {
+        templates.push(defaultTemplate);
+        added = true;
+        console.log('✅ Added missing template:', defaultTemplate.name);
+      }
+    });
+    
+    if (added) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(templates));
-      console.log('✅ Default template added to existing templates');
     }
   }
 }
-
 /**
  * Get all templates
  * @returns {Array} Array of template objects
