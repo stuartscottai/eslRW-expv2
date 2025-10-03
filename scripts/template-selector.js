@@ -63,6 +63,9 @@ function handleTemplateChange(event) {
     return;
   }
 
+  // Clear the form before switching
+  clearStudentForm();
+
   // Set the new active template
   const success = setActiveTemplate(newTemplateId);
   
@@ -75,6 +78,59 @@ function handleTemplateChange(event) {
       window.showToast(`Switched to: ${template.name}`, 'success');
     }
   }
+}
+
+/**
+ * Clear all student form data (Step 2)
+ */
+function clearStudentForm() {
+  // Clear name field
+  const nameField = document.getElementById('name');
+  if (nameField) nameField.value = '';
+
+  // Reset gender to default
+  const genderField = document.getElementById('gender');
+  if (genderField) genderField.selectedIndex = 0;
+
+  // Clear all rating dropdowns (will be regenerated with new template)
+  const perfLeft = document.getElementById('perf-left');
+  if (perfLeft) {
+    const selects = perfLeft.querySelectorAll('select');
+    selects.forEach(select => select.value = '0');
+  }
+
+  // Uncheck all character checkboxes
+  const characterOptions = document.getElementById('characterOptions');
+  if (characterOptions) {
+    const checkboxes = characterOptions.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = false);
+  }
+
+  // Uncheck all areas checkboxes
+  const areasOptions = document.getElementById('areasOptions');
+  if (areasOptions) {
+    const checkboxes = areasOptions.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = false);
+  }
+
+  // Clear other points
+  const otherPoints = document.getElementById('other-points');
+  if (otherPoints) otherPoints.value = '';
+
+  // Update multiselect display text
+  const characterSelected = document.getElementById('character-selected');
+  if (characterSelected) {
+    characterSelected.textContent = 'Select options';
+    characterSelected.className = 'text-slate-500';
+  }
+
+  const areasSelected = document.getElementById('areas-selected');
+  if (areasSelected) {
+    areasSelected.textContent = 'Select options';
+    areasSelected.className = 'text-slate-500';
+  }
+
+  console.log('✅ Form cleared');
 }
 
 /**
