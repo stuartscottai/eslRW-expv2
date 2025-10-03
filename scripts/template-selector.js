@@ -88,25 +88,43 @@ function confirmTemplateSwitch() {
     return confirm('Switching templates will clear the current form. Continue?');
   }
 
-  // Check if any rating has been changed from 0
+  // Check if any rating has been changed from default (0)
   const dynamicFields = document.getElementById('dynamic-form-fields');
   if (dynamicFields) {
     const selects = dynamicFields.querySelectorAll('select');
     for (const select of selects) {
-      if (select.value !== '0') {
+      // Only warn if value is not "0" (default)
+      if (select.value && select.value !== '0') {
         return confirm('Switching templates will clear the current form. Continue?');
       }
     }
   }
 
-  // Check if any checkboxes are checked
-  const characterChecked = document.querySelectorAll('#characterOptions input:checked');
-  const areasChecked = document.querySelectorAll('#areasOptions input:checked');
-  if (characterChecked.length > 0 || areasChecked.length > 0) {
+  // Check if any character checkboxes are checked
+  const characterOptions = document.getElementById('characterOptions');
+  if (characterOptions) {
+    const characterChecked = characterOptions.querySelectorAll('input:checked');
+    if (characterChecked.length > 0) {
+      return confirm('Switching templates will clear the current form. Continue?');
+    }
+  }
+
+  // Check if any areas checkboxes are checked
+  const areasOptions = document.getElementById('areasOptions');
+  if (areasOptions) {
+    const areasChecked = areasOptions.querySelectorAll('input:checked');
+    if (areasChecked.length > 0) {
+      return confirm('Switching templates will clear the current form. Continue?');
+    }
+  }
+
+  // Check if "Other Points" has content
+  const otherPoints = document.getElementById('other-points');
+  if (otherPoints && otherPoints.value.trim() !== '') {
     return confirm('Switching templates will clear the current form. Continue?');
   }
 
-  // No data entered, safe to switch
+  // No data entered, safe to switch without warning
   return true;
 }
 
