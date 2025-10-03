@@ -540,6 +540,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderUsage();
 });
-
-  renderUsage();
-});
