@@ -5,7 +5,7 @@ import {
   callGeminiAPI,
   callChatAPI,
   renderUsage
-} from './api.js';
+} from '/scripts/api.js';
 
 import {
   populateFormFields,
@@ -13,17 +13,25 @@ import {
   characterMultiselect,
   areasMultiselect,
   populateLanguageSelect 
-} from './form.js';
+} from '/scripts/form.js';
 
 // NEW: Import template system
-import { getActiveTemplate } from './templates.js';
+import { getActiveTemplate } from '/scripts/templates.js';
+
+// NEW: Import template selector
+import { initializeTemplateSelector } from '/scripts/template-selector.js';
 
 import {
   showToast,
   setGenButtonState,
   autoResizeTextarea,
   fallbackCopyToClipboard
-} from './ui.js';
+} from '/scripts/ui.js';
+
+// Expose showToast globally for template-selector
+if (typeof window !== 'undefined') {
+  window.showToast = showToast;
+}
 
 function stripMarkdown(s = "") {
   return s
@@ -529,6 +537,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateStep3Actions();
   updateChatTargetToggle();
+
+  renderUsage();
+});
 
   renderUsage();
 });
