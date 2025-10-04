@@ -362,4 +362,43 @@ function handleSaveTemplate(e) {
       "disinterested", "demotivated", "lazy", "shy"
     ],
     areasToImprove: [...improvementAreas],
-    languages: [...selecte
+    languages: [...selectedLanguages],
+    createdDate: Date.now()
+  };
+  
+  // Validate
+  const validation = validateTemplate(template);
+  if (!validation.valid) {
+    showToast(`Validation errors: ${validation.errors.join(', ')}`, 'error');
+    return;
+  }
+  
+  // Save
+  const success = saveTemplate(template);
+  
+  if (success) {
+    showToast(editingTemplateId ? 'Template updated!' : 'Template created!', 'success');
+    setTimeout(() => {
+      window.location.href = 'template-manager.html';
+    }, 1500);
+  } else {
+    showToast('Failed to save template', 'error');
+  }
+}
+
+// ============================================================
+// UTILITY
+// ============================================================
+
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast-notification');
+  const toastMessage = document.getElementById('toast-message');
+  toastMessage.textContent = message;
+  toast.className = 'toast show';
+  if (type === 'error') toast.classList.add('error');
+  setTimeout(() => { toast.className = 'toast'; }, 3000);
+}
+
+// Expose functions to window for onclick handlers
+window.removeRatingField = removeRatingField;
+window.removeImprovementArea = removeImprovementArea;
