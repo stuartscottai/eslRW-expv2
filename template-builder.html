@@ -89,7 +89,7 @@
             <input type="text" id="new-rating-field" placeholder="Category name (e.g., Lab Safety)"
                    class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500">
             <button type="button" id="add-rating-field"
-                    class="bg-slate-600 hover:bg-slate-700 text-white px-6 py-3 rounded-lg font-medium transition flex items-center gap-2">
+                    class="bg-white hover:bg-slate-50 text-slate-600 px-5 py-3 rounded-lg border border-slate-300 font-medium transition flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
@@ -112,8 +112,11 @@
             <input type="text" id="new-improvement-area" placeholder="Area name (e.g., Lab report writing)"
                    class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500">
             <button type="button" id="add-improvement-area"
-                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium">
-              + Add
+                    class="bg-white hover:bg-slate-50 text-slate-600 px-5 py-3 rounded-lg border border-slate-300 font-medium transition flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Add
             </button>
           </div>
           
@@ -135,12 +138,15 @@
         <!-- Actions -->
         <div class="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-slate-200">
           <a href="template-manager.html"
-             class="px-6 py-3 text-center bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg">
+             class="px-6 py-3 text-center bg-white hover:bg-slate-50 text-slate-600 border border-slate-300 font-semibold rounded-lg transition">
             Cancel
           </a>
           <button type="submit"
-                  class="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg">
-            💾 Save Template
+                  class="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-sm transition flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+            </svg>
+            Save Template
           </button>
         </div>
 
