@@ -1,4 +1,4 @@
-// scripts/template-builder.js - Template Builder Logic
+// scripts/template-builder.js - Template Builder Logic with Minimalist UI
 
 import { getTemplateById, saveTemplate, validateTemplate } from '/scripts/templates.js';
 
@@ -144,7 +144,8 @@ function renderRatingFields() {
       <span class="drag-handle text-slate-400 cursor-grab select-none">☰</span>
       <span class="flex-1 font-medium text-slate-700">${field.label}</span>
       <button type="button" onclick="window.removeRatingField(${index})"
-              class="text-slate-400 hover:text-red-600 transition">
+              class="text-slate-400 hover:text-red-600 transition p-1 rounded hover:bg-red-50"
+              title="Delete">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
@@ -209,8 +210,11 @@ function renderImprovementAreas() {
       <span class="drag-handle text-slate-400 cursor-grab">☰</span>
       <span class="flex-1 font-medium text-slate-700">${area}</span>
       <button type="button" onclick="window.removeImprovementArea(${index})"
-              class="text-red-600 hover:text-red-800 font-medium text-sm">
-        Delete
+              class="text-slate-400 hover:text-red-600 transition p-1 rounded hover:bg-red-50"
+              title="Delete">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
       </button>
     `;
     
