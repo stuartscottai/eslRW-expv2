@@ -15,11 +15,25 @@ export function populateTemplateSelector() {
   // Clear existing options
   selector.innerHTML = '';
 
+  // Add "Create New Template" option at the top
+  const createOption = document.createElement('option');
+  createOption.value = '__create_new__';
+  createOption.textContent = '➕ Create New Template';
+  createOption.style.fontWeight = 'bold';
+  createOption.style.color = '#059669'; // green
+  selector.appendChild(createOption);
+
+  // Add separator
+  const separator = document.createElement('option');
+  separator.disabled = true;
+  separator.textContent = '───────────────';
+  selector.appendChild(separator);
+
   // Add all templates as options
   templates.forEach(template => {
     const option = document.createElement('option');
     option.value = template.id;
-    option.textContent = template.name;
+    option.textContent = template.name + (template.isLocked ? ' 🔒' : ' ✏️');
     
     // Mark active template as selected
     if (template.id === activeTemplate.id) {
@@ -51,6 +65,17 @@ function updateTemplateDescription() {
  */
 function handleTemplateChange(event) {
   const newTemplateId = event.target.value;
+  
+  // Check if user selected "Create New Template"
+  if (newTemplateId === '__create_new__') {
+    console.log('🆕 User wants to create new template');
+    window.location.href = 'template-builder.html';
+    return;
+  }
+
+  // Check if user clicked on a template with pencil icon (editing)
+  // This is handled by the visual indicator only - actual editing via manager page
+  
   console.log('🔄 User selected template:', newTemplateId);
 
   // Confirm if user has filled out any form data
