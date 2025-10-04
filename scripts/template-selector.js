@@ -1,4 +1,4 @@
-// scripts/template-selector.js - Handles template selection UI
+// scripts/template-selector.js - Handles template selection UI with action buttons
 
 import { getAllTemplates, getActiveTemplate, setActiveTemplate } from '/scripts/templates.js';
 
@@ -18,8 +18,7 @@ export function populateTemplateSelector() {
   // Add "Create New Template" option at the top
   const createOption = document.createElement('option');
   createOption.value = '__create_new__';
-  createOption.textContent = '+ Create New Template';
-  createOption.style.fontWeight = '600';
+  createOption.textContent = 'Create New Template';
   selector.appendChild(createOption);
 
   // Add separator
@@ -28,7 +27,7 @@ export function populateTemplateSelector() {
   separator.textContent = '─────────';
   selector.appendChild(separator);
 
-  // Add all templates as options
+  // Add all templates as options (clean text, no emojis)
   templates.forEach(template => {
     const option = document.createElement('option');
     option.value = template.id;
@@ -52,21 +51,21 @@ export function populateTemplateSelector() {
 }
 
 /**
- * Render action buttons next to the active template
+ * Render action buttons below the dropdown
  */
 function renderTemplateActions() {
   // Check if action buttons container exists
   let actionsContainer = document.getElementById('template-actions');
   
   if (!actionsContainer) {
-    // Create it after the selector
-    const selector = document.getElementById('template-selector');
-    if (!selector) return;
+    // Create it after the description
+    const descEl = document.getElementById('template-description');
+    if (!descEl) return;
     
     actionsContainer = document.createElement('div');
     actionsContainer.id = 'template-actions';
-    actionsContainer.className = 'flex items-center gap-2 mt-2';
-    selector.parentElement.appendChild(actionsContainer);
+    actionsContainer.className = 'flex items-center gap-2 mt-3';
+    descEl.parentElement.appendChild(actionsContainer);
   }
   
   const activeTemplate = getActiveTemplate();
@@ -77,21 +76,21 @@ function renderTemplateActions() {
       ${canEdit ? `
         <button type="button" onclick="window.editActiveTemplate()" 
                 title="Edit this template"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md border border-slate-200 transition">
+                class="inline-flex items-center gap-1.5 px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md border border-slate-300 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
           </svg>
-          <span class="hidden sm:inline">Edit</span>
+          Edit
         </button>
       ` : ''}
       
       <button type="button" onclick="window.duplicateActiveTemplate()" 
               title="Duplicate & edit this template"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md border border-slate-200 transition">
+              class="inline-flex items-center gap-1.5 px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md border border-slate-300 transition">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
         </svg>
-        <span class="hidden sm:inline">Duplicate</span>
+        Duplicate
       </button>
     </div>
   `;
@@ -145,9 +144,6 @@ function handleTemplateChange(event) {
     return;
   }
 
-  // Check if user clicked on a template with pencil icon (editing)
-  // This is handled by the visual indicator only - actual editing via manager page
-  
   console.log('🔄 User selected template:', newTemplateId);
 
   // Confirm if user has filled out any form data
@@ -168,6 +164,7 @@ function handleTemplateChange(event) {
   
   if (success) {
     updateTemplateDescription();
+    renderTemplateActions();
     
     // Show toast notification
     const template = getAllTemplates().find(t => t.id === newTemplateId);
@@ -189,7 +186,7 @@ function clearStudentForm() {
   const genderField = document.getElementById('gender');
   if (genderField) genderField.selectedIndex = 0;
 
-  // Clear all rating dropdowns (will be regenerated with new template)
+  // Clear all rating dropdowns
   const perfLeft = document.getElementById('perf-left');
   if (perfLeft) {
     const selects = perfLeft.querySelectorAll('select');
@@ -237,58 +234,51 @@ function clearStudentForm() {
 function confirmTemplateSwitch() {
   let hasData = false;
 
-  // 1. Check name field
+  // Check name field
   const nameField = document.getElementById('name');
   if (nameField && nameField.value && nameField.value.trim() !== '') {
-    console.log('🔍 Data found: Name field has content');
     hasData = true;
   }
 
-  // 2. Check rating dropdowns (0-10 scales only, not salutation)
-  // We check the left column (perf-left) which contains only ratings
+  // Check rating dropdowns
   const perfLeft = document.getElementById('perf-left');
   if (perfLeft && !hasData) {
     const ratingSelects = perfLeft.querySelectorAll('select');
     for (const select of ratingSelects) {
       const value = select.value;
-      // Check if it's been changed from "0" (default for ratings)
       if (value && value !== '0') {
-        console.log('🔍 Data found: Rating changed to', value, 'in', select.id);
         hasData = true;
         break;
       }
     }
   }
 
-  // 3. Check character checkboxes
+  // Check character checkboxes
   if (!hasData) {
     const characterOptions = document.getElementById('characterOptions');
     if (characterOptions) {
       const checked = characterOptions.querySelectorAll('input[type="checkbox"]:checked');
       if (checked.length > 0) {
-        console.log('🔍 Data found:', checked.length, 'character traits selected');
         hasData = true;
       }
     }
   }
 
-  // 4. Check improvement areas checkboxes
+  // Check improvement areas checkboxes
   if (!hasData) {
     const areasOptions = document.getElementById('areasOptions');
     if (areasOptions) {
       const checked = areasOptions.querySelectorAll('input[type="checkbox"]:checked');
       if (checked.length > 0) {
-        console.log('🔍 Data found:', checked.length, 'improvement areas selected');
         hasData = true;
       }
     }
   }
 
-  // 5. Check "Other Points" text field
+  // Check "Other Points" text field
   if (!hasData) {
     const otherPoints = document.getElementById('other-points');
     if (otherPoints && otherPoints.value && otherPoints.value.trim() !== '') {
-      console.log('🔍 Data found: Other points has content');
       hasData = true;
     }
   }
@@ -298,8 +288,6 @@ function confirmTemplateSwitch() {
     return confirm('Switching templates will clear the current form. Continue?');
   }
 
-  // No data found, safe to switch
-  console.log('✅ No data found, switching templates without warning');
   return true;
 }
 
@@ -319,14 +307,15 @@ export function initializeTemplateSelector() {
   // Add change event listener
   selector.addEventListener('change', handleTemplateChange);
 
-  // Listen for template updates (from other sources)
+  // Listen for template updates
   window.addEventListener('templates-updated', () => {
     populateTemplateSelector();
   });
 
-  // Listen for template changes (to update description)
+  // Listen for template changes
   window.addEventListener('template-changed', () => {
     updateTemplateDescription();
+    renderTemplateActions();
   });
 
   console.log('✅ Template selector initialized');
