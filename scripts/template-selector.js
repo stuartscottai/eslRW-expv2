@@ -18,22 +18,21 @@ export function populateTemplateSelector() {
   // Add "Create New Template" option at the top
   const createOption = document.createElement('option');
   createOption.value = '__create_new__';
-  createOption.textContent = '➕ Create New Template';
-  createOption.style.fontWeight = 'bold';
-  createOption.style.color = '#059669'; // green
+  createOption.textContent = '+ Create New Template';
+  createOption.style.fontWeight = '600';
   selector.appendChild(createOption);
 
   // Add separator
   const separator = document.createElement('option');
   separator.disabled = true;
-  separator.textContent = '───────────────';
+  separator.textContent = '─────────';
   selector.appendChild(separator);
 
   // Add all templates as options
   templates.forEach(template => {
     const option = document.createElement('option');
     option.value = template.id;
-    option.textContent = template.name + (template.isLocked ? ' 🔒' : ' ✏️');
+    option.textContent = template.name;
     
     // Mark active template as selected
     if (template.id === activeTemplate.id) {
@@ -45,8 +44,81 @@ export function populateTemplateSelector() {
 
   // Update description
   updateTemplateDescription();
+  
+  // Add action buttons after selector
+  renderTemplateActions();
 
   console.log('✅ Template selector populated with', templates.length, 'templates');
+}
+
+/**
+ * Render action buttons next to the active template
+ */
+function renderTemplateActions() {
+  // Check if action buttons container exists
+  let actionsContainer = document.getElementById('template-actions');
+  
+  if (!actionsContainer) {
+    // Create it after the selector
+    const selector = document.getElementById('template-selector');
+    if (!selector) return;
+    
+    actionsContainer = document.createElement('div');
+    actionsContainer.id = 'template-actions';
+    actionsContainer.className = 'flex items-center gap-2 mt-2';
+    selector.parentElement.appendChild(actionsContainer);
+  }
+  
+  const activeTemplate = getActiveTemplate();
+  const canEdit = !activeTemplate.isLocked;
+  
+  actionsContainer.innerHTML = `
+    <div class="flex items-center gap-2">
+      ${canEdit ? `
+        <button type="button" onclick="window.editActiveTemplate()" 
+                title="Edit this template"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md border border-slate-200 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+          </svg>
+          <span class="hidden sm:inline">Edit</span>
+        </button>
+      ` : ''}
+      
+      <button type="button" onclick="window.duplicateActiveTemplate()" 
+              title="Duplicate & edit this template"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md border border-slate-200 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        <span class="hidden sm:inline">Duplicate</span>
+      </button>
+    </div>
+  `;
+}
+
+// Expose functions for button handlers
+if (typeof window !== 'undefined') {
+  window.editActiveTemplate = function() {
+    const active = getActiveTemplate();
+    window.location.href = `template-builder.html?edit=${active.id}`;
+  };
+  
+  window.duplicateActiveTemplate = function() {
+    const active = getActiveTemplate();
+    // Import duplicateTemplate dynamically
+    import('/scripts/templates.js').then(module => {
+      const newTemplate = module.duplicateTemplate(active.id);
+      if (newTemplate) {
+        if (typeof window.showToast === 'function') {
+          window.showToast('Template duplicated! Opening editor...', 'success');
+        }
+        setTimeout(() => {
+          window.location.href = `template-builder.html?edit=${newTemplate.id}`;
+        }, 1000);
+      }
+    });
+  };
 }
 
 /**
