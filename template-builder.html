@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Template Builder – ESL Report Writer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/style.css">
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+  <style>
+    .dragging {
+      opacity: 0.5;
+      background: #e0f2fe;
+    }
+    .drag-handle {
+      cursor: grab;
+    }
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body class="bg-blue-50 text-slate-800">
+
+  <!-- Top nav -->
+  <header class="bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center">
+        <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
+      </a>
+      <nav class="flex items-center gap-6">
+        <a href="index.html" class="text-slate-600 hover:text-slate-900">Home</a>
+        <a href="app.html" class="text-slate-600 hover:text-slate-900">Report Writer</a>
+        <a href="how-to.html" class="text-slate-600 hover:text-slate-900">How to use</a>
+        <a href="template-manager.html" class="text-slate-600 hover:text-slate-900">Templates</a>
+      </nav>
+      <a href="template-manager.html" class="hidden sm:inline-flex items-center bg-slate-600 hover:bg-slate-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
+        ← Back to Templates
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative z-0">
+    <img src="/public/hero-bg.jpg" alt="Hero"
+         class="w-full h-[200px] object-cover object-center">
+    <div class="absolute inset-0 bg-slate-900/40"></div>
+
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      <h1 class="text-white text-2xl md:text-3xl font-bold drop-shadow-lg" id="page-title">
+        Create New Template
+      </h1>
+    </div>
+  </section>
+
+  <!-- Card -->
+  <div class="max-w-4xl mx-auto px-4 -mt-10 relative z-10">
+    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
+      
+      <form id="template-form" class="space-y-8">
+        
+        <!-- Basic Info -->
+        <section class="border border-slate-200 rounded-lg p-6 bg-slate-50">
+          <h2 class="text-lg font-semibold text-slate-800 mb-4">Basic Information</h2>
+          
+          <div class="space-y-4">
+            <div>
+              <label for="template-name" class="block font-medium text-slate-700 mb-1">Template Name *</label>
+              <input type="text" id="template-name" required
+                     placeholder="e.g., High School Science Report"
+                     class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+            </div>
+            
+            <div>
+              <label for="template-description" class="block font-medium text-slate-700 mb-1">Description</label>
+              <textarea id="template-description" rows="2"
+                        placeholder="Brief description of what this template is for"
+                        class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Rating Fields -->
+        <section class="border border-slate-200 rounded-lg p-6 bg-slate-50">
+          <h2 class="text-lg font-semibold text-slate-800 mb-4">Rating Categories (0-10 scale)</h2>
+          
+          <div class="flex gap-2 mb-4">
+            <input type="text" id="new-rating-field" placeholder="Category name (e.g., Lab Safety)"
+                   class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+            <button type="button" id="add-rating-field"
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium">
+              + Add
+            </button>
+          </div>
+          
+          <div id="rating-fields-list" class="space-y-2">
+            <!-- Rating fields will be added here -->
+          </div>
+          
+          <p class="text-xs text-slate-500 mt-3">Tip: Drag ☰ to reorder fields</p>
+        </section>
+
+        <!-- Improvement Areas -->
+        <section class="border border-slate-200 rounded-lg p-6 bg-slate-50">
+          <h2 class="text-lg font-semibold text-slate-800 mb-4">Areas to Improve</h2>
+          
+          <div class="flex gap-2 mb-4">
+            <input type="text" id="new-improvement-area" placeholder="Area name (e.g., Lab report writing)"
+                   class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+            <button type="button" id="add-improvement-area"
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium">
+              + Add
+            </button>
+          </div>
+          
+          <div id="improvement-areas-list" class="space-y-2">
+            <!-- Improvement areas will be added here -->
+          </div>
+          
+          <p class="text-xs text-slate-500 mt-3">Tip: Drag ☰ to reorder areas</p>
+        </section>
+
+        <!-- Languages -->
+        <section class="border border-slate-200 rounded-lg p-6 bg-slate-50">
+          <h2 class="text-lg font-semibold text-slate-800 mb-4">Available Languages</h2>
+          <div id="languages-checkboxes" class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <!-- Language checkboxes will be added here -->
+          </div>
+        </section>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-slate-200">
+          <a href="template-manager.html"
+             class="px-6 py-3 text-center bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg">
+            Cancel
+          </a>
+          <button type="submit"
+                  class="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg">
+            💾 Save Template
+          </button>
+        </div>
+
+      </form>
+
+    </main>
+
+    <footer class="text-center mt-10 mb-6">
+      <p class="text-sm text-slate-500">&copy; <span id="currentYear"></span> ESL Report Writer. Designed and managed by 3P Machine digital.</p>
+    </footer>
+  </div>
+
+  <div id="toast-notification" class="toast"><span id="toast-message"></span></div>
+
+  <script type="module" src="/scripts/template-builder.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const y = document.getElementById('currentYear');
+      if (y) y.textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>
