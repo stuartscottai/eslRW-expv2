@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Template Manager – ESL Report Writer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/style.css">
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-blue-50 text-slate-800">
+
+  <!-- Top nav -->
+  <header class="bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center">
+        <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
+      </a>
+      <nav class="flex items-center gap-6">
+        <a href="index.html" class="text-slate-600 hover:text-slate-900">Home</a>
+        <a href="app.html" class="text-slate-600 hover:text-slate-900">Report Writer</a>
+        <a href="how-to.html" class="text-slate-600 hover:text-slate-900">How to use</a>
+        <a href="template-manager.html" class="text-slate-900 font-medium">Templates</a>
+      </nav>
+      <a href="app.html" class="hidden sm:inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
+        Get started
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative z-0">
+    <img src="/public/hero-bg.jpg" alt="Hero"
+         class="w-full h-[260px] md:h-[320px] object-cover object-center">
+    <div class="absolute inset-0 bg-slate-900/40"></div>
+
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      <img src="/public/logo.png" alt="ESL Report Writer Logo"
+           class="h-24 md:h-32 w-auto drop-shadow-lg">
+      <div class="mt-3 text-white text-lg md:text-xl font-medium drop-shadow">
+        Manage Your Report Templates
+      </div>
+    </div>
+  </section>
+
+  <!-- Card -->
+  <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
+    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div class="flex items-center gap-3">
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-orange-500"></span>
+          <span class="text-slate-800 font-semibold">Template Manager</span>
+        </div>
+        <a href="template-builder.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold px-4 py-2 rounded-md shadow">
+          + Create New Template
+        </a>
+      </div>
+
+      <!-- Templates List -->
+      <div id="templates-list" class="space-y-4">
+        <!-- Templates will be populated by JavaScript -->
+      </div>
+
+    </main>
+
+    <footer class="text-center mt-10 mb-6">
+      <p class="text-sm text-slate-500">&copy; <span id="currentYear"></span> ESL Report Writer. Designed and managed by 3P Machine digital.</p>
+    </footer>
+  </div>
+
+  <div id="toast-notification" class="toast"><span id="toast-message"></span></div>
+
+  <script type="module">
+    import { getAllTemplates, deleteTemplate, duplicateTemplate, setActiveTemplate } from '/scripts/templates.js';
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast-notification');
+      const toastMessage = document.getElementById('toast-message');
+      toastMessage.textContent = message;
+      toast.className = 'toast show';
+      if (type === 'error') toast.classList.add('error');
+      setTimeout(() => { toast.className = 'toast'; }, 3000);
+    }
+
+    function renderTemplates() {
+      const container = document.getElementById('templates-list');
+      const templates = getAllTemplates();
+
+      container.innerHTML = '';
+
+      templates.forEach(template => {
+        const div = document.createElement('div');
+        div.className = 'border border-slate-200 rounded-lg p-6 bg-slate-50 hover:bg-slate-100 transition';
+        
+        const isLocked = template.isLocked;
+        const lockIcon = isLocked ? '🔒' : '';
+
+        div.innerHTML = `
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                ${lockIcon} ${template.name}
+                ${template.isDefault ? '<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Default</span>' : ''}
+              </h3>
+              <p class="text-sm text-slate-600 mt-1">${template.description}</p>
+              <div class="mt-3 text-xs text-slate-500 space-y-1">
+                <div>📊 Rating Fields: ${template.ratingFields.length}</div>
+                <div>✏️ Improvement Areas: ${template.areasToImprove.length}</div>
+                <div>🌍 Languages: ${template.languages.length}</div>
+              </div>
+            </div>
+            
+            <div class="flex flex-col gap-2 ml-4">
+              ${!isLocked ? `
+                <button onclick="editTemplate('${template.id}')" 
+                        class="px-3 py-1.5 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md">
+                  ✏️ Edit
+                </button>
+              ` : ''}
+              
+              <button onclick="duplicateTemplate('${template.id}')" 
+                      class="px-3 py-1.5 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md">
+                📋 Duplicate
+              </button>
+              
+              <button onclick="useTemplate('${template.id}')" 
+                      class="px-3 py-1.5 text-sm bg-orange-600 hover:bg-orange-700 text-white rounded-md">
+                ▶️ Use
+              </button>
+              
+              ${!isLocked ? `
+                <button onclick="deleteTemplate('${template.id}')" 
+                        class="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-700 text-white rounded-md">
+                  🗑️ Delete
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+
+    window.editTemplate = function(templateId) {
+      window.location.href = `template-builder.html?edit=${templateId}`;
+    };
+
+    window.duplicateTemplate = function(templateId) {
+      const newTemplate = duplicateTemplate(templateId);
+      if (newTemplate) {
+        showToast('Template duplicated! You can now edit it.', 'success');
+        renderTemplates();
+      } else {
+        showToast('Failed to duplicate template', 'error');
+      }
+    };
+
+    window.useTemplate = function(templateId) {
+      setActiveTemplate(templateId);
+      showToast('Template activated! Redirecting...', 'success');
+      setTimeout(() => {
+        window.location.href = 'app.html';
+      }, 1000);
+    };
+
+    window.deleteTemplate = function(templateId) {
+      if (confirm('Are you sure you want to delete this template? This cannot be undone.')) {
+        const success = deleteTemplate(templateId);
+        if (success) {
+          showToast('Template deleted', 'success');
+          renderTemplates();
+        } else {
+          showToast('Failed to delete template', 'error');
+        }
+      }
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      const y = document.getElementById('currentYear');
+      if (y) y.textContent = new Date().getFullYear();
+      
+      renderTemplates();
+
+      // Listen for template updates
+      window.addEventListener('templates-updated', renderTemplates);
+    });
+  </script>
+</body>
+</html>
