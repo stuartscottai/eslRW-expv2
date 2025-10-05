@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>How to use – ESL Report Writer</title>
+  <title>How to Use - ESL Report Writer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/style.css">
@@ -12,120 +12,123 @@
 <body class="bg-blue-50 text-slate-800">
 
   <!-- Top nav -->
-  <header class="bg-white/90 backdrop-blur border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+  <header class="relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between relative">
       <a href="index.html" class="flex items-center">
         <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
       </a>
-      <nav class="flex items-center gap-6">
-        <a href="index.html" class="text-slate-600 hover:text-slate-900">Home</a>
-        <a href="app.html" class="text-slate-900 font-medium">Report Writer</a>
-        <a href="how-to.html" class="text-slate-600 hover:text-slate-900">How to use</a>
-        <a href="template-manager.html" class="text-slate-600 hover:text-slate-900">Templates</a>
-      </nav>
-      <a href="app.html" class="hidden sm:inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
-        Get started
-      </a>
+      <div class="flex items-center gap-4">
+        <div class="relative flex items-center gap-4">
+          <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-600 md:items-center" data-open="false">
+            <a href="index.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Home</a>
+            <a href="app.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Report Writer</a>
+            <a href="how-to.html" class="py-2 text-slate-900 font-semibold transition-colors duration-200 md:text-base" aria-current="page">How to use</a>
+            <a href="template-builder.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Builder</a>
+            <a href="template-manager.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Manager</a>
+            <a href="app.html" class="md:hidden btn-primary text-center text-sm">Launch Report Writer</a>
+          </nav>
+          <button type="button" class="nav-toggle md:hidden" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
+            <span class="sr-only">Toggle navigation</span>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+        <a href="app.html" class="hidden md:inline-flex items-center btn-primary text-sm font-semibold">Launch Report Writer</a>
+      </div>
     </div>
   </header>
 
   <!-- Hero -->
   <section class="relative z-0">
-    <img src="/public/hero-bg.jpg" alt="Hero"
-         class="w-full h-[260px] md:h-[320px] object-cover object-center">
-    <div class="absolute inset-0 bg-slate-900/40"></div>
-
+    <img src="/public/hero-bg.jpg" alt="Hero" class="w-full h-[260px] md:h-[320px] object-cover object-center">
+    <div class="absolute inset-0 hero-overlay"></div>
     <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-      <img src="/public/logo.png" alt="ESL Report Writer Logo"
-           class="h-24 md:h-32 w-auto drop-shadow-lg">
-      <div class="mt-3 text-white text-lg md:text-xl font-medium drop-shadow">
-        Create polished ESL reports in minutes
-      </div>
+      <img src="/public/logo.png" alt="ESL Report Writer Logo" class="h-24 md:h-32 w-auto drop-shadow-lg">
+      <div class="mt-3 text-white text-lg md:text-xl font-medium drop-shadow">Create polished ESL reports in minutes</div>
     </div>
   </section>
 
-  <!-- Card -->
+  <!-- Content -->
   <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
     <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
       <div class="flex items-center border-b border-slate-200 pb-4">
         <div class="flex items-center gap-3">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-orange-500"></span>
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500"></span>
           <span class="text-slate-800 font-semibold">How to use ESL Report Writer</span>
         </div>
       </div>
 
       <section class="space-y-8">
-        <!-- Quick Start -->
-        <div class="border border-slate-200 rounded-lg p-5 bg-slate-50 shadow-sm">
-          <h2 class="text-xl font-semibold text-slate-800 mb-2">🚀 Quick start (2 minutes)</h2>
-          <ol class="list-decimal list-inside space-y-2 text-slate-700">
-            <li><strong>Open the <a href="app.html" class="text-sky-700 underline">App</a></strong>.</li>
-            <li>Choose <strong>Language</strong> and <strong>Report Tone</strong>.</li>
-            <li>Enter the student’s <strong>Name</strong>, select <strong>Gender</strong>, <strong>Perspective</strong>, and <strong>Trimester</strong>.</li>
-            <li>Select <strong>Character traits</strong> and fill the <strong>ratings (0–10)</strong>.</li>
-            <li>Click <u><strong>Generate Full Report</strong></u>. Optionally click ✨ <strong>Get Improvement Ideas</strong>.</li>
-            <li>Use <strong>Edit with AI</strong> to tweak tone, length, or emphasis, then <strong>Copy</strong> the final text.</li>
+        <!-- Quick start -->
+        <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+          <h2 class="text-xl font-semibold text-slate-800 mb-4">Quick start in two minutes</h2>
+          <ol class="step-list text-slate-700">
+            <li><strong>Open the builder.</strong> Launch the Report Writer and pick the output language and tone.</li>
+            <li><strong>Complete the student profile.</strong> Add the student name, gender, perspective, trimester, and report register.</li>
+            <li><strong>Capture performance data.</strong> Score each area on the 0-10 scale, then note traits, highlights, and priorities.</li>
+            <li><strong>Generate content.</strong> Use <strong>Generate Full Report</strong> and optionally <strong>Get Improvement Ideas</strong> for actionable next steps.</li>
+            <li><strong>Refine and deliver.</strong> Tweak the copy with <strong>Edit with AI</strong>, then copy it into your reporting platform.</li>
           </ol>
         </div>
 
-        <!-- Modes -->
-        <div class="border border-slate-200 rounded-lg p-5 bg-slate-50 shadow-sm">
-          <h3 class="text-lg font-semibold text-slate-800 mb-2">🧭 Single page vs Step by Step mode</h3>
-          <p class="text-slate-700">
-            The default view is <strong>step by step mode</strong>. You’ll see navigation for <u>Step 1 → Step 2 → Step 3</u>.
-          </p>
-          <ul class="list-disc list-inside text-slate-700 space-y-1 mt-2">
-            <li><strong>Step 1:</strong> Initial report information.</li>
-            <li><strong>Step 2:</strong> Student performance &amp; actions.</li>
-            <li><strong>Step 3:</strong> Report generation, improvement idea generation, and the <strong>“Edit with AI”</strong> chat to tweak the AI-generated responses.</li>
-          </ul>
-          <p class="text-slate-700 mt-2">
-            Alternatively you can select <strong>Single page mode</strong>, which shows all inputs on one page. Complete the top section (language, tone, name, etc.) and then the performance ratings below. This is best for <u>fast data entry</u> and <u>scanning everything at once</u>.
-          </p>
+        <!-- Viewing modes -->
+        <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+          <h3 class="text-lg font-semibold text-slate-800 mb-3">Choose the layout that suits your workflow</h3>
+          <p class="text-slate-700 leading-relaxed">The default <strong>step-by-step mode</strong> guides you through three clear stages: gathering context, rating performance, and generating outputs. Navigation indicates whether you are on Step 1, 2, or 3.</p>
+          <p class="text-slate-700 leading-relaxed mt-3"><strong>Single-page mode</strong> displays everything at once. It is ideal for quick data entry when you already know the student details and want to move fast.</p>
         </div>
 
-        <!-- Fields overview -->
-        <div class="border border-slate-200 rounded-lg p-5 bg-slate-50 shadow-sm">
-          <h3 class="text-lg font-semibold text-slate-800 mb-3">🧩 Fields overview &amp; tips</h3>
+        <!-- Field overview -->
+        <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+          <h3 class="text-lg font-semibold text-slate-800 mb-3">Key fields at a glance</h3>
           <div class="grid md:grid-cols-2 gap-6">
-            <ul class="list-disc list-inside text-slate-700 space-y-1">
-              <li><strong>Language:</strong> Output language for the whole report. At the moment you can choose between <u>English</u> or <u>Spanish</u>.</li>
-              <li><strong>Report Tone:</strong> <u>Neutral</u> / <u>Friendly &amp; Constructive</u> / <u>Empathetic &amp; Supportive</u> / <u>Concise &amp; Direct</u> / <u>Growth-Oriented</u>.</li>
-              <li><strong>Perspective:</strong> <u>Third person</u> (“he/she”) or <u>Second person</u> (“you”).</li>
-              <li><strong>Trimester:</strong> Choose <u>Term 1</u>, <u>2</u> or <u>3 (End of academic Year)</u> for final reports.</li>
-              <li><strong>Ratings (0–10):</strong> Choose how students have performed in each category. <u>1 = poor</u> / <u>5 = average</u> / <u>10 = excellent</u>.</li>
+            <ul class="detail-list">
+              <li><strong>Language</strong> sets the language for headings and body copy.</li>
+              <li><strong>Report tone</strong> adjusts the voice: neutral, friendly, empathetic, concise, or growth-focused.</li>
+              <li><strong>Perspective</strong> swaps between third person ("she") and second person ("you").</li>
+              <li><strong>Ratings (0-10)</strong> influence the balance of praise and development points.</li>
             </ul>
-            <ul class="list-disc list-inside text-slate-700 space-y-1">
-              <li><strong>Character:</strong> Choose the traits which best characterise your student’s personality/attitude in class.</li>
-              <li><strong>Areas to Improve:</strong> Select relevant focus areas based on what you've seen during the term.</li>
-              <li><strong>Other Points:</strong> Optional free text for extra context. Here you can really personalise and mention unique things about your student.</li>
-              <li><strong>Salutation:</strong> How to sign off the report. For example, for <u>Christmas</u>, the report will wish the student a <strong>Merry Christmas</strong>.</li>
+            <ul class="detail-list">
+              <li><strong>Character traits</strong> highlight personality cues you want to surface.</li>
+              <li><strong>Areas to improve</strong> drive the improvement strategies the AI suggests.</li>
+              <li><strong>Other points</strong> lets you add bespoke context or classroom anecdotes.</li>
+              <li><strong>Salutation</strong> controls the closing sentiment for the report.</li>
             </ul>
           </div>
         </div>
 
-        <!-- Generate, refine, copy -->
-        <div class="border border-slate-200 rounded-lg p-5 bg-slate-50 shadow-sm">
-          <h3 class="text-lg font-semibold text-slate-800 mb-3">✨ Generate, refine, and copy</h3>
-          <ol class="list-decimal list-inside space-y-2 text-slate-700">
-            <li>Click <u><strong>Generate Full Report</strong></u>.</li>
-            <li>Click ✨ <strong>Get Improvement Ideas</strong> for actionable suggestions on how students can improve. This is based on <strong>areas</strong> you have identified in your ratings/comments.</li>
-            <li>Use <strong>Edit with AI</strong> to adjust the final text, then <u><strong>Copy</strong></u> it into your school's student reports system.</li>
-          </ol>
+        <!-- Generate, refine, deliver -->
+        <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+          <h3 class="text-lg font-semibold text-slate-800 mb-3">Generate, refine, deliver</h3>
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <h4 class="text-sm font-semibold text-slate-800 uppercase tracking-wide">Create the draft</h4>
+              <p class="mt-2 text-sm text-slate-700 leading-relaxed">Run <span class="font-semibold">Generate Full Report</span> after completing the required fields to produce a tailored narrative.</p>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <h4 class="text-sm font-semibold text-slate-800 uppercase tracking-wide">Plan next steps</h4>
+              <p class="mt-2 text-sm text-slate-700 leading-relaxed">Select <span class="font-semibold">Get Improvement Ideas</span> to transform low-scoring areas into practical actions.</p>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <h4 class="text-sm font-semibold text-slate-800 uppercase tracking-wide">Polish and share</h4>
+              <p class="mt-2 text-sm text-slate-700 leading-relaxed">Fine-tune tone, emphasis, or length in <span class="font-semibold">Edit with AI</span>, then copy the ready-to-send version.</p>
+            </div>
+          </div>
         </div>
 
         <!-- Troubleshooting -->
-        <div class="border border-slate-200 rounded-lg p-5 bg-slate-50 shadow-sm">
-          <h3 class="text-lg font-semibold text-slate-800 mb-3">🛠️ Troubleshooting &amp; common issues</h3>
-          <ul class="list-disc list-inside text-slate-700 space-y-2">
-            <li><strong>Nothing appears after clicking Generate</strong>: make sure required fields are filled; retry after a moment.</li>
-            <li><strong>Edits not applied</strong>: be specific (“shorten by 20%”, “friendlier tone”), then re-generate if needed.</li>
+        <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+          <h3 class="text-lg font-semibold text-slate-800 mb-3">Troubleshooting</h3>
+          <ul class="detail-list">
+            <li><strong>No report appears:</strong> double-check required fields (name, language, tone, trimester) and try again.</li>
+            <li><strong>Edits are not applied:</strong> give precise guidance such as "shorten by 20%" or "more encouraging tone", then regenerate if needed.</li>
           </ul>
         </div>
 
         <div class="flex justify-center">
-          <a href="app.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
-            Open the Report Writer →
+          <a href="app.html" class="inline-flex items-center btn-primary text-sm font-semibold">
+            Open the Report Writer
           </a>
         </div>
       </section>
@@ -136,6 +139,7 @@
     </footer>
   </div>
 
+  <script src="/scripts/nav.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const y = document.getElementById('currentYear');
@@ -144,3 +148,4 @@
   </script>
 </body>
 </html>
+

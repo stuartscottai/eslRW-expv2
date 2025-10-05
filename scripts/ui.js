@@ -1,11 +1,24 @@
+let toastHideTimer;
+
 export function showToast(message, type = 'success') {
   const toastNotification = document.getElementById('toast-notification');
   const toastMessage = document.getElementById('toast-message');
+  if (!toastNotification || !toastMessage) return;
+
   toastMessage.textContent = message;
-  toastNotification.className = 'toast show';
-  if (type === 'error') toastNotification.classList.add('error');
-  setTimeout(() => { toastNotification.className = 'toast'; }, 3000);
+  toastNotification.classList.add('toast');
+  toastNotification.classList.remove('toast--success', 'toast--error', 'show');
+
+  const variant = type === 'error' ? 'toast--error' : 'toast--success';
+  toastNotification.classList.add(variant);
+  requestAnimationFrame(() => toastNotification.classList.add('show'));
+
+  clearTimeout(toastHideTimer);
+  toastHideTimer = window.setTimeout(() => {
+    toastNotification.classList.remove('show');
+  }, 3200);
 }
+
 
 export function setGenButtonState(button, spinner, isGenerating) {
   const btnText = button.querySelector('span');
@@ -19,9 +32,9 @@ export function setGenButtonState(button, spinner, isGenerating) {
   if (clearFormButton) clearFormButton.disabled = isGenerating; // Also disable clear form button during generation
   spinner.classList.toggle('hidden', !isGenerating);
   if (button === generateReportButton) {
-    btnText.textContent = isGenerating ? 'Generating...' : 'Generate Full Report';
+    if (btnText) btnText.textContent = isGenerating ? 'Generating...' : 'Generate Full Report';
   } else if (button === getStrategiesButton) {
-    btnText.textContent = isGenerating ? 'Fetching Ideas...' : '✨ Get Improvement Ideas';
+    if (btnText) btnText.textContent = isGenerating ? 'Fetching Ideas...' : 'Get Improvement Ideas';
   }
 }
 

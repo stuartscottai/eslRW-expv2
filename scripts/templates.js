@@ -182,7 +182,7 @@ export function initializeTemplates() {
     ];
     localStorage.setItem(STORAGE_KEY, JSON.stringify(templates));
     localStorage.setItem(ACTIVE_TEMPLATE_KEY, DEFAULT_ESL_TEMPLATE.id);
-    console.log('✅ Templates initialized with 4 pre-made templates');
+    console.log('Templates initialized with 4 pre-made templates');
   } else {
     // Check if all default templates exist, add any missing ones
     const templates = JSON.parse(existing);
@@ -200,7 +200,7 @@ export function initializeTemplates() {
       if (!templateIds.includes(defaultTemplate.id)) {
         templates.push(defaultTemplate);
         added = true;
-        console.log('✅ Added missing template:', defaultTemplate.name);
+        console.log('Added missing template:', defaultTemplate.name);
       }
     });
     
@@ -249,7 +249,7 @@ export function getActiveTemplate() {
   
   if (!template) {
     // Active template doesn't exist, fall back to default
-    console.warn('⚠️ Active template not found, reverting to default');
+    console.warn('Active template not found, reverting to default');
     setActiveTemplate(DEFAULT_ESL_TEMPLATE.id);
     return DEFAULT_ESL_TEMPLATE;
   }
@@ -266,12 +266,12 @@ export function setActiveTemplate(templateId) {
   const template = getTemplateById(templateId);
   
   if (!template) {
-    console.error('❌ Template not found:', templateId);
+    console.error('Template not found:', templateId);
     return false;
   }
   
   localStorage.setItem(ACTIVE_TEMPLATE_KEY, templateId);
-  console.log('✅ Active template set to:', template.name);
+  console.log('Active template set to:', template.name);
   
   // Dispatch event so other parts of the app know template changed
   window.dispatchEvent(new CustomEvent('template-changed', { 
@@ -289,7 +289,7 @@ export function setActiveTemplate(templateId) {
 export function saveTemplate(template) {
   // Validate template has required fields
   if (!template.id || !template.name || !template.ratingFields) {
-    console.error('❌ Invalid template - missing required fields');
+    console.error('Invalid template - missing required fields');
     return false;
   }
   
@@ -300,15 +300,15 @@ export function saveTemplate(template) {
     // Update existing template
     // Don't allow editing locked templates
     if (templates[existingIndex].isLocked) {
-      console.error('❌ Cannot edit locked template');
+      console.error('Cannot edit locked template');
       return false;
     }
     templates[existingIndex] = template;
-    console.log('✅ Template updated:', template.name);
+    console.log('Template updated:', template.name);
   } else {
     // Add new template
     templates.push(template);
-    console.log('✅ New template saved:', template.name);
+    console.log('New template saved:', template.name);
   }
   
   localStorage.setItem(STORAGE_KEY, JSON.stringify(templates));
@@ -329,12 +329,12 @@ export function deleteTemplate(templateId) {
   const template = templates.find(t => t.id === templateId);
   
   if (!template) {
-    console.error('❌ Template not found');
+    console.error('Template not found');
     return false;
   }
   
   if (template.isLocked) {
-    console.error('❌ Cannot delete locked template');
+    console.error('Cannot delete locked template');
     return false;
   }
   
@@ -346,7 +346,7 @@ export function deleteTemplate(templateId) {
   
   const filtered = templates.filter(t => t.id !== templateId);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
-  console.log('✅ Template deleted:', template.name);
+  console.log('Template deleted:', template.name);
   
   // Dispatch event
   window.dispatchEvent(new CustomEvent('templates-updated'));
@@ -363,7 +363,7 @@ export function duplicateTemplate(templateId) {
   const original = getTemplateById(templateId);
   
   if (!original) {
-    console.error('❌ Template not found');
+    console.error('Template not found');
     return null;
   }
   
@@ -378,7 +378,7 @@ export function duplicateTemplate(templateId) {
   };
   
   if (saveTemplate(copy)) {
-    console.log('✅ Template duplicated:', copy.name);
+    console.log('Template duplicated:', copy.name);
     return copy;
   }
   
@@ -393,11 +393,15 @@ export function exportTemplate(templateId) {
   const template = getTemplateById(templateId);
   
   if (!template) {
-    console.error('❌ Template not found');
-    return;
+    console.error('Template not found');
+    return false;
+  }
+
+  if (template.isLocked) {
+    console.warn('Export blocked for locked template:', template.name);
+    return false;
   }
   
-  // Create downloadable JSON file
   const dataStr = JSON.stringify(template, null, 2);
   const dataBlob = new Blob([dataStr], { type: 'application/json' });
   const url = URL.createObjectURL(dataBlob);
@@ -408,7 +412,8 @@ export function exportTemplate(templateId) {
   link.click();
   
   URL.revokeObjectURL(url);
-  console.log('✅ Template exported:', template.name);
+  console.log('Template exported:', template.name);
+  return true;
 }
 
 /**
@@ -426,7 +431,7 @@ export async function importTemplate(file) {
         
         // Validate it's a proper template
         if (!template.id || !template.name || !template.ratingFields) {
-          console.error('❌ Invalid template file');
+          console.error('Invalid template file');
           resolve(false);
           return;
         }
@@ -438,19 +443,19 @@ export async function importTemplate(file) {
         template.createdDate = Date.now();
         
         if (saveTemplate(template)) {
-          console.log('✅ Template imported:', template.name);
+          console.log('Template imported:', template.name);
           resolve(true);
         } else {
           resolve(false);
         }
       } catch (error) {
-        console.error('❌ Failed to parse template file:', error);
+        console.error('Failed to parse template file:', error);
         resolve(false);
       }
     };
     
     reader.onerror = () => {
-      console.error('❌ Failed to read file');
+      console.error('Failed to read file');
       resolve(false);
     };
     
@@ -464,7 +469,7 @@ export async function importTemplate(file) {
 export function resetToDefaults() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify([DEFAULT_ESL_TEMPLATE]));
   localStorage.setItem(ACTIVE_TEMPLATE_KEY, DEFAULT_ESL_TEMPLATE.id);
-  console.log('✅ Templates reset to defaults');
+  console.log('Templates reset to defaults');
   window.dispatchEvent(new CustomEvent('templates-updated'));
 }
 

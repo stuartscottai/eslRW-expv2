@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ESL Report Writer – Home</title>
+  <title>ESL Report Writer - Home</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/style.css">
@@ -12,20 +12,30 @@
 <body class="bg-blue-50 text-slate-800">
 
   <!-- Top nav -->
-  <header class="bg-white/90 backdrop-blur border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+  <header class="relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between relative">
       <a href="index.html" class="flex items-center">
         <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
       </a>
-      <nav class="flex items-center gap-6">
-        <a href="index.html" class="text-slate-600 hover:text-slate-900">Home</a>
-        <a href="app.html" class="text-slate-900 font-medium">Report Writer</a>
-        <a href="how-to.html" class="text-slate-600 hover:text-slate-900">How to use</a>
-        <a href="template-manager.html" class="text-slate-600 hover:text-slate-900">Templates</a>
-      </nav>
-      <a href="app.html" class="hidden sm:inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
-        Get started
-      </a>
+      <div class="flex items-center gap-4">
+        <div class="relative flex items-center gap-4">
+          <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-600 md:items-center" data-open="false">
+            <a href="index.html" class="py-2 text-slate-900 font-semibold transition-colors duration-200 md:text-base" aria-current="page">Home</a>
+            <a href="app.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Report Writer</a>
+            <a href="how-to.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">How to use</a>
+            <a href="template-builder.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Builder</a>
+            <a href="template-manager.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Manager</a>
+            <a href="app.html" class="md:hidden btn-primary text-center text-sm">Launch Report Writer</a>
+          </nav>
+          <button type="button" class="nav-toggle md:hidden" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
+            <span class="sr-only">Toggle navigation</span>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+        <a href="app.html" class="hidden md:inline-flex items-center btn-primary text-sm font-semibold">Launch Report Writer</a>
+      </div>
     </div>
   </header>
 
@@ -49,7 +59,7 @@
     <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
       <div class="flex items-center justify-between border-b border-slate-200 pb-4">
         <div class="flex items-center gap-3">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-orange-500"></span>
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500"></span>
           <span class="text-slate-800 font-semibold">Welcome</span>
         </div>
       </div>
@@ -74,14 +84,14 @@
   </div>
 </section>
 
-         <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-  <a href="app.html" class="flex items-center justify-center bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg shadow text-center w-full sm:w-80">
-    Get Started with the Report Writer
-  </a>
-  <a href="how-to.html" class="flex items-center justify-center bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg shadow text-center w-full sm:w-80">
-    Learn how to use Report Writer
-  </a>
-</div>
+         <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
+          <a href="app.html" class="flex items-center justify-center btn-primary text-center text-sm sm:text-base w-full max-w-xs sm:w-auto sm:px-8">
+            Launch the Report Writer
+          </a>
+          <a href="how-to.html" class="flex items-center justify-center btn-secondary text-center text-sm sm:text-base w-full max-w-xs sm:w-auto sm:px-8">
+            Explore the How-To Guide
+          </a>
+        </div>
 
         </div>
       </section>
@@ -92,6 +102,7 @@
     </footer>
   </div>
 
+  <script src="/scripts/nav.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const y = document.getElementById('currentYear');
@@ -100,3 +111,4 @@
   </script>
 </body>
 </html>
+

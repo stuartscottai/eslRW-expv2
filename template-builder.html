@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Template Builder – ESL Report Writer</title>
+  <title>Template Builder - ESL Report Writer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/style.css">
@@ -24,20 +24,30 @@
 <body class="bg-blue-50 text-slate-800">
 
   <!-- Top nav -->
-  <header class="bg-white/90 backdrop-blur border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+  <header class="relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between relative">
       <a href="index.html" class="flex items-center">
         <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
       </a>
-      <nav class="flex items-center gap-6">
-        <a href="index.html" class="text-slate-600 hover:text-slate-900">Home</a>
-        <a href="app.html" class="text-slate-600 hover:text-slate-900">Report Writer</a>
-        <a href="how-to.html" class="text-slate-600 hover:text-slate-900">How to use</a>
-        <a href="template-manager.html" class="text-slate-600 hover:text-slate-900">Templates</a>
-      </nav>
-      <a href="template-manager.html" class="hidden sm:inline-flex items-center bg-slate-600 hover:bg-slate-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
-        ← Back to Templates
-      </a>
+      <div class="flex items-center gap-4">
+        <div class="relative flex items-center gap-4">
+          <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-600 md:items-center" data-open="false">
+            <a href="index.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Home</a>
+            <a href="app.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Report Writer</a>
+            <a href="how-to.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">How to use</a>
+            <a href="template-builder.html" class="py-2 text-slate-900 font-semibold transition-colors duration-200 md:text-base" aria-current="page">Template Builder</a>
+            <a href="template-manager.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Manager</a>
+            <a href="app.html" class="md:hidden btn-primary text-center text-sm">Launch Report Writer</a>
+          </nav>
+          <button type="button" class="nav-toggle md:hidden" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
+            <span class="sr-only">Toggle navigation</span>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+        <a href="template-manager.html" class="hidden md:inline-flex items-center btn-secondary text-sm font-semibold">Back to Templates</a>
+      </div>
     </div>
   </header>
 
@@ -69,14 +79,14 @@
               <label for="template-name" class="block font-medium text-slate-700 mb-1">Template Name *</label>
               <input type="text" id="template-name" required
                      placeholder="e.g., High School Science Report"
-                     class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                     class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#305a99]">
             </div>
             
             <div>
               <label for="template-description" class="block font-medium text-slate-700 mb-1">Description</label>
               <textarea id="template-description" rows="2"
                         placeholder="Brief description of what this template is for"
-                        class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500"></textarea>
+                        class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#305a99]"></textarea>
             </div>
           </div>
         </section>
@@ -85,11 +95,11 @@
         <section class="border border-slate-200 rounded-lg p-6 bg-slate-50">
           <h2 class="text-lg font-semibold text-slate-800 mb-4">Rating Categories (0-10 scale)</h2>
           
-          <div class="flex gap-2 mb-4">
+          <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center">
             <input type="text" id="new-rating-field" placeholder="Category name (e.g., Lab Safety)"
-                   class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                   class="w-full sm:flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#305a99]">
             <button type="button" id="add-rating-field"
-                    class="bg-white hover:bg-slate-50 text-slate-600 px-5 py-3 rounded-lg border border-slate-300 font-medium transition flex items-center gap-2">
+                    class="inline-flex items-center justify-center btn-secondary text-sm w-full sm:w-auto sm:flex-shrink-0">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
@@ -101,18 +111,18 @@
             <!-- Rating fields will be added here -->
           </div>
           
-          <p class="text-xs text-slate-500 mt-3">Tip: Drag ☰ to reorder fields</p>
+          <p class="text-xs text-slate-500 mt-3">Tip: Drag the handle icon to reorder fields</p>
         </section>
 
         <!-- Improvement Areas -->
         <section class="border border-slate-200 rounded-lg p-6 bg-slate-50">
           <h2 class="text-lg font-semibold text-slate-800 mb-4">Areas to Improve</h2>
           
-          <div class="flex gap-2 mb-4">
+          <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center">
             <input type="text" id="new-improvement-area" placeholder="Area name (e.g., Lab report writing)"
-                   class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                   class="w-full sm:flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#305a99]">
             <button type="button" id="add-improvement-area"
-                    class="bg-white hover:bg-slate-50 text-slate-600 px-5 py-3 rounded-lg border border-slate-300 font-medium transition flex items-center gap-2">
+                    class="inline-flex items-center justify-center btn-secondary text-sm w-full sm:w-auto sm:flex-shrink-0">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
@@ -124,7 +134,7 @@
             <!-- Improvement areas will be added here -->
           </div>
           
-          <p class="text-xs text-slate-500 mt-3">Tip: Drag ☰ to reorder areas</p>
+          <p class="text-xs text-slate-500 mt-3">Tip: Drag the handle icon to reorder areas</p>
         </section>
 
         <!-- Languages -->
@@ -138,11 +148,11 @@
         <!-- Actions -->
         <div class="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-slate-200">
           <a href="template-manager.html"
-             class="px-6 py-3 text-center bg-white hover:bg-slate-50 text-slate-600 border border-slate-300 font-semibold rounded-lg transition">
+             class="inline-flex items-center btn-secondary text-sm font-semibold">
             Cancel
           </a>
           <button type="submit"
-                  class="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-sm transition flex items-center justify-center gap-2">
+                  class="px-6 py-3 btn-primary text-sm font-semibold flex items-center justify-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
             </svg>
@@ -161,6 +171,7 @@
 
   <div id="toast-notification" class="toast"><span id="toast-message"></span></div>
 
+  <script src="/scripts/nav.js"></script>
   <script type="module" src="/scripts/template-builder.js"></script>
   
   <script>
@@ -171,3 +182,4 @@
   </script>
 </body>
 </html>
+

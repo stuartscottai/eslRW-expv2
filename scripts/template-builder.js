@@ -1,4 +1,5 @@
 // scripts/template-builder.js - Template Builder Logic with Minimalist UI
+import { showToast } from '/scripts/ui.js';
 
 import { getTemplateById, saveTemplate, validateTemplate } from '/scripts/templates.js';
 
@@ -141,7 +142,7 @@ function renderRatingFields() {
     div.dataset.index = index;
     
     div.innerHTML = `
-      <span class="drag-handle text-slate-400 cursor-grab select-none">☰</span>
+      <span class="drag-handle text-slate-400 cursor-grab select-none"></span>
       <span class="flex-1 font-medium text-slate-700">${field.label}</span>
       <button type="button" onclick="window.removeRatingField(${index})"
               class="text-slate-400 hover:text-red-600 transition p-1 rounded hover:bg-red-50"
@@ -207,7 +208,7 @@ function renderImprovementAreas() {
     div.dataset.index = index;
     
     div.innerHTML = `
-      <span class="drag-handle text-slate-400 cursor-grab">☰</span>
+      <span class="drag-handle text-slate-400 cursor-grab"></span>
       <span class="flex-1 font-medium text-slate-700">${area}</span>
       <button type="button" onclick="window.removeImprovementArea(${index})"
               class="text-slate-400 hover:text-red-600 transition p-1 rounded hover:bg-red-50"
@@ -295,7 +296,7 @@ function renderLanguageCheckboxes() {
     checkbox.type = 'checkbox';
     checkbox.value = lang;
     checkbox.checked = selectedLanguages.includes(lang);
-    checkbox.className = 'form-checkbox h-4 w-4 text-orange-600';
+    checkbox.className = 'form-checkbox h-4 w-4 text-[#305a99]';
     checkbox.addEventListener('change', handleLanguageChange);
     
     const span = document.createElement('span');
@@ -396,15 +397,9 @@ function handleSaveTemplate(e) {
 // UTILITY
 // ============================================================
 
-function showToast(message, type = 'success') {
-  const toast = document.getElementById('toast-notification');
-  const toastMessage = document.getElementById('toast-message');
-  toastMessage.textContent = message;
-  toast.className = 'toast show';
-  if (type === 'error') toast.classList.add('error');
-  setTimeout(() => { toast.className = 'toast'; }, 3000);
-}
-
 // Expose functions to window for onclick handlers
 window.removeRatingField = removeRatingField;
 window.removeImprovementArea = removeImprovementArea;
+
+
+

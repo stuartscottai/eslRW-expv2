@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ESL Report Writer – App</title>
+  <title>ESL Report Writer - App</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/style.css">
@@ -12,20 +12,30 @@
 <body class="bg-blue-50 text-slate-800">
 
   <!-- Top nav -->
-  <header class="bg-white/90 backdrop-blur border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+  <header class="relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between relative">
       <a href="index.html" class="flex items-center">
         <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
       </a>
-      <nav class="flex items-center gap-6">
-        <a href="index.html" class="text-slate-600 hover:text-slate-900">Home</a>
-        <a href="app.html" class="text-slate-900 font-medium">Report Writer</a>
-        <a href="how-to.html" class="text-slate-600 hover:text-slate-900">How to use</a>
-        <a href="template-manager.html" class="text-slate-600 hover:text-slate-900">Templates</a>
-      </nav>
-      <a href="app.html" class="hidden sm:inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
-        Get started
-      </a>
+      <div class="flex items-center gap-4">
+        <div class="relative flex items-center gap-4">
+          <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-600 md:items-center" data-open="false">
+            <a href="index.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Home</a>
+            <a href="app.html" class="py-2 text-slate-900 font-semibold transition-colors duration-200 md:text-base" aria-current="page">Report Writer</a>
+            <a href="how-to.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">How to use</a>
+            <a href="template-builder.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Builder</a>
+            <a href="template-manager.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Manager</a>
+            <a href="app.html" class="md:hidden btn-primary text-center text-sm">Launch Report Writer</a>
+          </nav>
+          <button type="button" class="nav-toggle md:hidden" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
+            <span class="sr-only">Toggle navigation</span>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+        <a href="app.html" class="hidden md:inline-flex items-center btn-primary text-sm font-semibold">Launch Report Writer</a>
+      </div>
     </div>
   </header>
 
@@ -49,13 +59,13 @@
     <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
       <div class="flex items-center justify-between border-b border-slate-200 pb-4">
         <div class="flex items-center gap-3">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-orange-500"></span>
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500"></span>
           <span class="text-slate-800 font-semibold">Report Builder</span>
         </div>
         <div class="flex items-center gap-3">
           <span class="text-sm text-slate-600">View:</span>
-          <button id="mode-steps" class="px-3 py-1.5 rounded-md text-sm font-medium hover:bg-slate-100 text-slate-700 border">Step by step</button>
-          <button id="mode-single" class="px-3 py-1.5 rounded-md text-sm font-medium bg-orange-500 text-white shadow">Single page</button>
+          <button id="mode-steps" class="px-3 py-1.5 rounded-md text-sm font-semibold text-white shadow bg-[#305a99]">Step by step</button>
+          <button id="mode-single" class="px-3 py-1.5 rounded-md text-sm font-semibold text-[#305a99] border border-[#d5ddea] bg-white">Single page</button>
         </div>
 
       </div>
@@ -76,7 +86,7 @@
             <label for="template-selector" class="block font-medium text-slate-700 mb-1">
               Report Template:
             </label>
-            <select id="template-selector" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+            <select id="template-selector" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#305a99] focus:border-[#305a99] bg-white">
               <!-- Options populated by JavaScript -->
             </select>
             <p class="text-xs text-slate-500 mt-1" id="template-description">
@@ -171,7 +181,7 @@
         <div>
           <label for="name" class="block font-medium text-slate-700 mb-1">Name:</label>
           <input type="text" id="name" placeholder="Enter student's name" required
-                 class="w-full p-3 border border-slate-300 rounded-lg shadow-sm bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                 class="w-full p-3 border border-slate-300 rounded-lg shadow-sm bg-white focus:ring-2 focus:ring-[#305a99] focus:border-[#305a99]">
         </div>
 
         <div>
@@ -195,19 +205,19 @@
 
           <div class="flex flex-col sm:flex-row justify-center pt-3 gap-3">
             <button type="button" id="generate-report-button"
-              class="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+              class="w-full sm:w-auto flex items-center justify-center gap-2 btn-primary text-sm sm:text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#305a99] disabled:opacity-60 disabled:cursor-not-allowed">
               <span id="generate-report-button-text">Generate Full Report</span>
               <div id="loading-spinner-report" class="loader hidden ml-2"></div>
             </button>
 
             <button type="button" id="get-strategies-button"
-              class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
-              <span id="get-strategies-button-text">✨ Get Improvement Ideas</span>
+              class="w-full sm:w-auto flex items-center justify-center gap-2 btn-secondary text-sm sm:text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c6d1e3] disabled:opacity-60 disabled:cursor-not-allowed">
+              <span id="get-strategies-button-text">Get Improvement Ideas</span>
               <div id="loading-spinner-strategies" class="loader hidden ml-2"></div>
             </button>
 
             <button type="button" id="clear-form-button"
-              class="w-full sm:w-auto bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+              class="w-full sm:w-auto btn-tertiary text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c6d1e3]">
               Clear Form &amp; Start New
             </button>
           </div>
@@ -220,12 +230,12 @@
             <!-- Step 3 mini actions (only shown in Step-by-step mode) -->
           <div id="step3-actions" class="hidden mb-3 flex flex-col sm:flex-row gap-3">
             <button type="button" id="get-strategies-button-step3"
-              class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
-              ✨ Get Improvement Ideas
+              class="w-full sm:w-auto btn-secondary text-sm sm:text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c6d1e3]">
+              Get Improvement Ideas
             </button>
 
             <button type="button" id="clear-form-button-step3"
-              class="w-full sm:w-auto bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+              class="w-full sm:w-auto btn-tertiary text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c6d1e3]">
               Clear Form &amp; Start New
             </button>
           </div>
@@ -235,16 +245,16 @@
             <div class="mt-3 flex flex-col sm:flex-row justify-between items-center gap-3">
               <div class="flex gap-3 w-full sm:w-auto">
                 <button id="undo-report-button"
-                  class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="w-full sm:w-auto btn-secondary text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled>Undo edit</button>
 
                 <button id="redo-report-button"
-                  class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="w-full sm:w-auto btn-secondary text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled>Redo edit</button>
               </div>
 
               <button id="copy-report-button"
-                class="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                class="w-full sm:w-auto btn-primary text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#305a99] disabled:opacity-60 disabled:cursor-not-allowed">
                 Copy Report
               </button>
             </div>
@@ -253,23 +263,23 @@
           </section>
 
           <section id="strategies-section" class="hidden">
-            <h2 class="text-xl font-semibold text-slate-800 mb-3">✨ Suggested Improvement Strategies</h2>
+            <h2 class="text-xl font-semibold text-slate-800 mb-3">Suggested Improvement Strategies</h2>
             <textarea id="strategies-output"
               class="w-full min-h-[100px] p-4 border border-slate-200 rounded-lg bg-slate-50 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
               placeholder="AI-generated improvement strategies will appear here..."></textarea>
             <div class="mt-3 flex flex-col sm:flex-row justify-between items-center gap-3">
               <div class="flex gap-3 w-full sm:w-auto">
                 <button id="undo-strategies-button"
-                  class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="w-full sm:w-auto btn-secondary text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled>Undo edit</button>
 
                 <button id="redo-strategies-button"
-                  class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="w-full sm:w-auto btn-secondary text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled>Redo edit</button>
               </div>
 
               <button id="copy-strategies-button"
-                class="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                class="w-full sm:w-auto btn-primary text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#305a99] disabled:opacity-60 disabled:cursor-not-allowed">
                 Copy Suggestions
               </button>
             </div>
@@ -295,20 +305,20 @@
 
             <div id="chat-messages" class="h-64 overflow-y-auto p-4 bg-white rounded-lg border border-gray-200 mb-4 flex flex-col space-y-3"></div>
             <div class="flex items-center space-x-2">
-              <textarea id="chat-input" rows="1" placeholder="Type your edit instructions here..." class="flex-grow p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-              <button id="send-chat-button" class="bg-orange-600 text-white p-3 rounded-full shadow-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">➤</button>
+              <textarea id="chat-input" rows="1" placeholder="Type your edit instructions here..." class="flex-grow p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#305a99]"></textarea>
+              <button id="send-chat-button" class="btn-primary rounded-full px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#305a99] flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed">Send</button>
             </div>
           </section>
         </section>
       </div>
 
       <div id="stepper-controls" class="hidden pt-2 flex items-center justify-between">
-        <button id="step-prev" class="inline-flex items-center gap-2 text-slate-700 hover:text-slate-900 px-3 py-2 rounded-md border">
-          ← Previous
+        <button id="step-prev" class="inline-flex items-center gap-2 btn-secondary text-sm font-semibold">
+          Previous
         </button>
         <div class="text-sm text-slate-500"><span id="step-indicator">Step 1 of 3</span></div>
-        <button id="step-next" class="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md shadow">
-          Next →
+        <button id="step-next" class="inline-flex items-center gap-2 btn-primary text-sm font-semibold">
+          Next
         </button>
       </div>
     </main>
@@ -324,6 +334,7 @@
 </div>
 <div id="toast-notification" class="toast"><span id="toast-message"></span></div>
 
+<script src="/scripts/nav.js"></script>
 <!-- Scripts -->
 <script type="module" src="/scripts/main.js"></script>
 <script type="module" src="/scripts/layout.js"></script>
@@ -336,3 +347,4 @@
 </script>
 </body>
 </html>
+

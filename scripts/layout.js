@@ -1,4 +1,4 @@
-// layout.js — mode toggle and stepper (no changes to your business logic)
+// layout.js - mode toggle and stepper (no changes to your business logic)
 
 // Grab elements (null-safe with optional chaining below)
 const btnSingle = document.getElementById('mode-single');
@@ -12,15 +12,15 @@ const steps = [
   document.getElementById('step1'),
   document.getElementById('step2'),
   document.getElementById('step3')
-].filter(Boolean); // in case a page doesn’t have all steps
+].filter(Boolean); // in case a page doesnt have all steps
 
 let current = 0;
 let mode = 'steps';
 
 // --- Button style presets (Tailwind classes) ---
-const BTN_BASE      = "px-3 py-1.5 rounded-md text-sm font-medium border";
-const BTN_ACTIVE    = "bg-orange-600 text-white shadow border-transparent";
-const BTN_INACTIVE  = "bg-white text-slate-700 hover:bg-slate-100 border";
+const BTN_BASE      = "px-3 py-1.5 rounded-md text-sm font-semibold transition-colors border";
+const BTN_ACTIVE    = "bg-[#305a99] text-white shadow border-transparent";
+const BTN_INACTIVE  = "bg-white text-[#305a99] border-[#d5ddea] hover:bg-slate-100";
 
 // Helper: apply active/inactive styles to the mode buttons
 function styleButtons(active) {
@@ -90,7 +90,7 @@ nextBtn?.addEventListener('click', () => showStep(current + 1));
 setActiveMode('steps');
 
 // If the user generates or opens results, jump to step 3 when in step mode
-// (We don’t alter your functions; just observe DOM changes.)
+// (We dont alter your functions; just observe DOM changes.)
 const reportSection     = document.getElementById('report-section');
 const strategiesSection = document.getElementById('strategies-section');
 const chatSection       = document.getElementById('chat-section');
