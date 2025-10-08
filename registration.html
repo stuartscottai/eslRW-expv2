@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account - ESL Report Writer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/style.css">
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-blue-50 text-slate-800">
+
+  <header class="site-header relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-center">
+      <button type="button" class="nav-toggle fixed top-3 left-4 z-40" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
+        <span class="sr-only">Toggle navigation</span>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+      <a href="index.html" class="flex items-center">
+        <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
+      </a>
+      <div class="fixed top-3 right-4 z-40 flex items-center gap-2" data-auth-header>
+        <div class="hidden items-center gap-2" data-auth-when="signed-in">
+          <span class="text-sm text-slate-700">Signed in as <span class="font-semibold text-slate-900" data-auth-display-name></span></span>
+          <button class="btn-secondary btn-compact text-sm" data-auth-action="logout">Sign out</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-700" data-open="false">
+    <a href="index.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Home</a>
+    <a href="app.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Report Writer</a>
+    <a href="how-to.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">How to use</a>
+    <a href="template-builder.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Template Builder</a>
+    <a href="template-manager.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Template Manager</a>
+    <a href="community.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Community</a>
+  </nav>
+
+  <section class="relative z-0">
+    <img src="/public/hero-bg.jpg" alt="Hero"
+         class="w-full h-[220px] md:h-[280px] object-cover object-center">
+    <div class="absolute inset-0 bg-slate-900/40"></div>
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      <img src="/public/logo.png" alt="ESL Report Writer Logo" class="h-20 md:h-28 w-auto drop-shadow-lg">
+      <div class="mt-2 text-white text-lg md:text-xl font-medium drop-shadow">Create your account</div>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
+    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div class="flex items-center gap-3">
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500"></span>
+          <span class="text-slate-800 font-semibold">Register</span>
+        </div>
+      </div>
+
+      <section class="border border-slate-200 rounded-lg p-6 bg-slate-50 max-w-xl mx-auto">
+        <form id="registration-form" class="space-y-4">
+          <div>
+            <label class="text-sm font-medium text-slate-700" for="reg-username">Username</label>
+            <input id="reg-username" name="username" type="text" required minlength="3" maxlength="24"
+                   class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                   placeholder="Choose a unique username">
+            <p class="text-xs text-slate-500 mt-1">3–24 characters, letters/numbers/underscore only.</p>
+          </div>
+          <div>
+            <label class="text-sm font-medium text-slate-700" for="reg-email">Email</label>
+            <input id="reg-email" name="email" type="email" autocomplete="email" required
+                   class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+          </div>
+          <div>
+            <label class="text-sm font-medium text-slate-700" for="reg-password">Password</label>
+            <input id="reg-password" name="password" type="password" autocomplete="new-password" required minlength="8"
+                   class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                   placeholder="At least 8 characters">
+          </div>
+          <button type="submit" class="w-full inline-flex justify-center btn-primary btn-compact text-sm font-semibold">Register</button>
+          <p id="reg-helper" class="text-xs text-slate-500 text-center">Already have an account? Use the user icon to sign in.</p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="text-center mt-10 mb-6">
+      <p class="text-sm text-slate-500">&copy; <span id="currentYear"></span> ESL Report Writer.</p>
+    </footer>
+  </div>
+
+  <div id="toast-notification" class="toast"><span id="toast-message"></span></div>
+
+  <script type="module" src="/scripts/env.js"></script>
+  <script type="module" src="/scripts/supabase-client.js"></script>
+  <script src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/header-auth.js"></script>
+  <script type="module" src="/scripts/register.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const y = document.getElementById('currentYear');
+      if (y) y.textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>
+

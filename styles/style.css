@@ -130,22 +130,29 @@ body { font-family: 'Inter', sans-serif; background-color: #f5f7fb; }
 .detail-list li + li { margin-top: 0.6rem; }
 
 .mobile-nav-panel {
-    top: calc(100% + 0.75rem);
-
-    display: none;
-    position: absolute; right: 0;
-    width: min(260px, calc(100vw - 2rem));
-    padding: 1.25rem 1.5rem;
-    background: #ffffff; border: 1px solid #e5eaf2;
-    border-radius: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(80vw, 320px);
+    max-width: 90vw;
+    padding: 1.25rem 1rem;
+    background: #ffffff;
+    border-right: 1px solid #e5eaf2;
     box-shadow: 0 22px 46px rgba(15, 23, 42, 0.16);
-    flex-direction: column; gap: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease-in-out;
+    z-index: 60;
 }
-.mobile-nav-panel[data-open="true"] { display: flex; }
+.mobile-nav-panel a { padding: 0.5rem 0.25rem; }
+.mobile-nav-panel[data-open="true"] { transform: translateX(0); }
 
 .nav-toggle {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 48px; height: 48px;
+    width: 44px; height: 44px;
     border-radius: 9999px;
     background: #f4f6fb; color: #1f2a37;
     border: 1px solid #c7d2e3;
@@ -155,27 +162,23 @@ body { font-family: 'Inter', sans-serif; background-color: #f5f7fb; }
 .nav-toggle:hover { background: #e7edf8; box-shadow: 0 6px 16px rgba(15, 23, 42, 0.16); }
 .nav-toggle[aria-expanded="true"] { background: #305a99; color: #ffffff; }
 
-@media (min-width: 768px) {
-    .mobile-nav-panel {
-    top: calc(100% + 0.75rem);
-
-        display: flex !important;
-        position: static; width: auto;
-        padding: 0; background: transparent;
-        border: none; box-shadow: none;
-        flex-direction: row; gap: 1.75rem;
-    }
-
-    .nav-toggle {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 48px; height: 48px;
-    border-radius: 9999px;
-    background: #f4f6fb; color: #1f2a37;
-    border: 1px solid #c7d2e3;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.14);
-    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+/* Overlay for nav drawer */
+#nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
-}
+#nav-overlay[data-visible="true"] { opacity: 1; pointer-events: auto; }
+
+/* Ensure header has consistent height so content never overlaps hero */
+.site-header { min-height: 64px; }
+
+/* Auth dropdown safety */
+[data-auth-dropdown] { max-width: min(92vw, 320px); }
 
 /* Force white background even when autofilled */
 \n.btn-compact { padding: 0.5rem 1rem; }\n@media (min-width: 640px) {\n  .btn-compact { padding: 0.65rem 1.5rem; }\n}\ninput:-webkit-autofill {

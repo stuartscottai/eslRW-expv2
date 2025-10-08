@@ -12,33 +12,61 @@
 <body class="bg-blue-50 text-slate-800">
 
   <!-- Top nav -->
-  <header class="relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between relative">
+  <header class="site-header relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-center">
+      <button type="button" class="nav-toggle fixed top-3 left-4 z-40" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
+        <span class="sr-only">Toggle navigation</span>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
       <a href="index.html" class="flex items-center">
         <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
       </a>
-      <div class="flex items-center gap-4">
-        <div class="relative flex items-center gap-4">
-          <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-600 md:items-center" data-open="false">
-            <a href="index.html" class="py-2 text-slate-900 font-semibold transition-colors duration-200 md:text-base" aria-current="page">Home</a>
-            <a href="app.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Report Writer</a>
-            <a href="how-to.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">How to use</a>
-            <a href="template-builder.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Builder</a>
-            <a href="template-manager.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Manager</a>
-            <a href="community.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Community</a>
-            <a href="app.html" class="md:hidden btn-primary text-center text-sm">Launch Report Writer</a>
-          </nav>
-          <button type="button" class="nav-toggle md:hidden" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
-            <span class="sr-only">Toggle navigation</span>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+      <div class="fixed top-3 right-4 z-40 flex items-center gap-2" data-auth-header>
+        <div class="flex items-center gap-2" data-auth-when="signed-out">
+          <button class="nav-toggle" aria-haspopup="true" aria-expanded="false" data-auth-open="login" title="User">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 14a4 4 0 10-8 0 4 4 0 008 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a7 7 0 00-7 7v1a7 7 0 0014 0V9a7 7 0 00-7-7z" />
             </svg>
           </button>
         </div>
-        <a href="app.html" class="hidden md:inline-flex items-center btn-primary text-sm font-semibold">Launch Report Writer</a>
+        <div class="hidden items-center gap-2" data-auth-when="signed-in">
+          <span class="text-sm text-slate-700">Signed in as <span class="font-semibold text-slate-900" data-auth-display-name></span></span>
+          <button class="btn-secondary btn-compact text-sm" data-auth-action="logout">Sign out</button>
+        </div>
+        <div class="absolute right-0 mt-2 w-[min(92vw,320px)] rounded-xl border border-slate-200 bg-white shadow-lg p-4 hidden z-50" data-auth-dropdown>
+          <div class="flex items-center mb-3">
+            <button class="ml-auto text-slate-400 hover:text-slate-600" data-auth-close>&times;</button>
+          </div>
+          <form data-auth-form="login" data-auth-tab="login" class="space-y-3">
+            <div class="space-y-1">
+              <label class="text-sm font-medium text-slate-700" for="header-login-email">Email</label>
+              <input id="header-login-email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+            </div>
+            <div class="space-y-1">
+              <label class="text-sm font-medium text-slate-700" for="header-login-password">Password</label>
+              <input id="header-login-password" name="password" type="password" autocomplete="current-password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+            </div>
+            <button type="submit" class="w-full inline-flex justify-center btn-primary btn-compact text-sm font-semibold">Sign in</button>
+            <div class="pt-2 text-center">
+              <a href="registration.html" class="inline-flex items-center justify-center btn-secondary btn-compact text-sm font-semibold">Register</a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </header>
+
+  <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-700" data-open="false">
+    <a href="index.html" class="py-2 text-slate-900 font-semibold transition-colors duration-200" aria-current="page">Home</a>
+    <a href="app.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Report Writer</a>
+    <a href="how-to.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">How to use</a>
+    <a href="template-builder.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Template Builder</a>
+    <a href="template-manager.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Template Manager</a>
+    <a href="community.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Community</a>
+  </nav>
 
   <!-- Hero -->
   <section class="relative z-0">
@@ -106,6 +134,7 @@
   <script type="module" src="/scripts/env.js"></script>
   <script type="module" src="/scripts/supabase-client.js"></script>
   <script src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/header-auth.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const y = document.getElementById('currentYear');

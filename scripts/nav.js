@@ -1,4 +1,13 @@
-﻿const MOBILE_BREAKPOINT = 768;
+function ensureOverlay() {
+  let overlay = document.getElementById('nav-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'nav-overlay';
+    overlay.setAttribute('data-visible', 'false');
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
 
 function setupNavigation(toggle) {
   const targetId = toggle.getAttribute('aria-controls');
@@ -6,14 +15,20 @@ function setupNavigation(toggle) {
   const panel = document.getElementById(targetId);
   if (!panel) return;
 
+  const overlay = ensureOverlay();
+
   const closePanel = () => {
     toggle.setAttribute('aria-expanded', 'false');
     panel.dataset.open = 'false';
+    overlay.setAttribute('data-visible', 'false');
+    document.body.classList.remove('overflow-hidden');
   };
 
   const openPanel = () => {
     toggle.setAttribute('aria-expanded', 'true');
     panel.dataset.open = 'true';
+    overlay.setAttribute('data-visible', 'true');
+    document.body.classList.add('overflow-hidden');
   };
 
   toggle.addEventListener('click', () => {
@@ -25,11 +40,11 @@ function setupNavigation(toggle) {
     }
   });
 
+  overlay.addEventListener('click', closePanel);
+
   panel.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
-      if (window.innerWidth < MOBILE_BREAKPOINT) {
-        closePanel();
-      }
+      closePanel();
     });
   });
 
@@ -39,20 +54,12 @@ function setupNavigation(toggle) {
     }
   });
 
-  const syncWithViewport = () => {
-    if (window.innerWidth >= MOBILE_BREAKPOINT) {
-      panel.dataset.open = 'true';
-      toggle.setAttribute('aria-expanded', 'false');
-    } else if (toggle.getAttribute('aria-expanded') !== 'true') {
-      panel.dataset.open = 'false';
-    }
-  };
-
-  window.addEventListener('resize', syncWithViewport);
-  syncWithViewport();
+  // Start closed on all viewports
+  closePanel();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-nav-toggle]')
     .forEach((toggle) => setupNavigation(toggle));
 });
+
