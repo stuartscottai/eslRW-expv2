@@ -1,0 +1,162 @@
+import { isSupabaseConfigured, getSupabaseClient, refreshSession } from '/scripts/supabase-client.js';
+import { showToast } from '/scripts/ui.js';
+
+function usernameValid(u) { return /^[a-zA-Z0-9_]{3,24}$/.test(u || ''); }
+
+async function usernameAvailable(client, username, selfId) {
+  try {
+    const { data, error } = await client.from('profiles').select('id').eq('username', username).maybeSingle();
+    if (error && error.code !== 'PGRST116') return true; // fail-open
+    if (!data) return true;
+    return data.id === selfId; // allow existing own username
+  } catch { return true; }
+}
+
+async function upsertProfile(client, userId, payload) {
+  try {
+    await client.from('profiles').upsert({ id: userId, ...payload });
+  } catch (e) { console.warn('Profile upsert failed', e); }
+}
+
+async function init() {
+  if (!isSupabaseConfigured()) return;
+  const client = getSupabaseClient();
+  const { data: { user } } = await client.auth.getUser();
+  if (!user) return;
+
+  const identityForm = document.getElementById('identity-form');
+  const displayName = document.getElementById('display-name');
+  const username = document.getElementById('username');
+  const emailForm = document.getElementById('email-form');
+  const newEmail = document.getElementById('new-email');
+  const passwordForm = document.getElementById('password-form');
+  const newPassword = document.getElementById('new-password');
+  const avatarForm = document.getElementById('avatar-form');
+  const avatarFile = document.getElementById('avatar-file');
+  const avatarPreview = document.getElementById('avatar-preview');
+  const cropperWrap = document.getElementById('avatar-cropper');
+  const cropperImg = document.getElementById('avatar-crop-image');
+  const zoomIn = document.getElementById('avatar-zoom-in');
+  const zoomOut = document.getElementById('avatar-zoom-out');
+  const cancelBtn = document.getElementById('avatar-cancel');
+  let cropper = null;
+
+  // Pre-fill
+  displayName.value = user.user_metadata?.display_name || '';
+  try {
+    const { data } = await client.from('profiles').select('username, avatar_url').eq('id', user.id).maybeSingle();
+    username.value = data?.username || user.user_metadata?.username || '';
+    if (avatarPreview) {
+      const url = data?.avatar_url || user.user_metadata?.avatar_url || '';
+      if (url) avatarPreview.src = url;
+    }
+  } catch { username.value = user.user_metadata?.username || ''; }
+
+  identityForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const dn = displayName.value.trim();
+    const un = username.value.trim();
+    if (un && !usernameValid(un)) { showToast('Username must be 3–24 chars: letters, numbers, underscore.', 'error'); return; }
+    if (un) {
+      const ok = await usernameAvailable(client, un, user.id);
+      if (!ok) { showToast('Username is taken. Choose another.', 'error'); return; }
+    }
+    try {
+      await client.auth.updateUser({ data: { display_name: dn || null, username: un || null } });
+      await upsertProfile(client, user.id, { username: un || null });
+      await refreshSession();
+      showToast('Profile updated', 'success');
+    } catch (err) {
+      showToast(err?.message || 'Failed to update profile', 'error');
+    }
+  });
+
+  emailForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (newEmail.value || '').trim();
+    if (!email) { showToast('Enter a new email first.', 'error'); return; }
+    try {
+      await client.auth.updateUser({ email });
+      showToast('Email update requested. Check your inbox to confirm.', 'success');
+    } catch (err) {
+      showToast(err?.message || 'Failed to update email', 'error');
+    }
+  });
+
+  passwordForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = (newPassword.value || '').trim();
+    if (!pw || pw.length < 8) { showToast('Password must be at least 8 characters.', 'error'); return; }
+    try {
+      await client.auth.updateUser({ password: pw });
+      newPassword.value = '';
+      showToast('Password changed.', 'success');
+    } catch (err) {
+      showToast(err?.message || 'Failed to change password', 'error');
+    }
+  });
+
+  avatarForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const file = avatarFile.files?.[0];
+    if (!file && !cropper) { showToast('Choose an image first.', 'error'); return; }
+    try {
+      // Create circular PNG client-side
+      let blobToUpload = null;
+      if (cropper) {
+        const squareCanvas = cropper.getCroppedCanvas({ width: 256, height: 256, imageSmoothingQuality: 'high' });
+        const circCanvas = document.createElement('canvas');
+        circCanvas.width = 256; circCanvas.height = 256;
+        const ctx = circCanvas.getContext('2d');
+        ctx.clearRect(0,0,256,256);
+        ctx.save();
+        ctx.beginPath(); ctx.arc(128,128,128,0,Math.PI*2); ctx.closePath(); ctx.clip();
+        ctx.drawImage(squareCanvas, 0, 0, 256, 256);
+        ctx.restore();
+        blobToUpload = await new Promise(res => circCanvas.toBlob(res, 'image/png', 0.95));
+      } else {
+        blobToUpload = file;
+      }
+
+      const path = `${user.id}.png`;
+      await client.storage.from('avatars').upload(path, blobToUpload, { upsert: true, cacheControl: '3600' });
+      const { data } = client.storage.from('avatars').getPublicUrl(path);
+      const url = data?.publicUrl ? `${data.publicUrl}?v=${Date.now()}` : null;
+      if (url) {
+        await upsertProfile(client, user.id, { avatar_url: url });
+        await client.auth.updateUser({ data: { avatar_url: url } });
+        if (avatarPreview) avatarPreview.src = url;
+      }
+      showToast('Avatar updated.', 'success');
+      destroyCropper(); avatarFile.value='';
+    } catch (err) {
+      console.warn('Avatar upload failed', err);
+      showToast('Could not upload avatar (storage not configured?)', 'error');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+  function destroyCropper() {
+    if (cropper) { try { cropper.destroy(); } catch {} cropper = null; }
+    if (cropperWrap) cropperWrap.classList.add('hidden');
+  }
+
+  avatarFile?.addEventListener('change', () => {
+    const file = avatarFile.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      cropperImg.src = reader.result;
+      if (cropperWrap) cropperWrap.classList.remove('hidden');
+      if (window.Cropper) {
+        destroyCropper();
+        cropper = new window.Cropper(cropperImg, { aspectRatio: 1, viewMode: 1, dragMode: 'move', autoCropArea: 1 });
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+
+  zoomIn?.addEventListener('click', () => { if (cropper) cropper.zoom(0.1); });
+  zoomOut?.addEventListener('click', () => { if (cropper) cropper.zoom(-0.1); });
+  cancelBtn?.addEventListener('click', () => { destroyCropper(); avatarFile.value=''; });

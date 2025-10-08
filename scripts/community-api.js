@@ -57,10 +57,12 @@ export async function shareTemplateToCommunity(sharePayload) {
 
   await waitForInitialSession();
   const client = getSupabaseClient();
+  const user = (await client.auth.getUser()).data?.user || null;
   const entry = {
     [NAME_COLUMN]: sharePayload.name || 'Untitled template',
     [DESCRIPTION_COLUMN]: sharePayload.description ?? '',
-    [CONTENT_COLUMN]: sharePayload.content
+    [CONTENT_COLUMN]: sharePayload.content,
+    [USER_ID_COLUMN]: user?.id || null
   };
 
   if (entry[CONTENT_COLUMN] == null) {

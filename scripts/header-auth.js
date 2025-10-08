@@ -21,43 +21,60 @@ function setActiveTab(panel, tab) {
   if (signup) signup.classList.toggle('hidden', tab !== 'signup');
 }
 
+function positionDropdown(el) {
+  try {
+    const header = document.querySelector('.site-header');
+    const gap = 8;
+    const baseTop = (header && header.offsetHeight) ? (header.offsetHeight + gap) : 72;
+    el.style.position = 'fixed';
+    el.style.top = `${baseTop}px`;
+    el.style.right = '16px';
+    el.style.left = 'auto';
+    el.style.maxHeight = '80vh';
+    el.style.overflow = 'auto';
+    el.style.zIndex = '1000';
+  } catch {}
+}
+
 function wireHeader(panel) {
   const signedInRow = panel.querySelector('[data-auth-when="signed-in"]');
   const signedOutRow = panel.querySelector('[data-auth-when="signed-out"]');
-  const dropdown = panel.querySelector('[data-auth-dropdown]');
+  const dropdownLogin = panel.querySelector('[data-auth-dropdown]');
+  const dropdownAccount = panel.querySelector('[data-auth-dropdown-account]');
   const openLogin = panel.querySelector('[data-auth-open="login"]');
+  const openAccount = panel.querySelector('[data-auth-open="account"]');
   const closeBtn = panel.querySelector('[data-auth-close]');
+  const closeAccountBtn = panel.querySelector('[data-auth-close-account]');
   const nameNode = panel.querySelector('[data-auth-display-name]');
 
-  const closeDropdown = () => {
-    if (dropdown) dropdown.classList.add('hidden');
+  const closeDropdowns = () => {
+    if (dropdownLogin) dropdownLogin.classList.add('hidden');
+    if (dropdownAccount) dropdownAccount.classList.add('hidden');
   };
-  const openDropdown = (tab) => {
-    if (!dropdown) return;
-    setActiveTab(panel, tab);
-    // Reposition dropdown to be fully visible below the header
-    try {
-      const header = document.querySelector('.site-header');
-      const gap = 8; // px
-      const baseTop = (header && header.offsetHeight) ? (header.offsetHeight + gap) : 72;
-      dropdown.style.position = 'fixed';
-      dropdown.style.top = `${baseTop}px`;
-      dropdown.style.right = '16px';
-      dropdown.style.left = 'auto';
-      dropdown.style.maxHeight = '80vh';
-      dropdown.style.overflow = 'auto';
-      dropdown.style.zIndex = '1000';
-    } catch {}
-    dropdown.classList.remove('hidden');
+  const openLoginDropdown = () => {
+    if (!dropdownLogin) return;
+    setActiveTab(panel, 'login');
+    positionDropdown(dropdownLogin);
+    dropdownLogin.classList.remove('hidden');
+    if (dropdownAccount) dropdownAccount.classList.add('hidden');
+  };
+  const openAccountDropdown = () => {
+    if (!dropdownAccount) return;
+    positionDropdown(dropdownAccount);
+    dropdownAccount.classList.remove('hidden');
+    if (dropdownLogin) dropdownLogin.classList.add('hidden');
   };
 
-  openLogin?.addEventListener('click', (e) => { e.preventDefault(); openDropdown('login'); });
-  closeBtn?.addEventListener('click', (e) => { e.preventDefault(); closeDropdown(); });
+  openLogin?.addEventListener('click', (e) => { e.preventDefault(); openLoginDropdown(); });
+  openAccount?.addEventListener('click', (e) => { e.preventDefault(); openAccountDropdown(); });
+  closeBtn?.addEventListener('click', (e) => { e.preventDefault(); closeDropdowns(); });
+  closeAccountBtn?.addEventListener('click', (e) => { e.preventDefault(); closeDropdowns(); });
 
   document.addEventListener('click', (e) => {
-    if (!dropdown || dropdown.classList.contains('hidden')) return;
+    const anyOpen = (dropdownLogin && !dropdownLogin.classList.contains('hidden')) || (dropdownAccount && !dropdownAccount.classList.contains('hidden'));
+    if (!anyOpen) return;
     if (panel.contains(e.target)) return;
-    closeDropdown();
+    closeDropdowns();
   });
 
   // Forms
@@ -104,7 +121,7 @@ function wireHeader(panel) {
         await signIn({ email, password });
         showToast('Signed in.', 'success');
         loginForm.reset();
-        closeDropdown();
+        closeDropdowns();
       } catch (error) {
         showToast(error?.message || 'Could not sign in.', 'error');
       } finally {
@@ -134,6 +151,8 @@ function wireHeader(panel) {
       signedOutRow.classList.toggle('hidden', isSignedIn);
       signedOutRow.hidden = isSignedIn;
     }
+    // Close any open dropdowns on state change
+    closeDropdowns();
   };
 
   (async () => {

@@ -13,6 +13,16 @@ let editingTemplateId = null;
 let ratingFields = [];
 let improvementAreas = [];
 let selectedLanguages = ["English", "Spanish"];
+let characterBank = [
+  "hard-working", "friendly", "attentive", "lively", "active", "quiet",
+  "energetic", "studious", "sociable", "motivated", "respectful",
+  "confident", "organised", "positive", "focused", "determined",
+  "disinterested", "demotivated", "lazy", "shy"
+];
+let selectedTraits = [
+  "hard-working", "friendly", "attentive", "lively", "active", "quiet",
+  "energetic", "studious", "sociable"
+];
 
 // ============================================================
 // INITIALIZATION
@@ -26,15 +36,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initializeBuilder() {
   renderLanguageCheckboxes();
+  renderTraitCheckboxes();
 }
 
 function checkEditMode() {
   const urlParams = new URLSearchParams(window.location.search);
   const editId = urlParams.get('edit');
+  try {
+    const staged = sessionStorage.getItem('communityTemplatePreview');
+    if (staged) {
+      const tpl = JSON.parse(staged);
+      sessionStorage.removeItem('communityTemplatePreview');
+      loadTemplateFromObject(tpl);
+      document.getElementById('page-title').textContent = 'View Template';
+      return;
+    }
+  } catch {}
   
   if (editId) {
     loadTemplateForEditing(editId);
   }
+}
+
+function loadTemplateFromObject(template) {
+  if (!template) return;
+  editingTemplateId = null; // treat as new unless saved
+  document.getElementById('template-name').value = template.name || '';
+  document.getElementById('template-description').value = template.description || '';
+  ratingFields = Array.isArray(template.ratingFields) ? [...template.ratingFields] : [];
+  improvementAreas = Array.isArray(template.areasToImprove) ? [...template.areasToImprove] : [];
+  selectedLanguages = Array.isArray(template.languages) ? [...template.languages] : selectedLanguages;
+  if (Array.isArray(template.characterOptions)) {
+    selectedTraits = [...template.characterOptions];
+    characterBank = Array.from(new Set([...(characterBank||[]), ...selectedTraits]));
+  }
+  renderRatingFields();
+  renderImprovementAreas();
+  updateLanguageCheckboxes();
+  renderTraitCheckboxes();
 }
 
 function loadTemplateForEditing(templateId) {
@@ -60,10 +99,16 @@ function loadTemplateForEditing(templateId) {
   ratingFields = [...template.ratingFields];
   improvementAreas = [...template.areasToImprove];
   selectedLanguages = [...template.languages];
+  // Merge character traits from template into bank and selection
+  if (Array.isArray(template.characterOptions)) {
+    selectedTraits = [...template.characterOptions];
+    characterBank = Array.from(new Set([...(characterBank||[]), ...selectedTraits]));
+  }
   
   renderRatingFields();
   renderImprovementAreas();
   updateLanguageCheckboxes();
+  renderTraitCheckboxes();
 }
 
 // ============================================================
@@ -91,6 +136,27 @@ function setupEventListeners() {
   
   // Form submission
   document.getElementById('template-form').addEventListener('submit', handleSaveTemplate);
+
+  // Traits add and select-all
+  const addTraitBtn = document.getElementById('add-trait');
+  const newTraitInput = document.getElementById('new-trait');
+  const selectAll = document.getElementById('traits-select-all');
+  if (addTraitBtn && newTraitInput) {
+    addTraitBtn.addEventListener('click', () => addTrait(newTraitInput));
+    newTraitInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); addTrait(newTraitInput); }
+    });
+  }
+  if (selectAll) {
+    selectAll.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        selectedTraits = Array.from(new Set([...(characterBank||[])]));
+      } else {
+        selectedTraits = [];
+      }
+      updateTraitCheckboxes();
+    });
+  }
 }
 
 // ============================================================
@@ -329,6 +395,75 @@ function handleLanguageChange(e) {
 }
 
 // ============================================================
+// CHARACTER TRAITS
+// ============================================================
+
+function normaliseTrait(label) {
+  return String(label || '').trim().replace(/\s+/g, ' ').replace(/^[-\s]+|[-\s]+$/g, '');
+}
+
+function addTrait(inputEl) {
+  const raw = inputEl.value;
+  const label = normaliseTrait(raw);
+  if (!label) { showToast('Enter a trait to add', 'error'); return; }
+  if (!characterBank.includes(label)) {
+    characterBank.push(label);
+  }
+  if (!selectedTraits.includes(label)) {
+    selectedTraits.push(label);
+  }
+  inputEl.value = '';
+  renderTraitCheckboxes();
+}
+
+function renderTraitCheckboxes() {
+  const container = document.getElementById('character-traits-checkboxes');
+  const selectAll = document.getElementById('traits-select-all');
+  if (!container) return;
+  container.innerHTML = '';
+  const sorted = [...characterBank].sort((a,b)=> a.localeCompare(b));
+  sorted.forEach(trait => {
+    const label = document.createElement('label');
+    label.className = 'flex items-center gap-2 cursor-pointer';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.value = trait;
+    cb.checked = selectedTraits.includes(trait);
+    cb.className = 'form-checkbox h-4 w-4 text-[#305a99]';
+    cb.addEventListener('change', (e) => {
+      const t = e.target.value;
+      if (e.target.checked) {
+        if (!selectedTraits.includes(t)) selectedTraits.push(t);
+      } else {
+        selectedTraits = selectedTraits.filter(x => x !== t);
+      }
+      if (selectAll) {
+        selectAll.checked = selectedTraits.length === characterBank.length && characterBank.length > 0;
+      }
+    });
+    const span = document.createElement('span');
+    span.textContent = trait;
+    span.className = 'text-sm text-slate-700';
+    label.appendChild(cb);
+    label.appendChild(span);
+    container.appendChild(label);
+  });
+  if (selectAll) {
+    selectAll.checked = selectedTraits.length === characterBank.length && characterBank.length > 0;
+  }
+}
+
+function updateTraitCheckboxes() {
+  document.querySelectorAll('#character-traits-checkboxes input[type="checkbox"]').forEach(cb => {
+    cb.checked = selectedTraits.includes(cb.value);
+  });
+  const selectAll = document.getElementById('traits-select-all');
+  if (selectAll) {
+    selectAll.checked = selectedTraits.length === characterBank.length && characterBank.length > 0;
+  }
+}
+
+// ============================================================
 // SAVE TEMPLATE
 // ============================================================
 
@@ -362,12 +497,7 @@ function handleSaveTemplate(e) {
     isDefault: false,
     isLocked: false,
     ratingFields: [...ratingFields],
-    characterOptions: [
-      "hard-working", "friendly", "attentive", "lively", "active", "quiet",
-      "energetic", "studious", "sociable", "motivated", "respectful",
-      "confident", "organised", "positive", "focused", "determined",
-      "disinterested", "demotivated", "lazy", "shy"
-    ],
+    characterOptions: [...new Set(selectedTraits)],
     areasToImprove: [...improvementAreas],
     languages: [...selectedLanguages],
     createdDate: Date.now()
