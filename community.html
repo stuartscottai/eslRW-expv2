@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Community Templates - ESL Report Writer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/style.css">
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-blue-50 text-slate-800">
+
+  <header class="relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between relative">
+      <a href="index.html" class="flex items-center">
+        <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
+      </a>
+      <div class="flex items-center gap-4">
+        <div class="relative flex items-center gap-4">
+          <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-600 md:items-center" data-open="false">
+            <a href="index.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Home</a>
+            <a href="app.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Report Writer</a>
+            <a href="how-to.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">How to use</a>
+            <a href="template-builder.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Builder</a>
+            <a href="template-manager.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Manager</a>
+            <a href="community.html" class="py-2 text-slate-900 font-semibold transition-colors duration-200 md:text-base" aria-current="page">Community</a>
+            <a href="app.html" class="md:hidden btn-primary text-center text-sm">Launch Report Writer</a>
+          </nav>
+          <button type="button" class="nav-toggle md:hidden" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
+            <span class="sr-only">Toggle navigation</span>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+        <a href="app.html" class="hidden md:inline-flex items-center btn-primary btn-compact text-sm font-semibold">Launch Report Writer</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="relative z-0">
+    <img src="/public/hero-bg.jpg" alt="Hero"
+         class="w-full h-[260px] md:h-[320px] object-cover object-center">
+    <div class="absolute inset-0 bg-slate-900/40"></div>
+
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      <img src="/public/logo.png" alt="ESL Report Writer Logo"
+           class="h-24 md:h-32 w-auto drop-shadow-lg">
+      <div class="mt-3 text-white text-lg md:text-xl font-medium drop-shadow">
+        Explore Community Templates
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
+    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div class="flex items-center gap-3">
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500 flex-shrink-0"></span>
+          <span class="text-slate-800 font-semibold">Community Templates</span>
+        </div>
+        <button type="button" data-community-refresh class="inline-flex items-center btn-secondary btn-compact text-sm font-semibold">
+          Refresh list
+        </button>
+      </div>
+
+      <section class="border border-slate-200 rounded-lg p-4 bg-slate-50 space-y-4" data-auth-panel>
+        <div data-auth-missing-config hidden class="text-sm text-red-600">
+          Supabase credentials are missing. Add them to enable community features.
+        </div>
+        <div data-auth-requires-config class="space-y-4">
+          <div data-auth-when="signed-in" hidden class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm text-slate-700">Signed in as <span class="font-medium text-slate-900" data-auth-email></span></p>
+            <button type="button" data-auth-action="logout" class="inline-flex items-center btn-secondary btn-compact text-sm font-semibold w-full sm:w-auto">
+              Log out
+            </button>
+          </div>
+          <div data-auth-when="signed-out" class="grid gap-4 md:grid-cols-2">
+            <form data-auth-form="login" class="space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <div class="space-y-1">
+                <label class="text-sm font-medium text-slate-700" for="community-login-email">Email</label>
+                <input id="community-login-email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              </div>
+              <div class="space-y-1">
+                <label class="text-sm font-medium text-slate-700" for="community-login-password">Password</label>
+                <input id="community-login-password" name="password" type="password" autocomplete="current-password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              </div>
+              <button type="submit" class="w-full inline-flex justify-center btn-primary btn-compact text-sm font-semibold">Log in</button>
+            </form>
+            <form data-auth-form="signup" class="space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <div class="space-y-1">
+                <label class="text-sm font-medium text-slate-700" for="community-signup-email">Email</label>
+                <input id="community-signup-email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              </div>
+              <div class="space-y-1">
+                <label class="text-sm font-medium text-slate-700" for="community-signup-password">Password</label>
+                <input id="community-signup-password" name="password" type="password" autocomplete="new-password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              </div>
+              <button type="submit" class="w-full inline-flex justify-center btn-secondary btn-compact text-sm font-semibold">Sign up</button>
+              <p class="text-xs text-slate-500 leading-snug">
+                Sign up to share your templates with the community. You will receive a confirmation email from Supabase.
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4">
+        <p data-community-missing-config hidden class="text-sm text-red-600">
+          Supabase credentials are missing. Add them to your deployment to load the community list.
+        </p>
+        <p class="text-sm text-slate-600">
+          Browse templates shared by other teachers. Import any template to add it to your local library.
+        </p>
+        <p data-community-loading class="text-sm text-slate-500">Loading community templates...</p>
+        <p data-community-error hidden class="text-sm text-red-600"></p>
+        <div data-community-empty hidden class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500">
+          <p>No community templates yet. Be the first to share!</p>
+        </div>
+        <div data-community-list class="space-y-4"></div>
+      </section>
+    </main>
+
+    <footer class="text-center mt-10 mb-6">
+      <p class="text-sm text-slate-500">&copy; <span id="currentYear"></span> ESL Report Writer. Designed and managed by 3P Machine digital.</p>
+    </footer>
+  </div>
+
+  <div id="toast-notification" class="toast"><span id="toast-message"></span></div>
+
+  <script type="module" src="/scripts/env.js"></script>
+  <script type="module" src="/scripts/supabase-client.js"></script>
+  <script src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/auth-panel.js"></script>
+  <script type="module" src="/scripts/community-page.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const y = document.getElementById('currentYear');
+      if (y) y.textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>

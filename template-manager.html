@@ -25,6 +25,7 @@
             <a href="how-to.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">How to use</a>
             <a href="template-builder.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Template Builder</a>
             <a href="template-manager.html" class="py-2 text-slate-900 font-semibold transition-colors duration-200 md:text-base" aria-current="page">Template Manager</a>
+            <a href="community.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900 md:text-base">Community</a>
             <a href="app.html" class="md:hidden btn-primary text-center text-sm">Launch Report Writer</a>
           </nav>
           <button type="button" class="nav-toggle md:hidden" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
@@ -59,7 +60,7 @@
     <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
       <div class="flex items-center justify-between border-b border-slate-200 pb-4">
         <div class="flex items-center gap-3">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500"></span>
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500 flex-shrink-0"></span>
           <span class="text-slate-800 font-semibold">Template Manager</span>
         </div>
         <div class="flex items-center gap-3 flex-wrap justify-start sm:justify-end">
@@ -73,6 +74,46 @@
         </div>
       </div>
 
+      <section class="border border-slate-200 rounded-lg p-4 bg-slate-50 space-y-4" data-auth-panel>
+        <div data-auth-missing-config hidden class="text-sm text-red-600">
+          Supabase credentials are missing. Add them to enable community features.
+        </div>
+        <div data-auth-requires-config class="space-y-4">
+          <div data-auth-when="signed-in" hidden class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm text-slate-700">Signed in as <span class="font-medium text-slate-900" data-auth-email></span></p>
+            <button type="button" data-auth-action="logout" class="inline-flex items-center btn-secondary btn-compact text-sm font-semibold w-full sm:w-auto">
+              Log out
+            </button>
+          </div>
+          <div data-auth-when="signed-out" class="grid gap-4 md:grid-cols-2">
+            <form data-auth-form="login" class="space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <div class="space-y-1">
+                <label class="text-sm font-medium text-slate-700" for="community-login-email">Email</label>
+                <input id="community-login-email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              </div>
+              <div class="space-y-1">
+                <label class="text-sm font-medium text-slate-700" for="community-login-password">Password</label>
+                <input id="community-login-password" name="password" type="password" autocomplete="current-password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              </div>
+              <button type="submit" class="w-full inline-flex justify-center btn-primary btn-compact text-sm font-semibold">Log in</button>
+            </form>
+            <form data-auth-form="signup" class="space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <div class="space-y-1">
+                <label class="text-sm font-medium text-slate-700" for="community-signup-email">Email</label>
+                <input id="community-signup-email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              </div>
+              <div class="space-y-1">
+                <label class="text-sm font-medium text-slate-700" for="community-signup-password">Password</label>
+                <input id="community-signup-password" name="password" type="password" autocomplete="new-password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              </div>
+              <button type="submit" class="w-full inline-flex justify-center btn-secondary btn-compact text-sm font-semibold">Sign up</button>
+              <p class="text-xs text-slate-500 leading-snug">
+                Sign up to share your templates with the community. You will receive a confirmation email from Supabase.
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
       <!-- Templates List -->
       <div id="templates-list" class="space-y-4">
         <!-- Templates will be populated by JavaScript -->
@@ -87,16 +128,37 @@
 
   <div id="toast-notification" class="toast"><span id="toast-message"></span></div>
 
+  <script type="module" src="/scripts/env.js"></script>
+  <script type="module" src="/scripts/supabase-client.js"></script>
   <script src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/auth-panel.js"></script>
   
 <script type="module">
-  import { getAllTemplates, deleteTemplate, duplicateTemplate, setActiveTemplate, exportTemplate, importTemplate } from '/scripts/templates.js';
+  import { getAllTemplates, deleteTemplate, duplicateTemplate, setActiveTemplate, exportTemplate, importTemplate, getTemplateById } from '/scripts/templates.js';
   import { showToast } from '/scripts/ui.js';
+  import { shareTemplateToCommunity } from '/scripts/community-api.js';
+  import { isSupabaseConfigured, getCurrentUser } from '/scripts/supabase-client.js';
 
   const templatesList = document.getElementById('templates-list');
   const importButton = document.getElementById('import-template-button');
   const importInput = document.getElementById('import-template-input');
   let openMenuId = null;
+  const shareEnabled = isSupabaseConfigured();
+
+  function serializeTemplateForShare(template) {
+    if (!template) return null;
+    try {
+      const copy = JSON.parse(JSON.stringify(template));
+      delete copy.id;
+      delete copy.isLocked;
+      delete copy.createdDate;
+      return copy;
+    } catch (error) {
+      console.error('Failed to serialise template for sharing', error);
+      return null;
+    }
+  }
+
 
   function closeActionMenus() {
     if (!templatesList) return;
@@ -118,6 +180,67 @@
       menu.classList.remove('hidden');
       toggle.setAttribute('aria-expanded', 'true');
       openMenuId = templateId;
+    }
+  }
+
+  async function shareTemplateWithCommunity(templateId, triggerButton) {
+    if (!shareEnabled) {
+      showToast('Community sharing is disabled until Supabase credentials are provided.', 'error');
+      return;
+    }
+
+    const template = getTemplateById(templateId);
+    if (!template) {
+      showToast('Template not found.', 'error');
+      return;
+    }
+
+    if (template.isLocked) {
+      showToast('Default templates cannot be shared.', 'error');
+      return;
+    }
+
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      showToast('Log in to share templates first.', 'error');
+      return;
+    }
+
+    const serialised = serializeTemplateForShare(template);
+    if (!serialised) {
+      showToast('Could not prepare this template for sharing.', 'error');
+      return;
+    }
+
+    const button = triggerButton || null;
+    let originalText = '';
+
+    if (button) {
+      if ('disabled' in button) button.disabled = true;
+      if ('textContent' in button) {
+        originalText = button.textContent;
+        button.textContent = 'Sharing...';
+      }
+    }
+
+    try {
+      await shareTemplateToCommunity({
+        name: template.name,
+        description: template.description ?? '',
+        content: serialised
+      });
+      showToast('Template shared with the community!', 'success');
+    } catch (error) {
+      console.error('Failed to share template', error);
+      const message = error?.code === 'auth-required'
+        ? 'Log in to share templates first.'
+        : error?.message || 'Failed to share template.';
+      showToast(message, 'error');
+    } finally {
+      if (button) {
+        if ('disabled' in button) button.disabled = false;
+        if (originalText) button.textContent = originalText;
+      }
     }
   }
 
@@ -171,6 +294,7 @@
                   ${!isLocked ? `<button type="button" data-action="edit" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Edit</button>` : ''}
                   <button type="button" data-action="duplicate" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Duplicate</button>
                   ${!isLocked ? `<button type="button" data-action="export" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Export</button>` : ''}
+                  ${!isLocked ? `<button type="button" data-action="share" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Share to Community</button>` : ''}
                   <button type="button" data-action="use" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Use</button>
                   ${!isLocked ? `<button type="button" data-action="delete" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50" role="menuitem">Delete</button>` : ''}
                 </div>
@@ -180,6 +304,7 @@
               ${!isLocked ? `<button type="button" data-action="edit" data-template-id="${template.id}" class="inline-flex items-center btn-tertiary btn-compact text-sm font-semibold">Edit</button>` : ''}
               <button type="button" data-action="duplicate" data-template-id="${template.id}" class="inline-flex items-center btn-secondary btn-compact text-sm font-semibold">Duplicate</button>
               ${!isLocked ? `<button type="button" data-action="export" data-template-id="${template.id}" class="inline-flex items-center btn-secondary btn-compact text-sm font-semibold">Export</button>` : ''}
+              ${!isLocked ? `<button type="button" data-action="share" data-template-id="${template.id}" class="inline-flex items-center btn-secondary btn-compact text-sm font-semibold">Share</button>` : ''}
               <button type="button" data-action="use" data-template-id="${template.id}" class="inline-flex items-center btn-primary btn-compact text-sm font-semibold">Use</button>
               ${!isLocked ? `<button type="button" data-action="delete" data-template-id="${template.id}" class="inline-flex items-center text-sm font-semibold px-3 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-colors">Delete</button>` : ''}
             </div>
@@ -230,6 +355,9 @@
         }
         break;
       }
+      case 'share':
+        await shareTemplateWithCommunity(templateId, button);
+        break;
       case 'use':
         setActiveTemplate(templateId);
         showToast('Template activated! Redirecting...', 'success');
@@ -300,4 +428,6 @@
 
 </body>
 </html>
+
+
 
