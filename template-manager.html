@@ -6,6 +6,7 @@
   <title>Template Manager - ESL Report Writer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/style.css">
   <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
 </head>
@@ -182,22 +183,23 @@
 
   function closeActionMenus() {
     if (!templatesList) return;
-    templatesList.querySelectorAll('[data-menu-for]').forEach(menu => menu.classList.add('hidden'));
-    templatesList.querySelectorAll('[data-menu-toggle]').forEach(toggle => toggle.setAttribute('aria-expanded', 'false'));
+    templatesList.querySelectorAll('[data-menu-toggle]').forEach(toggle => {
+      toggle.classList.remove('active');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
     openMenuId = null;
   }
 
   function toggleActionMenu(templateId) {
     if (!templatesList || !templateId) return;
-    const menu = templatesList.querySelector(`[data-menu-for="${templateId}"]`);
     const toggle = templatesList.querySelector(`[data-menu-toggle][data-template-id="${templateId}"]`);
-    if (!menu || !toggle) return;
+    if (!toggle) return;
 
-    const isOpen = openMenuId === templateId && !menu.classList.contains('hidden');
+    const isOpen = openMenuId === templateId && toggle.classList.contains('active');
     closeActionMenus();
 
     if (!isOpen) {
-      menu.classList.remove('hidden');
+      toggle.classList.add('active');
       toggle.setAttribute('aria-expanded', 'true');
       openMenuId = templateId;
     }
@@ -285,10 +287,10 @@
       const wrapper = document.createElement('div');
       const isLocked = template.isLocked;
 
-      wrapper.className = 'rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition';
+      wrapper.className = 'tm-card rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition relative overflow-hidden';
       wrapper.innerHTML = `
         <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <div class="flex-1">
+          <div class="flex-1 tm-body">
             <h3 class="text-lg font-semibold text-slate-800 flex flex-wrap items-center gap-2">
               ${template.name}
               ${template.isDefault ? '<span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full">Default</span>' : ''}
@@ -302,31 +304,75 @@
           </div>
 
           <div class="flex items-center justify-end">
-            <div class="relative w-full sm:w-auto" data-menu-container>
-              <button type="button" data-menu-toggle data-template-id="${template.id}" class="inline-flex items-center justify-between w-full sm:w-40 btn-secondary btn-compact text-sm font-semibold" aria-haspopup="menu" aria-expanded="false">
-                Actions
-                <svg class="ml-2 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.084l3.71-3.854a.75.75 0 111.08 1.04l-4.25 4.417a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                </svg>
+            <div class="tm-dropdown" data-menu-container>
+              <button type="button" data-menu-toggle data-template-id="${template.id}" class="tm-button" aria-haspopup="menu" aria-expanded="false">
+                <label class="tm-label-text">Actions</label>
+                <span class="tm-icon" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.084l3.71-3.854a.75.75 0 111.08 1.04l-4.25 4.417a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </span>
               </button>
-              <div class="mt-2 hidden w-full sm:w-56 rounded-lg border border-slate-200 bg-white shadow-lg" data-menu-for="${template.id}" role="menu">
-                <div class="flex flex-col py-1">
-                  ${!isLocked ? `<button type="button" data-action="edit" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Edit</button>` : ''}
-                  <button type="button" data-action="duplicate" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Duplicate</button>
-                  ${!isLocked ? `<button type="button" data-action="export" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Export</button>` : ''}
-                  ${!isLocked ? `<button type="button" data-action="share" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Share to Community</button>` : ''}
-                  <button type="button" data-action="use" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Use</button>
-                  ${!isLocked ? `<button type="button" data-action="delete" data-template-id="${template.id}" class="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50" role="menuitem">Delete</button>` : ''}
-                </div>
-              </div>
+              <ul class="tm-options" data-menu-for="${template.id}" role="menu">
+                ${!isLocked ? `<li class="tm-option" data-action="edit" data-template-id="${template.id}" role="menuitem" tabindex="0">Edit</li>` : ''}
+                <li class="tm-option" data-action="duplicate" data-template-id="${template.id}" role="menuitem" tabindex="0">Duplicate</li>
+                ${!isLocked ? `<li class="tm-option" data-action="export" data-template-id="${template.id}" role="menuitem" tabindex="0">Export</li>` : ''}
+                ${!isLocked ? `<li class="tm-option" data-action="share" data-template-id="${template.id}" role="menuitem" tabindex="0">Share to Community</li>` : ''}
+                <li class="tm-option" data-action="use" data-template-id="${template.id}" role="menuitem" tabindex="0">Use</li>
+                ${!isLocked ? `<li class="tm-option" data-action="delete" data-template-id="${template.id}" role="menuitem" tabindex="0">Delete</li>` : ''}
+              </ul>
             </div>
           </div>
         </div>
       `;
 
       templatesList.appendChild(wrapper);
+
+      // Ensure card is tall enough to contain the dropdown menu
+      requestAnimationFrame(() => {
+        try {
+          const dropdown = wrapper.querySelector('.tm-dropdown');
+          const menu = wrapper.querySelector('.tm-options');
+          if (!dropdown || !menu) return;
+
+          const style = getComputedStyle(wrapper);
+          const padBottom = parseFloat(style.paddingBottom) || 0;
+          const menuTop = dropdown.offsetTop + (menu.offsetTop || 0);
+          const menuHeight = menu.scrollHeight || menu.offsetHeight || 0;
+          const required = Math.ceil(menuTop + menuHeight + padBottom);
+
+          // Only increase if current height is smaller
+          const current = wrapper.getBoundingClientRect().height;
+          if (current < required) {
+            wrapper.style.minHeight = required + 'px';
+          }
+        } catch (_) {}
+      });
     });
   }
+
+  // Recompute card min-heights on resize to keep menus contained
+  window.addEventListener('resize', () => {
+    document.querySelectorAll('.tm-card').forEach(wrapper => {
+      try {
+        wrapper.style.minHeight = '';
+        const dropdown = wrapper.querySelector('.tm-dropdown');
+        const menu = wrapper.querySelector('.tm-options');
+        if (!dropdown || !menu) return;
+
+        const style = getComputedStyle(wrapper);
+        const padBottom = parseFloat(style.paddingBottom) || 0;
+        const menuTop = dropdown.offsetTop + (menu.offsetTop || 0);
+        const menuHeight = menu.scrollHeight || menu.offsetHeight || 0;
+        const required = Math.ceil(menuTop + menuHeight + padBottom);
+
+        const current = wrapper.getBoundingClientRect().height;
+        if (current < required) {
+          wrapper.style.minHeight = required + 'px';
+        }
+      } catch (_) {}
+    });
+  });
 
   templatesList?.addEventListener('click', async (event) => {
     const toggleButton = event.target.closest('[data-menu-toggle]');
@@ -336,10 +382,10 @@
       return;
     }
 
-    const button = event.target.closest('button[data-action]');
-    if (!button) return;
+    const actionEl = event.target.closest('[data-action]');
+    if (!actionEl) return;
 
-    const { action, templateId } = button.dataset;
+    const { action, templateId } = actionEl.dataset;
     if (!templateId) return;
 
     closeActionMenus();

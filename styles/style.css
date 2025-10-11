@@ -162,6 +162,72 @@ body { font-family: 'Inter', sans-serif; background-color: #f5f7fb; }
 .nav-toggle:hover { background: #e7edf8; box-shadow: 0 6px 16px rgba(15, 23, 42, 0.16); }
 .nav-toggle[aria-expanded="true"] { background: #305a99; color: #ffffff; }
 
+/* Template Manager: rotate chevron when menu open */
+[data-menu-toggle] svg { transition: transform 0.2s ease; }
+[data-menu-toggle][aria-expanded="true"] svg { transform: rotate(180deg); }
+
+/* Template Manager dropdown (exact style from provided snippet, scoped) */
+.tm-dropdown { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10; }
+.tm-button {
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  background: #f6f6fa;
+  border: 1px solid #a8a6bd;
+  height: 1.5rem;
+  width: 6rem;
+  border-radius: 0.2rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: #a8a6bd;
+  transition: 0.3s all ease;
+  font-family: 'Roboto', sans-serif;
+}
+.tm-button:hover { border-color: #577bf9; }
+.tm-button.selected { color: #577bf9; }
+.tm-button .tm-label-text { font-size: 0.6rem; }
+.tm-button .tm-icon {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.4rem;
+  transition: 0.2s all ease;
+}
+.tm-button.active .tm-icon { transform: rotate(180deg); }
+
+.tm-options {
+  position: absolute;
+  top: 1.6rem;
+  list-style-type: none;
+  width: 100%;
+  border: 1px solid #a8a6bd;
+  border-radius: 0.2rem;
+  font-size: 0.6rem;
+  color: #151542;
+  overflow: hidden;
+  transition: all 0.2s ease-in;
+  clip-path: polygon(0 0, 100% 0%, 100% 0, 0 0);
+  background: #ffffff;
+  z-index: 20;
+}
+.tm-button.active + .tm-options {
+  clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 100%);
+}
+.tm-options .tm-option {
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.tm-options .tm-option:hover {
+  color: #577bf9;
+  background: #e8edff;
+}
+
+/* Prevent overlap with title on small screens */
+@media (max-width: 639px) {
+  .tm-card .tm-body { padding-right: 7rem; }
+}
+
 /* Overlay for nav drawer */
 #nav-overlay {
   position: fixed;
