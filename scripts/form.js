@@ -97,16 +97,34 @@ export function populateFormFields() {
   const right = document.getElementById("perf-right");
 
   // LEFT: all ratings (0–10) from template
+  // Render select by default; use sliders for specific fields
+  const __sliderIds = new Set(['progress', 'behaviour', 'behavior', 'participation', 'english-level', 'exam-performance']);
   ratingFieldsData.forEach(field => {
-    left.insertAdjacentHTML("beforeend", `
-      <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-        <label for="${field.id}" class="font-medium text-slate-700 md:text-right">${field.label}:</label>
-        <select id="${field.id}"
-                class="col-span-2 w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
-          ${Array.from({ length: 11 }, (_, i) => `<option value="${i}">${i}</option>`).join("")}
-        </select>
-      </div>
-    `);
+    const id = (field.id || '').toLowerCase();
+    const labelKey = (field.label || '').toLowerCase().replace(/\s+/g,'-');
+    const useSlider = __sliderIds.has(id) || __sliderIds.has(labelKey);
+    if (useSlider) {
+      left.insertAdjacentHTML("beforeend", `
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+          <label for="${field.id}" class="font-medium text-slate-700 md:text-right">${field.label}:</label>
+          <div class="col-span-2 flex items-center gap-3">
+            <input id="${field.id}" type="range" min="1" max="10" value="5"
+                   class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer focus:outline-none" />
+            <span id="${field.id}-value" class="inline-block w-8 text-center text-slate-700 font-medium">5</span>
+          </div>
+        </div>
+      `);
+    } else {
+      left.insertAdjacentHTML("beforeend", `
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+          <label for="${field.id}" class="font-medium text-slate-700 md:text-right">${field.label}:</label>
+          <select id="${field.id}"
+                  class="col-span-2 w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+            ${Array.from({ length: 11 }, (_, i) => `<option value="${i}">${i}</option>`).join("")}
+          </select>
+        </div>
+      `);
+    }
   });
 
   // RIGHT: Character (multiselect)
@@ -182,6 +200,19 @@ export function populateFormFields() {
     areasToImproveData,
     () => updateSelectedDisplay(document.getElementById("areasOptions"), document.getElementById("areas-selected"))
   );
+
+  // Wire slider displays for the chosen slider fields
+  try {
+    ratingFieldsData.forEach(field => {
+      const input = document.getElementById(field.id);
+      const val = document.getElementById(`${field.id}-value`);
+      if (input && input.type === 'range' && val) {
+        const sync = () => { val.textContent = input.value; };
+        input.addEventListener('input', sync);
+        sync();
+      }
+    });
+  } catch (e) { /* no-op */ }
 }
 
 // Dropdown state
