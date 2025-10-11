@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeBuilder() {
   renderLanguageCheckboxes();
   renderTraitCheckboxes();
+  setupContainerDragArea();
 }
 
 function checkEditMode() {
@@ -208,7 +209,13 @@ function renderRatingFields() {
     div.dataset.index = index;
     
     div.innerHTML = `
-      <span class="drag-handle text-slate-400 cursor-grab select-none"></span>
+      <span class="drag-handle text-slate-400 cursor-grab select-none" title="Drag to reorder" aria-hidden="true">
+        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <circle cx="6" cy="5" r="1.2"/><circle cx="10" cy="5" r="1.2"/>
+          <circle cx="6" cy="10" r="1.2"/><circle cx="10" cy="10" r="1.2"/>
+          <circle cx="6" cy="15" r="1.2"/><circle cx="10" cy="15" r="1.2"/>
+        </svg>
+      </span>
       <span class="flex-1 font-medium text-slate-700">${field.label}</span>
       <button type="button" onclick="window.removeRatingField(${index})"
               class="text-slate-400 hover:text-red-600 transition p-1 rounded hover:bg-red-50"
@@ -274,7 +281,13 @@ function renderImprovementAreas() {
     div.dataset.index = index;
     
     div.innerHTML = `
-      <span class="drag-handle text-slate-400 cursor-grab"></span>
+      <span class="drag-handle text-slate-400 cursor-grab select-none" title="Drag to reorder" aria-hidden="true">
+        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <circle cx="6" cy="5" r="1.2"/><circle cx="10" cy="5" r="1.2"/>
+          <circle cx="6" cy="10" r="1.2"/><circle cx="10" cy="10" r="1.2"/>
+          <circle cx="6" cy="15" r="1.2"/><circle cx="10" cy="15" r="1.2"/>
+        </svg>
+      </span>
       <span class="flex-1 font-medium text-slate-700">${area}</span>
       <button type="button" onclick="window.removeImprovementArea(${index})"
               class="text-slate-400 hover:text-red-600 transition p-1 rounded hover:bg-red-50"
@@ -311,7 +324,7 @@ function handleDragOver(e) {
   if (e.preventDefault) {
     e.preventDefault();
   }
-  e.dataTransfer.dropEffect = 'move';
+  if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
   return false;
 }
 
@@ -347,51 +360,72 @@ function handleDragEnd(e) {
   draggedElement = null;
 }
 
+// Ensure container accepts dragover to avoid 'not-allowed' cursor between items
+function setupContainerDragArea() {
+  ['rating-fields-list', 'improvement-areas-list'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+    });
+    el.addEventListener('dragenter', (e) => {
+      e.preventDefault();
+    });
+  });
+}
+
 // ============================================================
 // LANGUAGES
 // ============================================================
 
 function renderLanguageCheckboxes() {
   const container = document.getElementById('languages-checkboxes');
+  if (!container) return;
+  container.innerHTML = '';
   
   AVAILABLE_LANGUAGES.forEach(lang => {
-    const label = document.createElement('label');
-    label.className = 'flex items-center gap-2 cursor-pointer';
-    
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.value = lang;
-    checkbox.checked = selectedLanguages.includes(lang);
-    checkbox.className = 'form-checkbox h-4 w-4 text-[#305a99]';
-    checkbox.addEventListener('change', handleLanguageChange);
-    
-    const span = document.createElement('span');
-    span.textContent = lang;
-    span.className = 'text-sm text-slate-700';
-    
-    label.appendChild(checkbox);
-    label.appendChild(span);
-    container.appendChild(label);
+    const id = `lang-${lang.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+    const wrap = document.createElement('label');
+    wrap.className = 'custom-checkbox-container';
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.className = 'custom-checkbox-input';
+    input.id = id;
+    input.value = lang;
+    input.checked = selectedLanguages.includes(lang);
+    input.addEventListener('change', (e) => {
+      const v = e.target.value;
+      if (e.target.checked) {
+        if (!selectedLanguages.includes(v)) selectedLanguages.push(v);
+      } else {
+        selectedLanguages = selectedLanguages.filter(x => x !== v);
+      }
+    });
+
+    const label = document.createElement('span');
+    label.className = 'custom-checkbox-label';
+    label.setAttribute('for', id);
+
+    const shine = document.createElement('span');
+    shine.className = 'custom-checkbox-shine';
+
+    const text = document.createElement('span');
+    text.className = 'custom-checkbox-text';
+    text.textContent = lang;
+
+    label.appendChild(shine);
+    label.appendChild(text);
+    wrap.appendChild(input);
+    wrap.appendChild(label);
+    container.appendChild(wrap);
   });
 }
 
 function updateLanguageCheckboxes() {
-  const checkboxes = document.querySelectorAll('#languages-checkboxes input[type="checkbox"]');
-  checkboxes.forEach(cb => {
-    cb.checked = selectedLanguages.includes(cb.value);
-  });
-}
-
-function handleLanguageChange(e) {
-  const lang = e.target.value;
-  
-  if (e.target.checked) {
-    if (!selectedLanguages.includes(lang)) {
-      selectedLanguages.push(lang);
-    }
-  } else {
-    selectedLanguages = selectedLanguages.filter(l => l !== lang);
-  }
+  document.querySelectorAll('#languages-checkboxes .custom-checkbox-input')
+    .forEach(cb => { cb.checked = selectedLanguages.includes(cb.value); });
 }
 
 // ============================================================
@@ -423,14 +457,17 @@ function renderTraitCheckboxes() {
   container.innerHTML = '';
   const sorted = [...characterBank].sort((a,b)=> a.localeCompare(b));
   sorted.forEach(trait => {
-    const label = document.createElement('label');
-    label.className = 'flex items-center gap-2 cursor-pointer';
-    const cb = document.createElement('input');
-    cb.type = 'checkbox';
-    cb.value = trait;
-    cb.checked = selectedTraits.includes(trait);
-    cb.className = 'form-checkbox h-4 w-4 text-[#305a99]';
-    cb.addEventListener('change', (e) => {
+    const id = `trait-${trait.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+    const wrap = document.createElement('label');
+    wrap.className = 'custom-checkbox-container';
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.className = 'custom-checkbox-input';
+    input.id = id;
+    input.value = trait;
+    input.checked = selectedTraits.includes(trait);
+    input.addEventListener('change', (e) => {
       const t = e.target.value;
       if (e.target.checked) {
         if (!selectedTraits.includes(t)) selectedTraits.push(t);
@@ -441,12 +478,23 @@ function renderTraitCheckboxes() {
         selectAll.checked = selectedTraits.length === characterBank.length && characterBank.length > 0;
       }
     });
-    const span = document.createElement('span');
-    span.textContent = trait;
-    span.className = 'text-sm text-slate-700';
-    label.appendChild(cb);
-    label.appendChild(span);
-    container.appendChild(label);
+
+    const label = document.createElement('span');
+    label.className = 'custom-checkbox-label';
+    label.setAttribute('for', id);
+
+    const shine = document.createElement('span');
+    shine.className = 'custom-checkbox-shine';
+
+    const text = document.createElement('span');
+    text.className = 'custom-checkbox-text';
+    text.textContent = trait;
+
+    label.appendChild(shine);
+    label.appendChild(text);
+    wrap.appendChild(input);
+    wrap.appendChild(label);
+    container.appendChild(wrap);
   });
   if (selectAll) {
     selectAll.checked = selectedTraits.length === characterBank.length && characterBank.length > 0;
@@ -454,7 +502,7 @@ function renderTraitCheckboxes() {
 }
 
 function updateTraitCheckboxes() {
-  document.querySelectorAll('#character-traits-checkboxes input[type="checkbox"]').forEach(cb => {
+  document.querySelectorAll('#character-traits-checkboxes .custom-checkbox-input').forEach(cb => {
     cb.checked = selectedTraits.includes(cb.value);
   });
   const selectAll = document.getElementById('traits-select-all');
@@ -462,6 +510,7 @@ function updateTraitCheckboxes() {
     selectAll.checked = selectedTraits.length === characterBank.length && characterBank.length > 0;
   }
 }
+
 
 // ============================================================
 // SAVE TEMPLATE
