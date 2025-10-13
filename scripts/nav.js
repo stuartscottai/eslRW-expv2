@@ -17,6 +17,10 @@ function setupNavigation(toggle) {
 
   const overlay = ensureOverlay();
 
+  // Ensure panel renders above overlay
+  panel.style.position = 'fixed';
+  panel.style.zIndex = '40';
+
   const closePanel = () => {
     toggle.setAttribute('aria-expanded', 'false');
     panel.dataset.open = 'false';
@@ -29,6 +33,16 @@ function setupNavigation(toggle) {
     panel.dataset.open = 'true';
     overlay.setAttribute('data-visible', 'true');
     document.body.classList.add('overflow-hidden');
+
+    // Position the full-height drawer below the site header
+    try {
+      const header = document.querySelector('.site-header');
+      const top = header ? header.getBoundingClientRect().bottom : 64;
+      panel.style.top = `${Math.round(top)}px`;
+      panel.style.left = '0px';
+      panel.style.height = `calc(100vh - ${Math.round(top)}px)`;
+      panel.style.width = `${Math.round(Math.min(window.innerWidth * 0.8, 320))}px`;
+    } catch (_) {}
   };
 
   toggle.addEventListener('click', () => {
@@ -41,6 +55,24 @@ function setupNavigation(toggle) {
   });
 
   overlay.addEventListener('click', closePanel);
+
+  // No in-panel close button (use navbar toggle or outside click)
+
+  // Close when clicking outside the panel/toggle
+  document.addEventListener('click', (e) => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    if (!isOpen) return;
+    const withinPanel = panel.contains(e.target);
+    const onToggle = toggle.contains(e.target);
+    if (!withinPanel && !onToggle) closePanel();
+  });
+
+  // Keep the drawer anchored below the header on resize/scroll
+  const repositionIfOpen = () => {
+    if (toggle.getAttribute('aria-expanded') === 'true') openPanel();
+  };
+  window.addEventListener('resize', repositionIfOpen);
+  window.addEventListener('scroll', repositionIfOpen, true);
 
   panel.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
@@ -62,4 +94,3 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-nav-toggle]')
     .forEach((toggle) => setupNavigation(toggle));
 });
-

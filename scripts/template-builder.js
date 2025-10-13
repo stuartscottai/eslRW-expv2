@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initializeBuilder() {
   renderLanguageCheckboxes();
+  updateLanguageCheckboxes();
   renderTraitCheckboxes();
   setupContainerDragArea();
 }
@@ -156,6 +157,19 @@ function setupEventListeners() {
         selectedTraits = [];
       }
       updateTraitCheckboxes();
+    });
+  }
+
+  // Languages select-all
+  const langAll = document.getElementById('languages-select-all');
+  if (langAll) {
+    langAll.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        selectedLanguages = [...AVAILABLE_LANGUAGES];
+      } else {
+        selectedLanguages = [];
+      }
+      updateLanguageCheckboxes();
     });
   }
 }
@@ -402,6 +416,7 @@ function renderLanguageCheckboxes() {
       } else {
         selectedLanguages = selectedLanguages.filter(x => x !== v);
       }
+      updateLanguageCheckboxes();
     });
 
     const label = document.createElement('span');
@@ -426,6 +441,10 @@ function renderLanguageCheckboxes() {
 function updateLanguageCheckboxes() {
   document.querySelectorAll('#languages-checkboxes .custom-checkbox-input')
     .forEach(cb => { cb.checked = selectedLanguages.includes(cb.value); });
+  const langAll = document.getElementById('languages-select-all');
+  if (langAll) {
+    langAll.checked = AVAILABLE_LANGUAGES.every(l => selectedLanguages.includes(l));
+  }
 }
 
 // ============================================================

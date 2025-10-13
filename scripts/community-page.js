@@ -1,5 +1,5 @@
-import { fetchCommunityTemplates } from '/scripts/community-api.js';
-import { saveTemplate, validateTemplate } from '/scripts/templates.js';
+import { fetchCommunityTemplates, shareTemplateToCommunity } from '/scripts/community-api.js';
+import { saveTemplate, validateTemplate, getAllTemplates } from '/scripts/templates.js';
 import { showToast } from '/scripts/ui.js';
 import { isSupabaseConfigured, getSupabaseClient } from '/scripts/supabase-client.js';
 
@@ -8,6 +8,12 @@ const loadingState = document.querySelector('[data-community-loading]');
 const emptyState = document.querySelector('[data-community-empty]');
 const errorState = document.querySelector('[data-community-error]');
 const refreshButton = document.querySelector('[data-community-refresh]');
+const postButton = document.querySelector('[data-community-post]');
+const postModal = document.querySelector('[data-community-post-modal]');
+const postList = document.querySelector('[data-community-post-list]');
+const postClose = document.querySelector('[data-community-post-close]');
+const postCancel = document.querySelector('[data-community-post-cancel]');
+const postSubmit = document.querySelector('[data-community-post-submit]');
 const supabaseWarning = document.querySelector('[data-community-missing-config]');
 
 function parseContent(content) {
@@ -218,9 +224,9 @@ async function enrichUsernames() {
   if (!ids.length) return;
   try {
     const client = getSupabaseClient();
-    const { data, error } = await client.from('profiles').select('id, username').in('id', ids);
+    const { data, error } = await client.from('profiles').select('id, username, display_name, full_name').in('id', ids);
     if (error) throw error;
-    usernameMap = (data || []).reduce((acc, row) => { acc[row.id] = row.username || ''; return acc; }, {});
+    usernameMap = (data || []).reduce((acc, row) => { acc[row.id] = (row.display_name || row.full_name || row.username || '').trim(); return acc; }, {});
     communityTemplates.forEach(t => { t.username = usernameMap[t.user_id] || ''; });
   } catch (e) {
     console.warn('Could not load usernames', e);
@@ -283,3 +289,74 @@ function applyFiltersAndRender() {
   }
   renderTemplates(items);
 }
+
+// ------------------------------------------------------------
+// Post Template flow (share local custom templates)
+// ------------------------------------------------------------
+
+function serializeTemplateForShare(template) {
+  if (!template) return null;
+  try {
+    const copy = JSON.parse(JSON.stringify(template));
+    delete copy.id; delete copy.isLocked; delete copy.createdDate; delete copy.isDefault;
+    return copy;
+  } catch (e) {
+    console.error('Serialize failed', e); return null;
+  }
+}
+
+function openPostModal() {
+  if (!postModal || !postList) return;
+  // Compute header height for flush placement
+  const header = document.querySelector('.site-header');
+  if (header) postModal.style.setProperty('--header-height', header.offsetHeight + 'px');
+  postList.innerHTML = '';
+  const templates = getAllTemplates().filter(t => !t.isLocked);
+  if (!templates.length) {
+    postList.innerHTML = '<p class="text-sm text-slate-500">No custom templates found. Create one in the Template Builder first.</p>';
+  } else {
+    templates.forEach(t => {
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'w-full text-left p-3 hover:bg-slate-50 flex items-center justify-between';
+      row.dataset.tmplId = t.id;
+      row.innerHTML = `<span class="font-medium text-slate-700">${t.name}</span><span class="text-xs text-slate-400">${(t.description||'').slice(0,60)}</span>`;
+      row.addEventListener('click', () => selectForPost(t.id, row));
+      postList.appendChild(row);
+    });
+  }
+  postModal.classList.remove('hidden');
+  postSubmit.disabled = true;
+  postSubmit.dataset.tmplId = '';
+}
+
+function selectForPost(id, row) {
+  postList.querySelectorAll('button').forEach(b => b.classList.remove('bg-slate-100'));
+  row.classList.add('bg-slate-100');
+  postSubmit.disabled = false;
+  postSubmit.dataset.tmplId = id;
+}
+
+async function submitPost() {
+  const id = postSubmit?.dataset?.tmplId || '';
+  if (!id) return;
+  const all = getAllTemplates();
+  const tmpl = all.find(t => t.id === id);
+  if (!tmpl) { showToast('Template not found.', 'error'); return; }
+  const serialised = serializeTemplateForShare(tmpl);
+  if (!serialised) { showToast('Could not prepare template.', 'error'); return; }
+  try {
+    await shareTemplateToCommunity({ name: tmpl.name, description: tmpl.description || '', content: serialised });
+    showToast('Template shared with the community!', 'success');
+    postModal.classList.add('hidden');
+    loadTemplates();
+  } catch (e) {
+    console.error('Share failed', e); showToast(e?.message || 'Failed to share template.', 'error');
+  }
+}
+
+postButton?.addEventListener('click', (e) => { e.preventDefault(); if (!supabaseConfigured) { showToast('Community sharing requires Supabase credentials.', 'error'); return; } openPostModal(); });
+postClose?.addEventListener('click', () => postModal?.classList.add('hidden'));
+postCancel?.addEventListener('click', () => postModal?.classList.add('hidden'));
+postModal?.addEventListener('click', (e) => { if (e.target === postModal) postModal.classList.add('hidden'); });
+postSubmit?.addEventListener('click', submitPost);

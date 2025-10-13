@@ -200,7 +200,16 @@
 
         <!-- Languages -->
         <section class="border border-slate-200 rounded-lg p-6 bg-slate-50">
-          <h2 class="text-lg font-semibold text-slate-800 mb-4">Available Languages</h2>
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-lg font-semibold text-slate-800">Available Languages</h2>
+            <label class="custom-checkbox-container text-sm">
+              <input id="languages-select-all" type="checkbox" class="custom-checkbox-input">
+              <span class="custom-checkbox-label">
+                <span class="custom-checkbox-shine"></span>
+                <span class="custom-checkbox-text">Select all</span>
+              </span>
+            </label>
+          </div>
           <div id="languages-checkboxes" class="grid grid-cols-2 md:grid-cols-3 gap-3">
             <!-- Language checkboxes will be added here -->
           </div>

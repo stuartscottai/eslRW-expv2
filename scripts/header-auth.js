@@ -24,11 +24,11 @@ function setActiveTab(panel, tab) {
 function positionDropdown(el) {
   try {
     const header = document.querySelector('.site-header');
-    const gap = 8;
-    const baseTop = (header && header.offsetHeight) ? (header.offsetHeight + gap) : 72;
+    const gap = 0; // flush with nav bar
+    const baseTop = (header && header.offsetHeight) ? (header.offsetHeight + gap) : 64;
     el.style.position = 'fixed';
     el.style.top = `${baseTop}px`;
-    el.style.right = '16px';
+    el.style.right = '0px'; // flush with right edge
     el.style.left = 'auto';
     el.style.maxHeight = '80vh';
     el.style.overflow = 'auto';
@@ -47,26 +47,64 @@ function wireHeader(panel) {
   const closeAccountBtn = panel.querySelector('[data-auth-close-account]');
   const nameNode = panel.querySelector('[data-auth-display-name]');
 
+  // Remove in-panel close rows entirely (X is shown on the icon toggle instead)
+  try { closeBtn?.closest('div')?.remove(); } catch {}
+  try { closeAccountBtn?.closest('div')?.remove(); } catch {}
+
   const closeDropdowns = () => {
-    if (dropdownLogin) dropdownLogin.classList.add('hidden');
-    if (dropdownAccount) dropdownAccount.classList.add('hidden');
+    if (dropdownLogin) {
+      dropdownLogin.dataset.open = 'false';
+      setTimeout(() => dropdownLogin.classList.add('hidden'), 200);
+    }
+    if (dropdownAccount) {
+      dropdownAccount.dataset.open = 'false';
+      setTimeout(() => dropdownAccount.classList.add('hidden'), 200);
+    }
+    // collapse icon state
+    openLogin?.setAttribute('aria-expanded', 'false');
+    openAccount?.setAttribute('aria-expanded', 'false');
   };
   const openLoginDropdown = () => {
     if (!dropdownLogin) return;
     setActiveTab(panel, 'login');
     positionDropdown(dropdownLogin);
     dropdownLogin.classList.remove('hidden');
+    requestAnimationFrame(() => { dropdownLogin.dataset.open = 'true'; });
     if (dropdownAccount) dropdownAccount.classList.add('hidden');
+    openLogin?.setAttribute('aria-expanded', 'true');
+    openAccount?.setAttribute('aria-expanded', 'false');
   };
   const openAccountDropdown = () => {
     if (!dropdownAccount) return;
     positionDropdown(dropdownAccount);
     dropdownAccount.classList.remove('hidden');
+    requestAnimationFrame(() => { dropdownAccount.dataset.open = 'true'; });
     if (dropdownLogin) dropdownLogin.classList.add('hidden');
+    openAccount?.setAttribute('aria-expanded', 'true');
+    openLogin?.setAttribute('aria-expanded', 'false');
   };
 
-  openLogin?.addEventListener('click', (e) => { e.preventDefault(); openLoginDropdown(); });
-  openAccount?.addEventListener('click', (e) => { e.preventDefault(); openAccountDropdown(); });
+  openLogin?.addEventListener('click', (e) => {
+    e.preventDefault();
+    try {
+      const here = window.location.href;
+      const url = `login.html?redirect=${encodeURIComponent(here)}`;
+      window.location.href = url;
+    } catch {
+      // Fallback to legacy dropdown if navigation is blocked
+      openLoginDropdown();
+    }
+  });
+  openAccount?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const isOpen = dropdownAccount && !dropdownAccount.classList.contains('hidden');
+    if (isOpen) {
+      closeDropdowns();
+    } else {
+      openAccountDropdown();
+    }
+  });
+  // We hide close buttons via CSS; keep listeners for safety
   closeBtn?.addEventListener('click', (e) => { e.preventDefault(); closeDropdowns(); });
   closeAccountBtn?.addEventListener('click', (e) => { e.preventDefault(); closeDropdowns(); });
 

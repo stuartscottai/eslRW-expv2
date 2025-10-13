@@ -32,10 +32,21 @@
           </button>
         </div>
         <div class="hidden items-center gap-2" data-auth-when="signed-in">
-          <span class="text-sm text-slate-700">Signed in as <span class="font-semibold text-slate-900" data-auth-display-name></span></span>
-          <button class="btn-secondary btn-compact text-sm" data-auth-action="logout">Sign out</button>
+          <button class="nav-toggle" aria-haspopup="true" aria-expanded="false" data-auth-open="account" title="Account">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="7" r="3.5" />
+              <path d="M4 20c0-4.2 3.6-7.5 8-7.5s8 3.3 8 7.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="absolute right-0 mt-2 w-[min(92vw,320px)] border border-slate-200 bg-white shadow-lg p-4 hidden z-50" data-auth-dropdown-account>
+            <div class="flex items-center mb-3"><button class="ml-auto text-slate-400 hover:text-slate-600" data-auth-close-account>&times;</button></div>
+            <div class="flex flex-col gap-2">
+              <a href="user-settings.html" class="inline-flex justify-center btn-secondary btn-compact text-sm font-semibold">User account settings</a>
+              <button type="button" class="inline-flex justify-center btn-primary btn-compact text-sm font-semibold" data-auth-action="logout">Sign out</button>
+            </div>
+          </div>
         </div>
-        <div class="absolute right-0 mt-2 w-[min(92vw,320px)] rounded-xl border border-slate-200 bg-white shadow-lg p-4 hidden z-50" data-auth-dropdown>
+        <div class="absolute right-0 mt-2 w-[min(92vw,320px)] border border-slate-200 bg-white shadow-lg p-4 hidden z-50" data-auth-dropdown>
           <div class="flex items-center mb-3">
             <button class="ml-auto text-slate-400 hover:text-slate-600" data-auth-close>&times;</button>
           </div>

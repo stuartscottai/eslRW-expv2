@@ -104,17 +104,22 @@
     </div>
   </section>
 
-  <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10" data-auth-guard-root>
-    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8" data-auth-guard="content">
-      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
-        <div class="flex items-center gap-3">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500 flex-shrink-0"></span>
-          <span class="text-slate-800 font-semibold">Community Templates</span>
-        </div>
-        <button type="button" data-community-refresh class="inline-flex items-center btn-secondary btn-compact text-sm font-semibold">
-          Refresh list
-        </button>
-      </div>
+      <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10" data-auth-guard-root>
+        <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8" data-auth-guard="content">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500 flex-shrink-0"></span>
+              <span class="text-slate-800 font-semibold">Community Templates</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" data-community-refresh class="inline-flex items-center btn-secondary btn-compact text-sm font-semibold">
+                Refresh list
+              </button>
+              <button type="button" data-community-post class="inline-flex items-center btn-primary btn-compact text-sm font-semibold">
+                Post Template
+              </button>
+            </div>
+          </div>
 
       
 
@@ -166,6 +171,23 @@
         <div data-community-list class="space-y-4"></div>
       </section>
     </main>
+
+    <!-- Post Template chooser -->
+    <div data-community-post-modal class="fixed inset-0 hidden z-50" aria-hidden="true">
+      <div class="absolute inset-0 bg-slate-900/40"></div>
+      <div class="absolute right-0 top-[var(--header-height,64px)] w-[min(92vw,420px)] h-[calc(100vh-var(--header-height,64px))] bg-white border-l border-slate-200 shadow-xl p-4 flex flex-col">
+        <div class="flex items-center mb-3">
+          <h3 class="text-slate-800 font-semibold">Share a Template</h3>
+          <button data-community-post-close class="ml-auto text-slate-400 hover:text-slate-600">&times;</button>
+        </div>
+        <p class="text-sm text-slate-600 mb-3">Select a template from your library (excluding defaults) to share with the community.</p>
+        <div data-community-post-list class="flex-1 overflow-auto divide-y divide-slate-200"></div>
+        <div class="pt-3 flex items-center justify-end gap-2">
+          <button data-community-post-cancel class="btn-secondary btn-compact text-sm font-semibold">Cancel</button>
+          <button data-community-post-submit class="btn-primary btn-compact text-sm font-semibold" disabled>Share</button>
+        </div>
+      </div>
+    </div>
 
     <section class="bg-white p-6 sm:p-8 rounded-xl shadow-xl text-center space-y-4" data-auth-guard="prompt" hidden>
       <h2 class="text-lg font-semibold text-slate-800">Sign in required</h2>
