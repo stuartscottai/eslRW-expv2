@@ -70,6 +70,25 @@ html[data-theme="dark"] [data-auth-dropdown] button:hover {
   box-shadow: 0 0 0 2px #ffffff inset !important; /* rounded outline */
 }
 
+/* Light mode: subtle orange hover for menu items */
+html:not([data-theme="dark"]) .mobile-nav-panel a:hover {
+  background: rgba(245, 158, 11, 0.08) !important; /* very light orange */
+  color: #0f172a !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Light mode: same orange hover for account dropdown items */
+html:not([data-theme="dark"]) [data-auth-dropdown-account] a:hover,
+html:not([data-theme="dark"]) [data-auth-dropdown-account] button:hover,
+html:not([data-theme="dark"]) [data-auth-dropdown] a:hover,
+html:not([data-theme="dark"]) [data-auth-dropdown] button:hover {
+  background: rgba(245, 158, 11, 0.08) !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 /* Dark: dropdown/menu buttons use dark blue with light text */
 html[data-theme="dark"] .btn-primary,
 html[data-theme="dark"] .btn-secondary,
