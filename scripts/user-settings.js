@@ -30,6 +30,7 @@ async function init() {
   const newEmail = document.getElementById('new-email');
   const passwordForm = document.getElementById('password-form');
   const newPassword = document.getElementById('new-password');
+  const themeFieldset = document.getElementById('theme-options');
 
   // Pre-fill
   displayName.value = user.user_metadata?.display_name || '';
@@ -70,7 +71,15 @@ async function init() {
     try { await client.auth.updateUser({ password: pw }); newPassword.value=''; showToast('Password changed.', 'success'); }
     catch (err) { showToast(err?.message || 'Failed to change password', 'error'); }
   });
+
+  // Theme controls
+  try {
+    const current = (window.Theme?.get() || 'system');
+    if (themeFieldset) {
+      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
+      radios.forEach(r => { r.checked = (r.value === current); r.addEventListener('change', () => window.Theme?.set(r.value)); });
+    }
+  } catch {}
 }
 
 document.addEventListener('DOMContentLoaded', init);
-

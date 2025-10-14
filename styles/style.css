@@ -1,6 +1,130 @@
 ﻿/* Custom Styles */
 body { font-family: 'Inter', sans-serif; background-color: #f5f7fb; }
 
+/* Theming tokens */
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --text: #1f2a37;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --primary: #305a99;
+  --accent: #f59e0b;
+  --overlay: rgba(15,23,42,0.4);
+  --shadow: 0 18px 40px rgba(15,23,42,0.18), 0 4px 12px rgba(15,23,42,0.08);
+}
+
+html[data-theme="dark"] {
+  --bg: #0b1220;
+  --surface: #0f172a;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --border: #233047;
+  --primary: #4ea1ff;
+  --accent: #f59e0b;
+  --overlay: rgba(2,6,23,0.6);
+  --shadow: 0 18px 40px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* Base application of theme tokens */
+body { background: var(--bg) !important; color: var(--text) !important; }
+.site-header { background: var(--surface) !important; border-color: var(--border) !important; }
+.mobile-nav-panel { background: var(--surface) !important; border-color: var(--border) !important; color: var(--text) !important; box-shadow: var(--shadow) !important; }
+[data-auth-dropdown], [data-auth-dropdown-account] { background: var(--surface) !important; border-color: var(--border) !important; box-shadow: var(--shadow) !important; color: var(--text) !important; }
+.toast { background-color: color-mix(in srgb, var(--surface) 92%, var(--primary) 8%) !important; color: var(--text) !important; border-color: var(--border) !important; }
+
+/* Dark theme overrides for common Tailwind utility colors used as cards */
+html[data-theme="dark"] .bg-white { background-color: var(--surface) !important; color: var(--text) !important; }
+html[data-theme="dark"] .bg-slate-50 { background-color: #111a2e !important; color: var(--text) !important; }
+html[data-theme="dark"] .border-slate-200 { border-color: var(--border) !important; }
+html[data-theme="dark"] .text-slate-800, 
+html[data-theme="dark"] .text-slate-700, 
+html[data-theme="dark"] .text-slate-600 { color: var(--text) !important; }
+html[data-theme="dark"] .text-slate-500 { color: var(--muted) !important; }
+
+/* Dark: Template Manager 'Default' badge stays readable (dark text on light pill) */
+html[data-theme="dark"] .bg-slate-100.text-slate-600 { color: #0b1220 !important; }
+
+/* Dark: Main menu hover = white outline (no fill) */
+html[data-theme="dark"] .mobile-nav-panel a:hover {
+  background: transparent !important;
+  color: #ffffff !important;
+  /* use box-shadow ring so corners stay rounded */
+  box-shadow: 0 0 0 2px #ffffff inset !important;
+}
+
+/* Dark: Account dropdown items hover = white outline (no fill) */
+html[data-theme="dark"] [data-auth-dropdown-account] a,
+html[data-theme="dark"] [data-auth-dropdown-account] button,
+html[data-theme="dark"] [data-auth-dropdown] a,
+html[data-theme="dark"] [data-auth-dropdown] button {
+  background-color: transparent !important; /* remove any inner box fill */
+  border-radius: 10px !important; /* ensure curved corners for hover ring */
+}
+html[data-theme="dark"] [data-auth-dropdown-account] a:hover,
+html[data-theme="dark"] [data-auth-dropdown-account] button:hover,
+html[data-theme="dark"] [data-auth-dropdown] a:hover,
+html[data-theme="dark"] [data-auth-dropdown] button:hover {
+  background: transparent !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 2px #ffffff inset !important; /* rounded outline */
+}
+
+/* Dark: dropdown/menu buttons use dark blue with light text */
+html[data-theme="dark"] .btn-primary,
+html[data-theme="dark"] .btn-secondary,
+html[data-theme="dark"] .btn-tertiary,
+html[data-theme="dark"] .btn-compact {
+  background-color: #17315c !important;
+  color: #ffffff !important;
+  border-color: #274873 !important;
+}
+html[data-theme="dark"] .btn-primary:hover,
+html[data-theme="dark"] .btn-secondary:hover,
+html[data-theme="dark"] .btn-tertiary:hover {
+  background-color: #1d3b6d !important;
+  border-color: #2f5a96 !important;
+}
+
+/* Dark: person icon (account) matches light text */
+html[data-theme="dark"] .nav-toggle { background: #0f203d !important; color: #ffffff !important; border-color: #274873 !important; }
+html[data-theme="dark"] .nav-toggle:hover { background: #152a4e !important; }
+html[data-theme="dark"] .nav-toggle[aria-expanded="true"] { background: #305a99 !important; color: #ffffff !important; }
+
+/* Dark: template builder multiselect buttons (Character / Areas) */
+html[data-theme="dark"] .selectBox { background: #17315c !important; color: #ffffff !important; border-color: #274873 !important; }
+html[data-theme="dark"] .checkboxes { background: #0f172a !important; color: #ffffff !important; border-color: #274873 !important; }
+
+/* Dark: custom checkbox text white, keep green hover/checked */
+html[data-theme="dark"] .custom-checkbox-text { color: #ffffff !important; }
+/* retain existing green styles; no change needed for :before gradient */
+
+/* Dark: inputs and selects site‑wide */
+html[data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+  background-color: #102647 !important; /* dark blue */
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder { color: #cbd5e1 !important; }
+html[data-theme="dark"] input:focus,
+html[data-theme="dark"] textarea:focus,
+html[data-theme="dark"] select:focus { outline: none !important; box-shadow: 0 0 0 2px rgba(78,161,255,0.35) !important; border-color: #4ea1ff !important; }
+
+/* Dark: how-to page readability (ensure all muted text becomes light) */
+html[data-theme="dark"] .prose p,
+html[data-theme="dark"] .prose li,
+html[data-theme="dark"] .prose span,
+html[data-theme="dark"] .prose strong { color: #e5e7eb !important; }
+
+/* Dark: account dropdown items keep light text */
+html[data-theme="dark"] [data-auth-dropdown-account] a,
+html[data-theme="dark"] [data-auth-dropdown-account] button,
+html[data-theme="dark"] [data-auth-dropdown] a,
+html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important; }
+
 .checkboxes::-webkit-scrollbar { width: 8px; }
 .checkboxes::-webkit-scrollbar-track { background: #f1f4f9; border-radius: 10px; }
 .checkboxes::-webkit-scrollbar-thumb { background: #9aa8bc; border-radius: 10px; }

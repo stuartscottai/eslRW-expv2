@@ -1,4 +1,5 @@
 import { isSupabaseConfigured, waitForInitialSession, onAuthStateChange, signUp, signIn, signOut, getCurrentUser } from '/scripts/supabase-client.js';
+import '/scripts/theme.js';
 import { showToast } from '/scripts/ui.js';
 
 function getDisplayName(user) {
