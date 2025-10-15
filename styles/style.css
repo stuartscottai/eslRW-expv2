@@ -468,9 +468,16 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
 .hero-overlay { background: rgba(15, 23, 42, 0.45); }
 
 .btn-primary {
-    background-color: #305a99; color: #ffffff;
-    padding: 0.65rem 1.5rem; border-radius: 0.75rem;
-    font-weight: 600; letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #305a99;
+    color: #ffffff;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     box-shadow: 0 12px 32px rgba(48, 90, 153, 0.18);
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -479,15 +486,26 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; }
 
 .btn-secondary {
-    background-color: #f1f4fa; color: #1f2a37;
-    padding: 0.65rem 1.5rem; border-radius: 0.75rem;
-    font-weight: 600; border: 1px solid #d5ddea;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #f1f4fa;
+    color: #1f2a37;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #d5ddea;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 .btn-secondary:hover { background-color: #e4eaf5; border-color: #c6d1e3; }
 .btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(213, 221, 234, 0.6); }
 
 .btn-tertiary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     background-color: transparent;
     color: #305a99;
     padding: 0.6rem 1.15rem;
@@ -819,7 +837,13 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
 
 
 
-.btn-compact { padding: 0.5rem 1rem; }
+.btn-compact {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.5rem 1rem;
+}
 @media (min-width: 640px) {
   .btn-compact { padding: 0.65rem 1.5rem; }
 }
