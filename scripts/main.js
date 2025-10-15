@@ -280,6 +280,9 @@ function getStudentDataSummary() {
   const perspective = document.getElementById('report-perspective').value;
   const outputLen = document.getElementById('output-length').value;
   const trimester = document.getElementById('trimester').value;
+  const templateInstruction = typeof template.customInstruction === 'string'
+    ? template.customInstruction.trim()
+    : '';
 
   // Step 2 variables
   const name = document.getElementById('name').value;
@@ -318,27 +321,54 @@ Gender: ${gender}
 ${ratings}Character Attributes: ${chars || 'N/A'}
 Areas to Improve: ${areas || 'N/A'}
 Other Notes: ${notes || 'N/A'}
+Template Custom Instruction: ${templateInstruction || 'N/A'}
 Holiday Salutation Theme: ${salutation}`
   );
 }
 
 function clearForm() {
+  const template = getActiveTemplate();
+  const salutationSelect = document.getElementById('salutation');
+  const preservedSalutation = salutationSelect ? salutationSelect.value : '';
+
   document.getElementById('student-form')?.reset();
 
   document.querySelectorAll('#characterOptions input[type="checkbox"]').forEach(cb => cb.checked = false);
   document.querySelectorAll('#areasOptions input[type="checkbox"]').forEach(cb => cb.checked = false);
 
-  document.querySelectorAll('#step2 select').forEach(sel => { sel.selectedIndex = 0; });
+  document.querySelectorAll('#step2 select').forEach(sel => {
+    if (sel.id === 'salutation') return;
+    sel.selectedIndex = 0;
+  });
 
   document.querySelectorAll('#step2 select[multiple]').forEach(sel => {
     Array.from(sel.options).forEach(o => (o.selected = false));
   });
+
+  if (salutationSelect && preservedSalutation) {
+    salutationSelect.value = preservedSalutation;
+  }
 
   const otherPoints = document.getElementById('other-points');
   if (otherPoints) otherPoints.value = '';
 
   updateSelectedDisplay(document.getElementById('characterOptions'), document.getElementById('character-selected'));
   updateSelectedDisplay(document.getElementById('areasOptions'), document.getElementById('areas-selected'));
+
+  if (template && Array.isArray(template.ratingFields)) {
+    template.ratingFields.forEach(field => {
+      const slider = document.getElementById(field.id);
+      if (slider && slider.type === 'range') {
+        slider.value = '5';
+        try {
+          slider.dispatchEvent(new Event('input', { bubbles: true }));
+        } catch {
+          const readout = document.getElementById(`${field.id}-value`);
+          if (readout) readout.textContent = slider.value;
+        }
+      }
+    });
+  }
 
   reportSection.classList.add('hidden');
   strategiesSection.classList.add('hidden');

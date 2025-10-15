@@ -102,7 +102,11 @@ export function populateFormFields() {
   ratingFieldsData.forEach(field => {
     const id = (field.id || '').toLowerCase();
     const labelKey = (field.label || '').toLowerCase().replace(/\s+/g,'-');
-    const useSlider = __sliderIds.has(id) || __sliderIds.has(labelKey);
+    const typeHint = typeof field.inputType === 'string' ? field.inputType.toLowerCase() : '';
+    const useSlider = typeHint === 'slider'
+      || typeHint === 'range'
+      || __sliderIds.has(id)
+      || __sliderIds.has(labelKey);
     if (useSlider) {
       left.insertAdjacentHTML("beforeend", `
         <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
@@ -178,6 +182,7 @@ export function populateFormFields() {
       <label for="salutation" class="font-medium text-slate-700 md:text-right">Salutation:</label>
       <select id="salutation"
               class="col-span-2 w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+        <option value="None">None</option>
         <option value="Christmas">Christmas</option>
         <option value="Easter">Easter</option>
         <option value="Summer">Summer</option>

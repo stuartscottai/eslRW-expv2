@@ -23,6 +23,7 @@ let selectedTraits = [
   "hard-working", "friendly", "attentive", "lively", "active", "quiet",
   "energetic", "studious", "sociable"
 ];
+let customInstruction = '';
 
 // ============================================================
 // INITIALIZATION
@@ -39,6 +40,11 @@ function initializeBuilder() {
   updateLanguageCheckboxes();
   renderTraitCheckboxes();
   setupContainerDragArea();
+
+  const customInput = document.getElementById('custom-instruction');
+  if (customInput) {
+    customInput.value = customInstruction;
+  }
 }
 
 function checkEditMode() {
@@ -65,9 +71,12 @@ function loadTemplateFromObject(template) {
   editingTemplateId = null; // treat as new unless saved
   document.getElementById('template-name').value = template.name || '';
   document.getElementById('template-description').value = template.description || '';
-  ratingFields = Array.isArray(template.ratingFields) ? [...template.ratingFields] : [];
+  ratingFields = Array.isArray(template.ratingFields)
+    ? template.ratingFields.map(field => ({ ...field }))
+    : [];
   improvementAreas = Array.isArray(template.areasToImprove) ? [...template.areasToImprove] : [];
   selectedLanguages = Array.isArray(template.languages) ? [...template.languages] : selectedLanguages;
+  customInstruction = typeof template.customInstruction === 'string' ? template.customInstruction : '';
   if (Array.isArray(template.characterOptions)) {
     selectedTraits = [...template.characterOptions];
     characterBank = Array.from(new Set([...(characterBank||[]), ...selectedTraits]));
@@ -76,6 +85,10 @@ function loadTemplateFromObject(template) {
   renderImprovementAreas();
   updateLanguageCheckboxes();
   renderTraitCheckboxes();
+  const customInput = document.getElementById('custom-instruction');
+  if (customInput) {
+    customInput.value = customInstruction;
+  }
 }
 
 function loadTemplateForEditing(templateId) {
@@ -98,9 +111,14 @@ function loadTemplateForEditing(templateId) {
   document.getElementById('template-name').value = template.name;
   document.getElementById('template-description').value = template.description || '';
   
-  ratingFields = [...template.ratingFields];
-  improvementAreas = [...template.areasToImprove];
-  selectedLanguages = [...template.languages];
+  ratingFields = Array.isArray(template.ratingFields)
+    ? template.ratingFields.map(field => ({ ...field }))
+    : [];
+  improvementAreas = Array.isArray(template.areasToImprove) ? [...template.areasToImprove] : [];
+  selectedLanguages = Array.isArray(template.languages) && template.languages.length > 0
+    ? [...template.languages]
+    : ["English", "Spanish"];
+  customInstruction = typeof template.customInstruction === 'string' ? template.customInstruction : '';
   // Merge character traits from template into bank and selection
   if (Array.isArray(template.characterOptions)) {
     selectedTraits = [...template.characterOptions];
@@ -111,6 +129,10 @@ function loadTemplateForEditing(templateId) {
   renderImprovementAreas();
   updateLanguageCheckboxes();
   renderTraitCheckboxes();
+  const customInput = document.getElementById('custom-instruction');
+  if (customInput) {
+    customInput.value = customInstruction;
+  }
 }
 
 // ============================================================
@@ -196,7 +218,7 @@ function addRatingField() {
     return;
   }
   
-  ratingFields.push({ id, label });
+  ratingFields.push({ id, label, inputType: 'slider' });
   input.value = '';
   renderRatingFields();
 }
@@ -540,6 +562,8 @@ function handleSaveTemplate(e) {
   
   const name = document.getElementById('template-name').value.trim();
   const description = document.getElementById('template-description').value.trim();
+  const customInput = document.getElementById('custom-instruction');
+  customInstruction = customInput ? customInput.value.trim() : '';
   
   // Validation
   if (!name) {
@@ -568,6 +592,7 @@ function handleSaveTemplate(e) {
     characterOptions: [...new Set(selectedTraits)],
     areasToImprove: [...improvementAreas],
     languages: [...selectedLanguages],
+    customInstruction,
     createdDate: Date.now()
   };
   

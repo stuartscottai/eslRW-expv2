@@ -14,6 +14,7 @@
 //   characterOptions: ["trait1", "trait2", ...],
 //   areasToImprove: ["area1", "area2", ...],
 //   languages: ["English", "Spanish", ...],
+//   customInstruction: "Optional extra context passed to the AI",
 //   createdDate: timestamp
 // }
 
@@ -55,6 +56,7 @@ const DEFAULT_ESL_TEMPLATE = {
     "Portuguese", "Dutch", "Polish", "Arabic", "Chinese (Simplified)", 
     "Chinese (Traditional)", "Japanese", "Korean"
   ],
+  customInstruction: '',
   createdDate: Date.now()
 };
 
@@ -89,6 +91,7 @@ const GENERAL_ACADEMIC_TEMPLATE = {
     "Portuguese", "Dutch", "Polish", "Arabic", "Chinese (Simplified)", 
     "Chinese (Traditional)", "Japanese", "Korean"
   ],
+  customInstruction: '',
   createdDate: Date.now()
 };
 
@@ -123,6 +126,7 @@ const PRIMARY_SCHOOL_TEMPLATE = {
     "Portuguese", "Dutch", "Polish", "Arabic", "Chinese (Simplified)", 
     "Chinese (Traditional)", "Japanese", "Korean"
   ],
+  customInstruction: '',
   createdDate: Date.now()
 };
 
@@ -158,6 +162,7 @@ const BEHAVIOUR_FOCUSED_TEMPLATE = {
     "Portuguese", "Dutch", "Polish", "Arabic", "Chinese (Simplified)", 
     "Chinese (Traditional)", "Japanese", "Korean"
   ],
+  customInstruction: '',
   createdDate: Date.now()
 };
 
@@ -219,7 +224,17 @@ export function getAllTemplates() {
     initializeTemplates();
     return [DEFAULT_ESL_TEMPLATE];
   }
-  return JSON.parse(stored);
+  const parsed = JSON.parse(stored);
+  return parsed.map(template => {
+    const normalised = {
+      ...template,
+      customInstruction: typeof template.customInstruction === 'string' ? template.customInstruction : ''
+    };
+    normalised.ratingFields = Array.isArray(template.ratingFields)
+      ? template.ratingFields.map(field => (field && typeof field === 'object' ? { ...field } : field))
+      : [];
+    return normalised;
+  });
 }
 
 /**
