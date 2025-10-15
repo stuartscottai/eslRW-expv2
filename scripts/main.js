@@ -23,6 +23,8 @@ import { initializeTemplateSelector } from '/scripts/template-selector.js';
 
 import {
   showToast,
+  showAiLoader,
+  hideAiLoader,
   setGenButtonState,
   autoResizeTextarea,
   fallbackCopyToClipboard
@@ -115,6 +117,7 @@ async function handleGenerateReport() {
     showToast("Student's name is required.", "error");
     return;
   }
+  showAiLoader('Generating Report');
   setGenButtonState(generateReportButton, document.getElementById('loading-spinner-report'), true);
   reportSection.classList.remove('hidden');
   chatSection.classList.add('hidden');
@@ -157,6 +160,7 @@ async function handleGenerateReport() {
     resetHistory('report');
     updateStep3Actions();
     updateChatTargetToggle();
+    hideAiLoader();
   }
 }
 
@@ -165,6 +169,7 @@ async function handleGetStrategies() {
     showToast("Student's name is required.", "error");
     return;
   }
+  showAiLoader('Generating Improvement Ideas');
   setGenButtonState(getStrategiesButton, document.getElementById('loading-spinner-strategies'), true);
   strategiesSection.classList.remove('hidden');
   chatSection.classList.add('hidden');
@@ -207,6 +212,7 @@ async function handleGetStrategies() {
     resetHistory('strategies');
     updateStep3Actions();
     updateChatTargetToggle();
+    hideAiLoader();
   }
 }
 
@@ -247,6 +253,10 @@ async function handleSendMessage() {
     redoStacks.strategies = [];
   }
   updateUndoRedoButtons();
+  const loaderMessage = activeChatTextarea === reportOutput
+    ? 'Editing Report'
+    : 'Editing Improvement Ideas';
+  showAiLoader(loaderMessage);
   
   try {
     const newText = await callChatAPI(
@@ -265,6 +275,7 @@ async function handleSendMessage() {
     sendChatButton.disabled = false;
     chatInput.disabled = false;
     chatInput.focus();
+    hideAiLoader();
   }
 }
 

@@ -12,6 +12,39 @@ body { font-family: 'Inter', sans-serif; background-color: #f5f7fb; }
   --accent: #f59e0b;
   --overlay: rgba(15,23,42,0.4);
   --shadow: 0 18px 40px rgba(15,23,42,0.18), 0 4px 12px rgba(15,23,42,0.08);
+  --ai-loader-duration: 4200ms;
+  --ai-loader-crayon: var(--primary);
+  --ai-loader-color-01: #fff4e6;
+  --ai-loader-color-02: #ffe6c7;
+  --ai-loader-color-03: #ffd8a8;
+  --ai-loader-color-04: #ffca89;
+  --ai-loader-color-05: #ffbc6b;
+  --ai-loader-color-06: #ffae4c;
+  --ai-loader-color-07: #ffa02e;
+  --ai-loader-color-08: #ff9210;
+  --ai-loader-color-09: #f57f00;
+  --ai-loader-color-10: #e96d00;
+  --ai-loader-color-11: #d35f00;
+  --ai-loader-bg-01-a: no-repeat left 0% top / 11% 0% linear-gradient(to right, var(--ai-loader-color-01), var(--ai-loader-color-02));
+  --ai-loader-bg-01-b: no-repeat left 0% top / 11% 100% linear-gradient(to right, var(--ai-loader-color-01), var(--ai-loader-color-02));
+  --ai-loader-bg-02-a: no-repeat left 11.11% bottom / 11% 0% linear-gradient(to right, var(--ai-loader-color-02), var(--ai-loader-color-03));
+  --ai-loader-bg-02-b: no-repeat left 11.11% bottom / 11% 100% linear-gradient(to right, var(--ai-loader-color-02), var(--ai-loader-color-03));
+  --ai-loader-bg-03-a: no-repeat left 22.22% top / 11% 0% linear-gradient(to right, var(--ai-loader-color-03), var(--ai-loader-color-04));
+  --ai-loader-bg-03-b: no-repeat left 22.22% top / 11% 100% linear-gradient(to right, var(--ai-loader-color-03), var(--ai-loader-color-04));
+  --ai-loader-bg-04-a: no-repeat left 33.33% bottom / 11% 0% linear-gradient(to right, var(--ai-loader-color-04), var(--ai-loader-color-05));
+  --ai-loader-bg-04-b: no-repeat left 33.33% bottom / 11% 100% linear-gradient(to right, var(--ai-loader-color-04), var(--ai-loader-color-05));
+  --ai-loader-bg-05-a: no-repeat left 44.44% top / 11% 0% linear-gradient(to right, var(--ai-loader-color-05), var(--ai-loader-color-06));
+  --ai-loader-bg-05-b: no-repeat left 44.44% top / 11% 100% linear-gradient(to right, var(--ai-loader-color-05), var(--ai-loader-color-06));
+  --ai-loader-bg-06-a: no-repeat left 55.55% bottom / 11% 0% linear-gradient(to right, var(--ai-loader-color-06), var(--ai-loader-color-07));
+  --ai-loader-bg-06-b: no-repeat left 55.55% bottom / 11% 100% linear-gradient(to right, var(--ai-loader-color-06), var(--ai-loader-color-07));
+  --ai-loader-bg-07-a: no-repeat left 66.66% top / 11% 0% linear-gradient(to right, var(--ai-loader-color-07), var(--ai-loader-color-08));
+  --ai-loader-bg-07-b: no-repeat left 66.66% top / 11% 100% linear-gradient(to right, var(--ai-loader-color-07), var(--ai-loader-color-08));
+  --ai-loader-bg-08-a: no-repeat left 77.77% bottom / 11% 0% linear-gradient(to right, var(--ai-loader-color-08), var(--ai-loader-color-09));
+  --ai-loader-bg-08-b: no-repeat left 77.77% bottom / 11% 100% linear-gradient(to right, var(--ai-loader-color-08), var(--ai-loader-color-09));
+  --ai-loader-bg-09-a: no-repeat left 88.88% top / 11% 0% linear-gradient(to right, var(--ai-loader-color-09), var(--ai-loader-color-10));
+  --ai-loader-bg-09-b: no-repeat left 88.88% top / 11% 100% linear-gradient(to right, var(--ai-loader-color-09), var(--ai-loader-color-10));
+  --ai-loader-bg-10-a: no-repeat left 99.99% bottom / 11% 0% linear-gradient(to right, var(--ai-loader-color-10), var(--ai-loader-color-11));
+  --ai-loader-bg-10-b: no-repeat left 99.99% bottom / 12% 100% linear-gradient(to right, var(--ai-loader-color-10), var(--ai-loader-color-11));
 }
 
 html[data-theme="dark"] {
@@ -175,6 +208,238 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.ai-loader {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: color-mix(in srgb, var(--overlay) 90%, transparent);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.ai-loader--visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.ai-loader__title {
+    color: var(--text);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.ai-marker-loader {
+    height: 2rem;
+    width: min(10rem, 70vw);
+    border: 0.25rem solid var(--ai-loader-crayon);
+    border-radius: 0.35rem;
+    animation: infinite alternate ai-loader-fill var(--ai-loader-duration) ease-in-out;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0;
+    background:
+        var(--ai-loader-bg-01-a),
+        var(--ai-loader-bg-02-a),
+        var(--ai-loader-bg-03-a),
+        var(--ai-loader-bg-04-a),
+        var(--ai-loader-bg-05-a),
+        var(--ai-loader-bg-06-a),
+        var(--ai-loader-bg-07-a),
+        var(--ai-loader-bg-08-a),
+        var(--ai-loader-bg-09-a),
+        var(--ai-loader-bg-10-a);
+}
+
+.ai-marker-loader::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: left center;
+    border-radius: 0.35rem;
+    box-sizing: border-box;
+    margin-top: -5%;
+    margin-left: -1.5%;
+    animation: infinite alternate ai-loader-move var(--ai-loader-duration) ease-in-out;
+    background:
+        no-repeat left 0% top / 1.5rem 50% linear-gradient(to bottom right, transparent, transparent 40%, var(--ai-loader-crayon) 40%),
+        no-repeat left 0% bottom / 1.5rem 50% linear-gradient(to top right, transparent, transparent 40%, var(--ai-loader-crayon) 40%),
+        no-repeat left 1.5rem bottom / 100% 100% linear-gradient(var(--ai-loader-crayon), var(--ai-loader-crayon));
+}
+
+@keyframes ai-loader-move {
+    10% { transform: translate(5%, 100%) rotate(2.5deg); }
+    20% { transform: translate(20%, 0) rotate(-5deg); }
+    30% { transform: translate(30%, 100%) rotate(2.5deg); }
+    40% { transform: translate(40%, 0) rotate(-5deg); }
+    50% { transform: translate(50%, 100%) rotate(2.5deg); }
+    60% { transform: translate(60%, 0) rotate(-5deg); }
+    70% { transform: translate(70%, 100%) rotate(2.5deg); }
+    80% { transform: translate(80%, 0) rotate(-5deg); }
+    90% { transform: translate(90%, 100%) rotate(2.5deg); }
+    100% { transform: translate(100%, 0) rotate(-5deg); }
+}
+
+@keyframes ai-loader-fill {
+    0% {
+        background:
+            var(--ai-loader-bg-01-a),
+            var(--ai-loader-bg-02-a),
+            var(--ai-loader-bg-03-a),
+            var(--ai-loader-bg-04-a),
+            var(--ai-loader-bg-05-a),
+            var(--ai-loader-bg-06-a),
+            var(--ai-loader-bg-07-a),
+            var(--ai-loader-bg-08-a),
+            var(--ai-loader-bg-09-a),
+            var(--ai-loader-bg-10-a);
+    }
+    10% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-a),
+            var(--ai-loader-bg-03-a),
+            var(--ai-loader-bg-04-a),
+            var(--ai-loader-bg-05-a),
+            var(--ai-loader-bg-06-a),
+            var(--ai-loader-bg-07-a),
+            var(--ai-loader-bg-08-a),
+            var(--ai-loader-bg-09-a),
+            var(--ai-loader-bg-10-a);
+    }
+    20% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-b),
+            var(--ai-loader-bg-03-a),
+            var(--ai-loader-bg-04-a),
+            var(--ai-loader-bg-05-a),
+            var(--ai-loader-bg-06-a),
+            var(--ai-loader-bg-07-a),
+            var(--ai-loader-bg-08-a),
+            var(--ai-loader-bg-09-a),
+            var(--ai-loader-bg-10-a);
+    }
+    30% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-b),
+            var(--ai-loader-bg-03-b),
+            var(--ai-loader-bg-04-a),
+            var(--ai-loader-bg-05-a),
+            var(--ai-loader-bg-06-a),
+            var(--ai-loader-bg-07-a),
+            var(--ai-loader-bg-08-a),
+            var(--ai-loader-bg-09-a),
+            var(--ai-loader-bg-10-a);
+    }
+    40% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-b),
+            var(--ai-loader-bg-03-b),
+            var(--ai-loader-bg-04-b),
+            var(--ai-loader-bg-05-a),
+            var(--ai-loader-bg-06-a),
+            var(--ai-loader-bg-07-a),
+            var(--ai-loader-bg-08-a),
+            var(--ai-loader-bg-09-a),
+            var(--ai-loader-bg-10-a);
+    }
+    50% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-b),
+            var(--ai-loader-bg-03-b),
+            var(--ai-loader-bg-04-b),
+            var(--ai-loader-bg-05-b),
+            var(--ai-loader-bg-06-a),
+            var(--ai-loader-bg-07-a),
+            var(--ai-loader-bg-08-a),
+            var(--ai-loader-bg-09-a),
+            var(--ai-loader-bg-10-a);
+    }
+    60% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-b),
+            var(--ai-loader-bg-03-b),
+            var(--ai-loader-bg-04-b),
+            var(--ai-loader-bg-05-b),
+            var(--ai-loader-bg-06-b),
+            var(--ai-loader-bg-07-a),
+            var(--ai-loader-bg-08-a),
+            var(--ai-loader-bg-09-a),
+            var(--ai-loader-bg-10-a);
+    }
+    70% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-b),
+            var(--ai-loader-bg-03-b),
+            var(--ai-loader-bg-04-b),
+            var(--ai-loader-bg-05-b),
+            var(--ai-loader-bg-06-b),
+            var(--ai-loader-bg-07-b),
+            var(--ai-loader-bg-08-a),
+            var(--ai-loader-bg-09-a),
+            var(--ai-loader-bg-10-a);
+    }
+    80% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-b),
+            var(--ai-loader-bg-03-b),
+            var(--ai-loader-bg-04-b),
+            var(--ai-loader-bg-05-b),
+            var(--ai-loader-bg-06-b),
+            var(--ai-loader-bg-07-b),
+            var(--ai-loader-bg-08-b),
+            var(--ai-loader-bg-09-a),
+            var(--ai-loader-bg-10-a);
+    }
+    90% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-b),
+            var(--ai-loader-bg-03-b),
+            var(--ai-loader-bg-04-b),
+            var(--ai-loader-bg-05-b),
+            var(--ai-loader-bg-06-b),
+            var(--ai-loader-bg-07-b),
+            var(--ai-loader-bg-08-b),
+            var(--ai-loader-bg-09-b),
+            var(--ai-loader-bg-10-a);
+    }
+    100% {
+        background:
+            var(--ai-loader-bg-01-b),
+            var(--ai-loader-bg-02-b),
+            var(--ai-loader-bg-03-b),
+            var(--ai-loader-bg-04-b),
+            var(--ai-loader-bg-05-b),
+            var(--ai-loader-bg-06-b),
+            var(--ai-loader-bg-07-b),
+            var(--ai-loader-bg-08-b),
+            var(--ai-loader-bg-09-b),
+            var(--ai-loader-bg-10-b);
+    }
 }
 
 .output-textarea {

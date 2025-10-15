@@ -1,4 +1,6 @@
 let toastHideTimer;
+let loaderDepth = 0;
+let loaderHideTimer;
 
 export function showToast(message, type = 'success') {
   const toastNotification = document.getElementById('toast-notification');
@@ -30,12 +32,42 @@ export function setGenButtonState(button, spinner, isGenerating) {
   if (getStrategiesButton) getStrategiesButton.disabled = isGenerating;
   if (generateReportButton) generateReportButton.disabled = isGenerating;
   if (clearFormButton) clearFormButton.disabled = isGenerating; // Also disable clear form button during generation
-  spinner.classList.toggle('hidden', !isGenerating);
+  if (spinner) spinner.classList.toggle('hidden', !isGenerating);
   if (button === generateReportButton) {
     if (btnText) btnText.textContent = isGenerating ? 'Generating...' : 'Generate Full Report';
   } else if (button === getStrategiesButton) {
     if (btnText) btnText.textContent = isGenerating ? 'Fetching Ideas...' : 'Get Improvement Ideas';
   }
+}
+
+export function showAiLoader(message) {
+  const overlay = document.getElementById('ai-loader');
+  const label = document.getElementById('ai-loader-text');
+  if (!overlay || !label) return;
+
+  loaderDepth += 1;
+  label.textContent = message || 'Working...';
+  if (loaderHideTimer) {
+    clearTimeout(loaderHideTimer);
+    loaderHideTimer = null;
+  }
+  overlay.hidden = false;
+  requestAnimationFrame(() => overlay.classList.add('ai-loader--visible'));
+}
+
+export function hideAiLoader(force = false) {
+  const overlay = document.getElementById('ai-loader');
+  if (!overlay) return;
+
+  loaderDepth = force ? 0 : Math.max(0, loaderDepth - 1);
+  if (loaderDepth > 0) return;
+
+  overlay.classList.remove('ai-loader--visible');
+  loaderHideTimer = window.setTimeout(() => {
+    if (!overlay.classList.contains('ai-loader--visible')) {
+      overlay.hidden = true;
+    }
+  }, 220);
 }
 
 export function autoResizeTextarea(element) {

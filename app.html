@@ -387,6 +387,11 @@
 <div id="usageWidget" style="position:fixed; right:12px; bottom:12px; z-index:9999; background:#ffffff; border:1px solid #ddd; border-radius:10px; padding:8px 12px; box-shadow:0 6px 18px rgba(0,0,0,0.08); font:14px/1.2 system-ui, sans-serif;">
   <strong>Gemini calls</strong>: <span id="usageCounter">This month: 0/1500</span>
 </div>
+<div id="ai-loader" class="ai-loader" hidden>
+  <h2 id="ai-loader-text" class="ai-loader__title">Generating...</h2>
+  <div class="ai-marker-loader"></div>
+</div>
+
 <div id="toast-notification" class="toast"><span id="toast-message"></span></div>
 
 <script type="module" src="/scripts/env.js"></script>
