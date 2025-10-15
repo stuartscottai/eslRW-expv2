@@ -1,29 +1,27 @@
-// Lightweight theme manager: light / dark / system
 (function(){
   const KEY = 'theme';
-  const getPref = () => (localStorage.getItem(KEY) || 'system');
-  const setPref = (v) => { localStorage.setItem(KEY, v); apply(); };
+  const normalise = (value) => value === 'dark' ? 'dark' : 'light';
+  const getPref = () => normalise(localStorage.getItem(KEY));
+  const setPref = (value) => { localStorage.setItem(KEY, normalise(value)); apply(); };
 
   const apply = () => {
     try {
-      const pref = getPref();
-      const sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const mode = pref === 'system' ? (sysDark ? 'dark' : 'light') : pref;
+      const mode = normalise(localStorage.getItem(KEY));
       document.documentElement.dataset.theme = mode;
       const meta = document.querySelector('meta[name="theme-color"]') || (function(){ const m=document.createElement('meta'); m.name='theme-color'; document.head.appendChild(m); return m; })();
       meta.setAttribute('content', mode === 'dark' ? '#0f172a' : '#ffffff');
-    } catch {}
+    } catch (e) {}
   };
 
-  // React to system changes when in 'system'
-  try {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    mq.addEventListener?.('change', () => { if (getPref() === 'system') apply(); });
-  } catch {}
-
-  // Expose API
   window.Theme = { get: getPref, set: setPref, apply };
-  // Apply on load
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      const pref = getPref();
+      document.querySelectorAll('input[name=\"theme\"]').forEach(radio => {
+        radio.checked = (radio.value === pref);
+        radio.addEventListener('change', () => setPref(radio.value));
+      });
+    } catch (e) {}
+  });
   apply();
 })();
-

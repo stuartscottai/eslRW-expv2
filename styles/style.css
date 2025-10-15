@@ -133,10 +133,10 @@ html[data-theme="dark"] textarea:focus,
 html[data-theme="dark"] select:focus { outline: none !important; box-shadow: 0 0 0 2px rgba(78,161,255,0.35) !important; border-color: #4ea1ff !important; }
 
 /* Dark: how-to page readability (ensure all muted text becomes light) */
-html[data-theme="dark"] .prose p,
-html[data-theme="dark"] .prose li,
-html[data-theme="dark"] .prose span,
-html[data-theme="dark"] .prose strong { color: #e5e7eb !important; }
+html[data-theme="dark"] .howto, 
+html[data-theme="dark"] .howto *:not(svg):not(path) {
+  color: #ffffff !important;
+}
 
 /* Dark: account dropdown items keep light text */
 html[data-theme="dark"] [data-auth-dropdown-account] a,
@@ -245,12 +245,12 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
 .step-list { list-style: none; margin: 0; padding: 0; counter-reset: step; }
 .step-list li {
     counter-increment: step;
-    position: relative; padding-left: 2.75rem;
-    color: #374151; line-height: 1.55;
+    position: relative; padding-left: 3rem;
+    color: #374151; line-height: 1.6;
 }
 .step-list li::before {
     content: counter(step);
-    position: absolute; left: 0; top: 0.2rem;
+    position: absolute; left: 0; top: 0.15rem;
     width: 2rem; height: 2rem; border-radius: 9999px;
     background: linear-gradient(135deg, #305a99, #3d78b7);
     color: #ffffff; font-weight: 600;

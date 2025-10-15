@@ -101,7 +101,7 @@
 
   <!-- Content -->
   <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
-    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
+    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8 howto">
       <div class="flex items-center border-b border-slate-200 pb-4">
         <div class="flex items-center gap-3">
           <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500"></span>
@@ -114,11 +114,11 @@
         <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
           <h2 class="text-xl font-semibold text-slate-800 mb-4">Quick start in two minutes</h2>
           <ol class="step-list text-slate-700">
-            <li><strong>Open the builder.</strong> Launch the Report Writer and pick the output language and tone.</li>
-            <li><strong>Complete the student profile.</strong> Add the student name, gender, perspective, trimester, and report register.</li>
-            <li><strong>Capture performance data.</strong> Score each area on the 0-10 scale, then note traits, highlights, and priorities.</li>
-            <li><strong>Generate content.</strong> Use <strong>Generate Full Report</strong> and optionally <strong>Get Improvement Ideas</strong> for actionable next steps.</li>
-            <li><strong>Refine and deliver.</strong> Tweak the copy with <strong>Edit with AI</strong>, then copy it into your reporting platform.</li>
+            <li><strong>Choose a template.</strong> In the Report Writer, select your Template (or set the active one in Template Manager).</li>
+            <li><strong>Fill the basics.</strong> Enter student name, class, trimester, register, tone and perspective.</li>
+            <li><strong>Rate and describe.</strong> Use the 1–10 sliders for ratings, tick Character traits and Areas to improve.</li>
+            <li><strong>Generate.</strong> Click <strong>Generate Full Report</strong> for a draft, and <strong>Get Improvement Ideas</strong> for practical strategies.</li>
+            <li><strong>Refine & deliver.</strong> Use <strong>Edit with AI</strong> to polish; copy the final text to your system.</li>
           </ol>
         </div>
 
@@ -134,10 +134,11 @@
           <h3 class="text-lg font-semibold text-slate-800 mb-3">Key fields at a glance</h3>
           <div class="grid md:grid-cols-2 gap-6">
             <ul class="detail-list">
+              <li><strong>Template</strong> controls available ratings, traits, areas and languages.</li>
               <li><strong>Language</strong> sets the language for headings and body copy.</li>
               <li><strong>Report tone</strong> adjusts the voice: neutral, friendly, empathetic, concise, or growth-focused.</li>
               <li><strong>Perspective</strong> swaps between third person ("she") and second person ("you").</li>
-              <li><strong>Ratings (0-10)</strong> influence the balance of praise and development points.</li>
+              <li><strong>Ratings (1–10)</strong> influence the balance of praise and development points.</li>
             </ul>
             <ul class="detail-list">
               <li><strong>Character traits</strong> highlight personality cues you want to surface.</li>
@@ -145,6 +146,25 @@
               <li><strong>Other points</strong> lets you add bespoke context or classroom anecdotes.</li>
               <li><strong>Salutation</strong> controls the closing sentiment for the report.</li>
             </ul>
+          </div>
+        </div>
+
+        <!-- Templates: build, manage, share -->
+        <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+          <h3 class="text-lg font-semibold text-slate-800 mb-3">Templates: build, manage, share</h3>
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <h4 class="text-sm font-semibold text-slate-800 uppercase tracking-wide">Template Builder</h4>
+              <p class="mt-2 text-sm text-slate-700 leading-relaxed">Create or edit templates: add rating fields (sliders 1–10), define Character traits and Areas to improve, and set available languages. “Select all” helps when you want everything enabled.</p>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <h4 class="text-sm font-semibold text-slate-800 uppercase tracking-wide">Template Manager</h4>
+              <p class="mt-2 text-sm text-slate-700 leading-relaxed">Manage your templates: set Active, Duplicate, Export, or Delete. Use the Actions menu; default templates can’t be deleted.</p>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <h4 class="text-sm font-semibold text-slate-800 uppercase tracking-wide">Community Sharing</h4>
+              <p class="mt-2 text-sm text-slate-700 leading-relaxed">Share your custom templates from Template Manager or the Community page (Post Template). Your display name is shown as the author. Browse, preview and import community templates.</p>
+            </div>
           </div>
         </div>
 
