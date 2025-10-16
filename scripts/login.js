@@ -1,5 +1,5 @@
 // Material-style login wired to Supabase when available
-import { isSupabaseConfigured, signIn } from '/scripts/supabase-client.js';
+import { isSupabaseConfigured, signIn, getSupabaseClient, waitForInitialSession, getCurrentUser } from '/scripts/supabase-client.js';
 
 class MaterialLoginForm {
   constructor() {
@@ -37,9 +37,39 @@ class MaterialLoginForm {
     });
   }
   setupSocialButtons() {
-    this.socialButtons.forEach(btn => btn.addEventListener('click', (e) => {
-      this.createRipple(e, btn.querySelector('.social-ripple'));
-    }));
+    // Google button
+    const googleBtn = document.querySelector('.social-btn.google-material');
+    if (googleBtn) {
+      googleBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        this.createRipple(e, googleBtn.querySelector('.social-ripple'));
+        if (!isSupabaseConfigured()) {
+          this.showError('password', 'Google login unavailable (Supabase not configured).');
+          return;
+        }
+        try {
+          this.setLoading(true);
+          const client = getSupabaseClient();
+          const redirectTo = `${window.location.origin}/app.html`;
+          await client.auth.signInWithOAuth({ provider: 'google', options: { redirectTo } });
+        } catch (err) {
+          this.showError('password', err?.message || 'Could not start Google login.');
+        } finally {
+          this.setLoading(false);
+        }
+      });
+    }
+
+    // Optional: disable other social buttons (e.g., Facebook) if present
+    this.socialButtons.forEach(btn => {
+      if (btn && !btn.classList.contains('google-material')) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.createRipple(e, btn.querySelector('.social-ripple'));
+          this.showError('password', 'This sign-in method is not enabled.');
+        });
+      }
+    });
   }
   setupRipples() {
     [this.emailInput, this.passwordInput].forEach(input => {
@@ -152,4 +182,16 @@ class MaterialLoginForm {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => new MaterialLoginForm());
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    if (isSupabaseConfigured()) {
+      await waitForInitialSession();
+      const user = getCurrentUser();
+      if (user) {
+        window.location.replace('app.html');
+        return;
+      }
+    }
+  } catch {}
+  new MaterialLoginForm();
+});

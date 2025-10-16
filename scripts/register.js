@@ -64,7 +64,10 @@ async function handleRegister(event) {
     const { data, error } = await client.auth.signUp({
       email,
       password,
-      options: { data: { username } }
+      options: {
+        emailRedirectTo: `${window.location.origin}/login.html`,
+        data: { username }
+      }
     });
     if (error) throw error;
 
@@ -95,4 +98,3 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('registration-form');
   if (form) form.addEventListener('submit', handleRegister);
 });
-

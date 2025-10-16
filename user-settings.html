@@ -92,6 +92,7 @@
           <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500"></span>
           <span class="text-slate-800 font-semibold">Your Profile</span>
         </div>
+        <div id="signin-status" class="text-xs text-slate-500"></div>
       </div>
 
       <section class="grid gap-6 lg:grid-cols-2">
@@ -99,14 +100,11 @@
           <h2 class="text-lg font-semibold text-slate-800">Identity</h2>
           <form id="identity-form" class="space-y-4">
             <div>
-              <label class="text-sm font-medium text-slate-700" for="display-name">Display name</label>
-              <input id="display-name" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:ring-2 focus:ring-sky-200">
-            </div>
-            <div>
               <label class="text-sm font-medium text-slate-700" for="username">Username</label>
-              <input id="username" type="text" minlength="3" maxlength="24" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:ring-2 focus:ring-sky-200" placeholder="3–24 chars: letters, numbers, underscore">
+              <input id="username" type="text" minlength="3" maxlength="24" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:ring-2 focus:ring-sky-200" placeholder="3-24 chars: letters, numbers, underscore">
+              <p class="text-xs text-slate-500 mt-1">Usernames are unique. No display names.</p>
             </div>
-            <button type="submit" class="btn-primary btn-compact text-sm font-semibold">Save identity</button>
+            <button type="submit" class="btn-primary btn-compact text-sm font-semibold">Save username</button>
           </form>
         </div>
 
@@ -129,20 +127,14 @@
 
         <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 space-y-4">
           <h2 class="text-lg font-semibold text-slate-800">Account</h2>
-          <form id="email-form" class="space-y-3">
+          <div class="text-sm text-slate-600">Email changes are disabled.</div>
+          <form id="password-form" class="space-y-3 pt-2">
             <div>
-              <label class="text-sm font-medium text-slate-700" for="new-email">Email</label>
-              <input id="new-email" type="email" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:ring-2 focus:ring-sky-200" placeholder="New email">
+              <label class="text-sm font-medium text-slate-700" for="pw-email">Confirm your email</label>
+              <input id="pw-email" type="email" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:ring-2 focus:ring-sky-200" placeholder="you@example.com">
             </div>
-            <button type="submit" class="btn-secondary btn-compact text-sm font-semibold">Change email</button>
-            <p class="text-xs text-slate-500">You may need to confirm via email, depending on project settings.</p>
-          </form>
-          <form id="password-form" class="space-y-3 pt-4">
-            <div>
-              <label class="text-sm font-medium text-slate-700" for="new-password">New password</label>
-              <input id="new-password" type="password" minlength="8" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:ring-2 focus:ring-sky-200" placeholder="At least 8 characters">
-            </div>
-            <button type="submit" class="btn-secondary btn-compact text-sm font-semibold">Change password</button>
+            <button type="submit" class="btn-secondary btn-compact text-sm font-semibold">Send password reset link</button>
+            <p class="text-xs text-slate-500">We’ll email a link to reset your password, just like the “Forgot password” page.</p>
           </form>
         </div>
       </section>

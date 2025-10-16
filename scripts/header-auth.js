@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, waitForInitialSession, onAuthStateChange, signUp, signIn, signOut, getCurrentUser } from '/scripts/supabase-client.js';
+import { isSupabaseConfigured, waitForInitialSession, onAuthStateChange, signUp, signIn, signOut, getCurrentUser, getSupabaseClient } from '/scripts/supabase-client.js';
 import '/scripts/theme.js';
 import { showToast } from '/scripts/ui.js';
 
@@ -6,6 +6,43 @@ function getDisplayName(user) {
   if (!user) return '';
   const meta = user.user_metadata || {};
   return meta.username || meta.full_name || (user.email ? String(user.email).split('@')[0] : '');
+}
+
+function usernameValid(u) { return /^[a-zA-Z0-9_]{3,24}$/.test(u || ''); }
+
+function generateDefaultUsername(email) {
+  const base = String(email || '').split('@')[0].replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 16);
+  const suffix = Math.floor(100 + Math.random() * 900); // 3 digits
+  return `${base}_${suffix}`;
+}
+
+async function usernameAvailable(client, username) {
+  try {
+    const { data, error } = await client.from('profiles').select('id').eq('username', username).maybeSingle();
+    if (error && error.code !== 'PGRST116') return true; // fail-open
+    return !data;
+  } catch { return true; }
+}
+
+async function ensureUsernameIfMissing(user) {
+  try {
+    const client = getSupabaseClient();
+    const { data } = await client.from('profiles').select('id, username').eq('id', user.id).maybeSingle();
+    let username = data?.username || user.user_metadata?.username || '';
+    if (username && usernameValid(username)) return; // nothing to do
+    // Generate and ensure availability
+    let candidate = generateDefaultUsername(user.email || 'user');
+    let attempts = 0;
+    while (!(await usernameAvailable(client, candidate)) && attempts < 5) {
+      candidate = generateDefaultUsername(user.email || 'user');
+      attempts += 1;
+    }
+    await client.from('profiles').upsert({ id: user.id, username: candidate });
+    await client.auth.updateUser({ data: { username: candidate } });
+  } catch (e) {
+    // Non-fatal
+    console.warn('Could not ensure username', e);
+  }
 }
 
 function toggle(panel, selector, show) {
@@ -192,6 +229,7 @@ function wireHeader(panel) {
     }
     // Close any open dropdowns on state change
     closeDropdowns();
+    if (isSignedIn) { ensureUsernameIfMissing(user); }
   };
 
   (async () => {

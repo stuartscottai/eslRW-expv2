@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       if (isSupabaseConfigured()) {
         const client = getSupabaseClient();
-        const redirectTo = window.location.origin + '/login.html';
+        const redirectTo = window.location.origin + '/reset-password.html';
         const { error } = await client.auth.resetPasswordForEmail(value, { redirectTo });
         if (error) throw error;
         showToast('Password reset email sent. Check your inbox.', 'success');

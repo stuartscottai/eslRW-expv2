@@ -1,135 +1,81 @@
+import { isSupabaseConfigured, getSupabaseClient } from '/scripts/supabase-client.js';
+import { showToast } from '/scripts/ui.js';
+
+function usernameValid(u) { return /^[a-zA-Z0-9_]{3,24}$/.test(u || ''); }
+
+async function usernameAvailable(client, username, selfId) {
   try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
+    const { data, error } = await client.from('profiles').select('id').eq('username', username).maybeSingle();
+    if (error && error.code !== 'PGRST116') return true; // fail-open
+    if (!data) return true;
+    return data.id === selfId; // allow own username
+  } catch { return true; }
+}
+
+function providerLabel(user) {
+  const provider = user?.app_metadata?.provider || '';
+  return provider === 'google' ? 'Google email' : 'email';
+}
+
+async function init() {
+  if (!isSupabaseConfigured()) return;
+  const client = getSupabaseClient();
+  const { data: { user } } = await client.auth.getUser();
+  if (!user) return;
+
+  // Signed-in status label
+  const status = document.getElementById('signin-status');
+  if (status) {
+    const label = providerLabel(user);
+    status.textContent = `Signed in with ${label}: ${user.email || ''}`;
+  }
+
+  // Prefill username
+  const username = document.getElementById('username');
+  try {
+    const { data } = await client.from('profiles').select('username').eq('id', user.id).maybeSingle();
+    username.value = data?.username || user.user_metadata?.username || '';
+  } catch { username.value = user.user_metadata?.username || ''; }
+
+  // Save username
+  const identityForm = document.getElementById('identity-form');
+  identityForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const un = (username.value || '').trim();
+    if (!un || !usernameValid(un)) { showToast('Username must be 3–24 chars: letters, numbers, underscore.', 'error'); return; }
+    try {
+      const ok = await usernameAvailable(client, un, user.id);
+      if (!ok) { showToast('Username is taken. Choose another.', 'error'); return; }
+      await client.from('profiles').upsert({ id: user.id, username: un });
+      await client.auth.updateUser({ data: { username: un } });
+      showToast('Username saved.', 'success');
+    } catch (err) {
+      showToast(err?.message || 'Failed to save username.', 'error');
     }
-  } catch {}
-i  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
+  });
+
+  // Send password reset email
+  const pwForm = document.getElementById('password-form');
+  const pwEmail = document.getElementById('pw-email');
+  pwForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (pwEmail.value || '').trim();
+    if (!email) { showToast('Enter your account email.', 'error'); return; }
+    if (email.toLowerCase() !== String(user.email || '').toLowerCase()) {
+      showToast('Email must match your account email.', 'error'); return; }
+    try {
+      const redirectTo = window.location.origin + '/reset-password.html';
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
+      if (error) throw error;
+      showToast('Password reset email sent. Check your inbox.', 'success');
+      pwEmail.value = '';
+    } catch (err) {
+      showToast(err?.message || 'Could not send reset email.', 'error');
     }
-  } catch {}
-m  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-p  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-o  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-r  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-t  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-try {
-    let current = (window.Theme?.get() || 'light');
-    if (current === 'system') current = 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-{  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-try {
-    let current = (window.Theme?.get() || 'light');
-    if (current === 'system') current = 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-i  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-s  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
-S  try {
-    const current = window.Theme?.get() || 'light';
-    if (themeFieldset) {
-      const radios = themeFieldset.querySelectorAll('input[name="theme"]');
-      radios.forEach(r => {
-        r.checked = (r.value === current);
-        r.addEventListener('change', () => window.Theme?.set(r.value));
-      });
-    }
-  } catch {}
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
 u  try {
     const current = window.Theme?.get() || 'light';
     if (themeFieldset) {
