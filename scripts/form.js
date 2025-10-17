@@ -97,16 +97,13 @@ export function populateFormFields() {
   const right = document.getElementById("perf-right");
 
   // LEFT: all ratings (0–10) from template
-  // Render select by default; use sliders for specific fields
-  const __sliderIds = new Set(['progress', 'behaviour', 'behavior', 'participation', 'english-level', 'exam-performance']);
+  // Render sliders by default for consistency; only use selects if the
+  // template explicitly sets inputType to 'select' or 'dropdown'.
   ratingFieldsData.forEach(field => {
     const id = (field.id || '').toLowerCase();
     const labelKey = (field.label || '').toLowerCase().replace(/\s+/g,'-');
     const typeHint = typeof field.inputType === 'string' ? field.inputType.toLowerCase() : '';
-    const useSlider = typeHint === 'slider'
-      || typeHint === 'range'
-      || __sliderIds.has(id)
-      || __sliderIds.has(labelKey);
+    const useSlider = !(typeHint === 'select' || typeHint === 'dropdown');
     if (useSlider) {
       left.insertAdjacentHTML("beforeend", `
         <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
