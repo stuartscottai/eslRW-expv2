@@ -779,7 +779,9 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
 [data-auth-dropdown-account] button,
 [data-auth-dropdown] a,
 [data-auth-dropdown] button {
-  display: block !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
   width: 100% !important;
   text-align: left !important;
   background: transparent !important;
@@ -820,6 +822,167 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
 [data-auth-dropdown] a:hover::before,
 [data-auth-dropdown] button:hover::before {
   transform: scaleX(1);
+}
+
+.account-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.account-menu-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.5rem 0.75rem !important;
+  text-decoration: none !important;
+}
+
+.account-menu-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #1f2a37;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s ease, color .2s ease;
+}
+
+.account-menu-item--logout .account-menu-icon {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.account-menu-item:hover .account-menu-icon,
+.account-menu-item:focus-visible .account-menu-icon {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.account-menu-item--logout:hover .account-menu-icon,
+.account-menu-item--logout:focus-visible .account-menu-icon {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+.account-menu-svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.account-menu-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-start;
+}
+
+.account-menu-title {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.account-menu-desc {
+  font-size: 0.72rem;
+  color: #64748b;
+  line-height: 1.3;
+}
+
+html[data-theme="dark"] .account-menu-icon {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+html[data-theme="dark"] .account-menu-item--logout .account-menu-icon {
+  background: rgba(248, 113, 113, 0.22);
+  color: #fecaca;
+}
+
+html[data-theme="dark"] .account-menu-item:hover .account-menu-icon,
+html[data-theme="dark"] .account-menu-item:focus-visible .account-menu-icon {
+  background: #1f3a5f;
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] .account-menu-item--logout:hover .account-menu-icon,
+html[data-theme="dark"] .account-menu-item--logout:focus-visible .account-menu-icon {
+  background: rgba(248, 113, 113, 0.35);
+  color: #fca5a5;
+}
+
+html[data-theme="dark"] .account-menu-title { color: #e2e8f0; }
+html[data-theme="dark"] .account-menu-desc { color: #94a3b8; }
+
+/* Home page main menu prototype */
+.mobile-nav-panel .main-nav-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-inline: 0.75rem;
+}
+
+.account-menu .main-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-inline: 0.75rem;
+}
+
+.main-nav-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #e8edff;
+  color: #1f2a37;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.main-nav-icon svg { width: 16px; height: 16px; fill: currentColor; }
+
+.main-nav-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.main-nav-title {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.main-nav-desc {
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+
+.mobile-nav-panel .main-nav-link:hover .main-nav-icon,
+.mobile-nav-panel .main-nav-link:focus-visible .main-nav-icon,
+.account-menu .main-nav-link:hover .main-nav-icon,
+.account-menu .main-nav-link:focus-visible .main-nav-icon {
+  background: #dbe4ff;
+  color: #1d4ed8;
+}
+
+html[data-theme="dark"] .main-nav-icon {
+  background: #1f2a37;
+  color: #e2e8f0;
+}
+
+html[data-theme="dark"] .main-nav-title { color: #e2e8f0; }
+html[data-theme="dark"] .main-nav-desc { color: #94a3b8; }
+html[data-theme="dark"] .mobile-nav-panel .main-nav-link:hover .main-nav-icon,
+html[data-theme="dark"] .mobile-nav-panel .main-nav-link:focus-visible .main-nav-icon,
+html[data-theme="dark"] .account-menu .main-nav-link:hover .main-nav-icon,
+html[data-theme="dark"] .account-menu .main-nav-link:focus-visible .main-nav-icon {
+  background: #1f3a5f;
+  color: #60a5fa;
 }
 
 /* Hide built-in close buttons; use icon toggle instead */

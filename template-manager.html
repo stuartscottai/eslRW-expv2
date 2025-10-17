@@ -42,10 +42,71 @@
           </button>
           <div class="absolute right-0 mt-2 w-[min(92vw,320px)] rounded-xl border border-slate-200 bg-white shadow-lg p-4 hidden z-50" data-auth-dropdown-account>
             <div class="flex items-center mb-3"><button class="ml-auto text-slate-400 hover:text-slate-600" data-auth-close-account>&times;</button></div>
-            <div class="flex flex-col gap-2">
-              <a href="user-settings.html" class="inline-flex justify-center btn-secondary btn-compact text-sm font-semibold">User account settings</a>
-              <button type="button" class="inline-flex justify-center btn-primary btn-compact text-sm font-semibold" data-auth-action="logout">Sign out</button>
-            </div>
+            <nav class="account-menu" aria-label="Account">
+              <a href="user-settings.html" class="account-menu-item" data-menu-link="profile">
+                <span class="account-menu-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="account-menu-svg"><path d="M12 3.75a4.25 4.25 0 1 1 0 8.5 4.25 4.25 0 0 1 0-8.5Zm0 10.75c3.69 0 7 1.78 7 4v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1c0-2.22 3.31-4 7-4Z"/></svg>
+                </span>
+                <span class="account-menu-label">
+                  <span class="account-menu-title">My profile</span>
+                  <span class="account-menu-desc">Manage your account settings.</span>
+                </span>
+              </a>
+              <a href="account-login.html" class="account-menu-item" data-menu-link="login">
+                <span class="account-menu-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="account-menu-svg"><path d="m13.25 4 6.75 6.75-6.75 6.75v-4.5h-7v-4.5h7z"/><path d="M4 4.75A.75.75 0 0 1 4.75 4h5.5a.75.75 0 0 1 0 1.5h-4.75v13h4.75a.75.75 0 0 1 0 1.5h-5.5A.75.75 0 0 1 4 19.25Z"/></svg>
+                </span>
+                <span class="account-menu-label">
+                  <span class="account-menu-title">Login</span>
+                  <span class="account-menu-desc">Switch or reconnect an account.</span>
+                </span>
+              </a>
+              <a href="accessibility.html" class="account-menu-item" data-menu-link="accessibility">
+                <span class="account-menu-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="account-menu-svg"><path d="M12 3.25a2.25 2.25 0 1 1 0 4.5 2.25 2.25 0 0 1 0-4.5Zm-6.5 4.5a1 1 0 0 1 0-2h13a1 1 0 1 1 0 2h-4.5v13a1 1 0 1 1-2 0v-5h-1v5a1 1 0 1 1-2 0v-13Z"/></svg>
+                </span>
+                <span class="account-menu-label">
+                  <span class="account-menu-title">Accessibility</span>
+                  <span class="account-menu-desc">View accessibility resources.</span>
+                </span>
+              </a>
+              <a href="data-storage.html" class="account-menu-item" data-menu-link="storage">
+                <span class="account-menu-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="account-menu-svg"><path d="M12 2a7 7 0 0 1 6.93 6H21a1 1 0 0 1 .99 1.14l-1.5 9A1 1 0 0 1 19.5 19h-15a1 1 0 0 1-.99-.86l-1.5-9A1 1 0 0 1 3 8h2.07A7 7 0 0 1 12 2Zm4.72 8H7.28l1.05 7h9.34ZM12 4a5 5 0 0 0-4.9 4h9.8A5 5 0 0 0 12 4Z"/></svg>
+                </span>
+                <span class="account-menu-label">
+                  <span class="account-menu-title">Data &amp; Storage</span>
+                  <span class="account-menu-desc">Manage saved templates.</span>
+                </span>
+              </a>
+              <a href="usage-report.html" class="account-menu-item" data-menu-link="usage">
+                <span class="account-menu-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="account-menu-svg"><path d="M5 3.25a1 1 0 0 1 1 1V19h13a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V4.25a1 1 0 0 1 1-1ZM19.53 7.53a.75.75 0 0 0-1.06-1.06L15 10.94 12.53 8.5a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 0 0 1.06 1.06l2.47-2.47 2.47 2.44a.75.75 0 0 0 1.06 0l4-4Z"/></svg>
+                </span>
+                <span class="account-menu-label">
+                  <span class="account-menu-title">Usage report</span>
+                  <span class="account-menu-desc">Check activity summaries.</span>
+                </span>
+              </a>
+              <a href="privacy.html" class="account-menu-item" data-menu-link="privacy">
+                <span class="account-menu-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="account-menu-svg"><path d="M12 2a6.5 6.5 0 0 1 6.5 6.5v1.61a8.49 8.49 0 0 1-6.02 8.13l-.48.13-.48-.13A8.49 8.49 0 0 1 5.5 10.11V8.5A6.5 6.5 0 0 1 12 2Zm0 2a4.5 4.5 0 0 0-4.5 4.5v1.61a6.5 6.5 0 0 0 4.61 6.2l.39.11.39-.11a6.5 6.5 0 0 0 4.61-6.2V8.5A4.5 4.5 0 0 0 12 4Zm0 3a1 1 0 0 1 1 1v2.5a1 1 0 1 1-2 0V8a1 1 0 0 1 1-1Z"/></svg>
+                </span>
+                <span class="account-menu-label">
+                  <span class="account-menu-title">Privacy</span>
+                  <span class="account-menu-desc">Review privacy practices.</span>
+                </span>
+              </a>
+              <button type="button" class="account-menu-item account-menu-item--logout" data-auth-action="logout">
+                <span class="account-menu-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="account-menu-svg"><path d="M12.75 4a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 .75.75v16a.75.75 0 0 1-.75.75h-6.5a.75.75 0 0 1 0-1.5h5.75V4.75H13.5a.75.75 0 0 1-.75-.75Zm-7.28 7.22 4.5-4.5a.75.75 0 0 1 1.06 1.06L7.81 11H16a.75.75 0 0 1 0 1.5H7.81l3.22 3.22a.75.75 0 0 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06Z"/></svg>
+                </span>
+                <span class="account-menu-label">
+                  <span class="account-menu-title">Sign out</span>
+                  <span class="account-menu-desc">Log out of this account.</span>
+                </span>
+              </button>
+            </nav>
           </div>
         </div>
         <div class="absolute right-0 mt-2 w-[min(92vw,320px)] rounded-xl border border-slate-200 bg-white shadow-lg p-4 hidden z-50" data-auth-dropdown>
@@ -83,13 +144,61 @@
     </div>
   </header>
 
-  <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-700" data-open="false">
-    <a href="index.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Home</a>
-    <a href="app.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Report Writer</a>
-    <a href="how-to.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">How to use</a>
-    <a href="template-builder.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Template Builder</a>
-    <a href="template-manager.html" class="py-2 text-slate-900 font-semibold transition-colors duration-200" aria-current="page">Template Manager</a>
-    <a href="community.html" class="py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">Community</a>
+    <nav id="primary-navigation" class="mobile-nav-panel text-sm font-medium text-slate-700" data-open="false">
+    <a href="index.html" class="main-nav-link py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">
+      <span class="main-nav-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.75 12 4l8 6.75v9a1.25 1.25 0 0 1-1.25 1.25h-4.5a.75.75 0 0 1-.75-.75V15h-2v5.25a.75.75 0 0 1-.75.75h-4.5A1.25 1.25 0 0 1 4 19.75v-9Z"/></svg>
+      </span>
+      <span class="main-nav-label">
+        <span class="main-nav-title">Home</span>
+        <span class="main-nav-desc">Start here</span>
+      </span>
+    </a>
+    <a href="app.html" class="main-nav-link py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">
+      <span class="main-nav-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2v10h12V7H6Zm2 2h4v2H8V9Zm0 4h8v2H8v-2Z"/></svg>
+      </span>
+      <span class="main-nav-label">
+        <span class="main-nav-title">Report Writer</span>
+        <span class="main-nav-desc">Generate reports</span>
+      </span>
+    </a>
+    <a href="how-to.html" class="main-nav-link py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">
+      <span class="main-nav-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm0 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm1.25 9.5v-1.2c0-1.05.43-1.57 1.14-2.12.67-.51 1.11-1.07 1.11-1.93 0-1.57-1.33-2.75-3-2.75s-3 1.18-3 2.75a1 1 0 1 0 2 0c0-.42.41-.75 1-.75s1 .33 1 .75c0 .26-.11.44-.49.72-.83.63-1.61 1.45-1.61 3.08v1.25a1 1 0 1 0 2 0Z"/></svg>
+      </span>
+      <span class="main-nav-label">
+        <span class="main-nav-title">How to use</span>
+        <span class="main-nav-desc">Guides &amp; tips</span>
+      </span>
+    </a>
+    <a href="template-builder.html" class="main-nav-link py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">
+      <span class="main-nav-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4h11a1.5 1.5 0 0 1 1.5 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18.5v-13A1.5 1.5 0 0 1 6.5 4Zm.5 2v12h10V6H7Zm2 2h6v2H9V8Zm0 4h6v2H9v-2Z"/></svg>
+      </span>
+      <span class="main-nav-label">
+        <span class="main-nav-title">Template Builder</span>
+        <span class="main-nav-desc">Create structures</span>
+      </span>
+    </a>
+    <a href="template-manager.html" class="main-nav-link py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">
+      <span class="main-nav-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.25A1.25 1.25 0 0 1 6.25 4h11.5A1.25 1.25 0 0 1 19 5.25V19a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5.25Zm2 1.25v11h10v-11H7Zm2 2h3.5a.5.5 0 0 1 .5.5V11h2v2h-2v2.25a.5.5 0 0 1-.5.5H9a.5.5 0 0 1-.5-.5V13H7v-2h1.5V9a.5.5 0 0 1 .5-.5Z"/></svg>
+      </span>
+      <span class="main-nav-label">
+        <span class="main-nav-title">Template Manager</span>
+        <span class="main-nav-desc">Organise templates</span>
+      </span>
+    </a>
+    <a href="community.html" class="main-nav-link py-2 text-slate-600 transition-colors duration-200 hover:text-slate-900">
+      <span class="main-nav-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 4.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm9 0a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 7.5c2.62 0 4.5 1.54 4.5 3.5V19a1 1 0 0 1-1 1h-7v-2.5c0-.69-.15-1.34-.42-1.93.97-.8 2.3-1.32 3.92-1.32Zm-9 0c1.62 0 2.95.52 3.92 1.32-.27.6-.42 1.24-.42 1.93V20H3a1 1 0 0 1-1-1v-1.5c0-1.96 1.88-3.5 4.5-3.5Z"/></svg>
+      </span>
+      <span class="main-nav-label">
+        <span class="main-nav-title">Community</span>
+        <span class="main-nav-desc">Share &amp; explore</span>
+      </span>
+    </a>
   </nav>
 
   <!-- Hero -->
@@ -486,6 +595,17 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
