@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -8,6 +8,74 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/style.css">
   <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+  <style>
+    /* --- 3D Feature Carousel + Detail Cards (scoped) --- */
+    .rw-section-title{letter-spacing:-.02em}
+    .rw-carousel-wrapper{position:relative;width:100%;height:560px;display:flex;justify-content:center;align-items:center}
+    .rw-carousel{position:relative;width:900px;max-width:100%;height:520px;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+    .rw-card{position:absolute;width:380px;max-width:86vw;height:500px;background:radial-gradient(120% 120% at 0% 0%, var(--surface) 0%, #f3f4f6 60%, var(--surface) 100%);border-radius:22px;padding:36px 36px 96px 36px;box-shadow:0 12px 36px rgba(15,23,42,.08),0 2px 8px rgba(15,23,42,.05);border:1px solid var(--border);cursor:grab;transition:all .5s cubic-bezier(.4,0,.2,1);backdrop-filter:blur(10px) saturate(120%);transform-style:preserve-3d;left:50%;top:50%;margin-left:-190px;margin-top:-250px;display:flex;flex-direction:column;justify-content:flex-start;color:var(--text)}
+    .rw-card:hover{transform:translateZ(24px);border-color:#cbd5e1}
+    .rw-card-icon{width:72px;height:72px;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 18px;color:var(--accent)}
+    .rw-card-title{font-weight:700;color:var(--text);letter-spacing:-.3px;text-align:center}
+    .rw-card-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:12px;font-weight:500;text-align:center}
+    .rw-card-btn{display:block;text-align:center;text-decoration:none;width:calc(100% - 72px);padding:14px 16px;border-radius:12px;border:1px solid var(--accent);background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 3px 8px rgba(245, 158, 11, .3);transition:transform .2s ease,box-shadow .2s ease;background-clip:padding-box;z-index:10;position:absolute;bottom:10px;left:50%;transform:translateX(-50%)}
+    .rw-card-btn:hover{transform:translateX(-50%) translateY(-2px);box-shadow:0 8px 20px rgba(245, 158, 11, .45);background:linear-gradient(180deg,var(--accent),#ea580c)}
+    .rw-nav{position:absolute;width:100%;display:flex;justify-content:space-between;top:50%;transform:translateY(-50%);pointer-events:none;z-index:200}
+    .rw-nav-btn{width:52px;height:52px;border:none;border-radius:999px;pointer-events:all;cursor:pointer;background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(245, 158, 11, .4);transition:transform .2s ease;outline:none}
+    .rw-nav-btn:hover{transform:scale(1.06);box-shadow:0 10px 26px rgba(245, 158, 11, .5)}
+    .rw-indicators{display:flex;justify-content:center;gap:10px;margin-top:18px}
+    .rw-indicator{height:10px;width:26px;border-radius:999px;background:#e5e7eb;border:1px solid var(--border);cursor:pointer;transition:all .3s ease}
+    .rw-indicator.active{width:40px;background:linear-gradient(180deg,#f4b860,var(--accent))}
+    /* Detail cards */
+    .rw-details{display:flex;flex-direction:column;gap:28px;margin-top:34px}
+    .rw-detail-card{opacity:0;transform:perspective(1000px) translateY(24px) rotateX(10deg) translateZ(-60px) scaleY(.98) scaleX(.995);transition:transform 700ms cubic-bezier(.2,.8,.2,1),opacity 600ms ease-out,box-shadow .2s ease,border-color .2s ease;transition-delay:var(--stagger,0ms);display:flex;align-items:center;gap:40px;background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.98));padding:28px;border-radius:18px;box-shadow:0 10px 26px rgba(15,23,42,.08);position:relative;min-height:280px;border:1px solid color-mix(in srgb, var(--border) 70%, transparent)}
+    .rw-detail-card::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;border-radius:18px 18px 0 0;background:linear-gradient(90deg, var(--primary), var(--accent));opacity:.9}
+    .rw-detail-card:hover{box-shadow:0 14px 34px rgba(15,23,42,.10)}
+    .rw-detail-card.visible{opacity:1;transform:perspective(1000px) translateY(0) rotateX(0) translateZ(0) scaleY(1) scaleX(1)}
+    .rw-detail-img{width:50%;height:280px;border-radius:14px;object-fit:cover;background:#f1f5f9;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);box-shadow:0 10px 22px rgba(2,6,23,.10);transition:transform 120ms ease;transform:translate3d(var(--tx,0px), calc(var(--ty,0px) + var(--sy,0px)), 0)}
+    .rw-detail-text{width:50%;transition:transform 120ms ease;transform:translate3d(var(--tx,0px), calc(var(--ty,0px) + var(--sy,0px)), 0)}
+    .rw-detail-text h3{font-size:1.375rem;margin-bottom:.5rem;color:var(--text);font-weight:700;letter-spacing:-.01em}
+    .rw-detail-text p,.rw-detail-text li{font-size:1rem;line-height:1.75;color:var(--muted);text-align:justify}
+    .rw-detail-text ul{margin-top:.75rem;padding-left:1.25rem;list-style:disc}
+    .rw-detail-text li{margin:.35rem 0}
+    .rw-detail-text li::marker{color:var(--primary)}
+    .rw-detail-card.left .rw-detail-img{order:0}
+    .rw-detail-card.right .rw-detail-img{order:1}
+    .rw-detail-card.left .rw-detail-text{order:1}
+    .rw-detail-card.right .rw-detail-text{order:0}
+    @media (max-width: 900px){
+      .rw-carousel-wrapper{height:520px}
+      .rw-card{height:460px}
+      .rw-detail-card{flex-direction:column;text-align:center;min-height:unset}
+      .rw-detail-img,.rw-detail-text{width:100%}
+      .rw-detail-img{height:220px}
+    }
+    /* Mobile tweaks */
+      @media (max-width: 640px){
+      /* Create a clean, scrollable carousel on mobile */
+      .rw-carousel-wrapper{height:auto; margin-top:14px}
+      .rw-carousel{height:auto; display:flex; gap:12px; overflow-x:auto; padding:8px 8px 18px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch}
+      .rw-card{position:relative; left:auto; top:auto; margin:0; width:100%; min-width:100%; max-width:100%; height:400px; transform:none !important; opacity:1 !important; filter:none !important; z-index:auto !important; pointer-events:auto !important; scroll-snap-align:center}
+      .rw-card-title{font-size:1rem}
+      .rw-card-desc{font-size:13px}
+      .rw-card-btn{width:calc(100% - 48px);padding:12px;font-size:14px}
+      .rw-nav-btn{width:44px;height:44px;font-size:18px}
+      .rw-indicators{margin-top:10px}
+      /* Detail cards below: tighter visuals */
+      
+      .rw-detail-card .rw-detail-img{order:0 !important}
+      .rw-detail-card .rw-detail-text{order:1 !important; text-align:justify}
+      .rw-detail-text h3{font-size:1.125rem}
+      .rw-detail-text p,.rw-detail-text li{font-size:.95rem;line-height:1.6}
+      .rw-info-card h1{font-size:1.25rem}
+    }
+    /* Parallax helpers */
+    .rw-parallax-layer{will-change: transform}
+    .rw-info-card{transform-style:preserve-3d;will-change:transform;transition:transform 120ms ease}
+    @media (prefers-reduced-motion: reduce){
+      .rw-card, .rw-detail-card, .rw-info-card{transition:none !important}
+    }
+  </style>
 </head>
 <body class="bg-blue-50 text-slate-800">
 
@@ -215,8 +283,8 @@
         </div>
       </div>
 
-      <section class="space-y-6">
-        <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+      <section class="space-y-10">
+        <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm rw-info-card">
           <h1 class="text-2xl font-bold text-slate-800 mb-2">Welcome to ESL Report Writer</h1>
           <p class="text-slate-700 leading-relaxed">
             Writing student reports can be tiring, repetitive and time consuming, especially is you have to write them in another language. 
@@ -225,15 +293,130 @@
             and get improvement ideas for each student, based on your ratings and comments.  The ESL Report Writer is the essential tool for teachers working in the TEFL world!
           </p>
           
-<section class="mt-8 flex justify-center">
-  <div class="bg-white rounded-xl shadow-xl p-6 max-w-3xl w-full">
-    <h2 class="text-xl font-bold mb-4 text-center">See How It Works</h2>
-    <video class="rounded-lg w-full shadow-md" controls>
-      <source src="videos/demo.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
-</section>
+          <!-- 3D Feature Carousel -->
+          <div class="mt-8">
+            <div class="rw-carousel-wrapper">
+                            <div class="rw-nav">
+                <button class="rw-nav-btn" onclick="rwPrev()" aria-label="Previous feature">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M15 18l-6-6 6-6"/>
+                  </svg>
+                </button>
+                <button class="rw-nav-btn" onclick="rwNext()" aria-label="Next feature">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 6l6 6-6 6"/>
+                  </svg>
+                </button>
+              </div><div class="rw-carousel" id="rw-carousel" aria-live="polite">
+                <div class="rw-card" data-index="0">
+                  <div class="rw-card-icon" aria-hidden="true">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 3h8l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+                      <path d="M14 3v5h5"/>
+                      <path d="M8 12h8M8 16h8M8 8.5h3"/>
+                    </svg>
+                  </div>
+                  <h3 class="rw-card-title text-lg">Report Generator</h3>
+                  <p class="rw-card-desc">Generate polished student reports in minutes with AI-assisted templates.</p>
+                  <a class="rw-card-btn" href="#detail-generator">Learn More</a>
+                </div>
+                <div class="rw-card" data-index="1">
+                  <div class="rw-card-icon" aria-hidden="true">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 18h6"/>
+                      <path d="M10 22h4"/>
+                      <path d="M12 2a7 7 0 0 0-4.95 11.95c.72.72 1.27 1.59 1.57 2.55h6.76c.3-.96.85-1.83 1.57-2.55A7 7 0 0 0 12 2z"/>
+                    </svg>
+                  </div>
+                  <h3 class="rw-card-title text-lg">Areas for Improvement</h3>
+                  <p class="rw-card-desc">Turn feedback into action with precise, AI-generated next steps.</p>
+                  <a class="rw-card-btn" href="#detail-improvement">Learn More</a>
+                </div>
+                <div class="rw-card" data-index="2">
+                  <div class="rw-card-icon" aria-hidden="true">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8 3h4a2 2 0 1 1 0 4H8v4H4V7a4 4 0 0 1 4-4z"/>
+                      <path d="M16 21h-4a2 2 0 1 1 0-4h4v-4h4v4a4 4 0 0 1-4 4z"/>
+                      <path d="M8 11h4v2a2 2 0 1 0 4 0v-2h4"/>
+                    </svg>
+                  </div>
+                  <h3 class="rw-card-title text-lg">Template Builder</h3>
+                  <p class="rw-card-desc">Create bespoke templates with custom criteria and ratings.</p>
+                  <a class="rw-card-btn" href="#detail-template">Learn More</a>
+                </div>
+                <div class="rw-card" data-index="3">
+                  <div class="rw-card-icon" aria-hidden="true">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="9"/>
+                      <path d="M3 12h18"/>
+                      <path d="M12 3a15 15 0 0 1 0 18"/>
+                      <path d="M12 3a15 15 0 0 0 0 18"/>
+                    </svg>
+                  </div>
+                  <h3 class="rw-card-title text-lg">Community Sharing</h3>
+                  <p class="rw-card-desc">Share, duplicate, and refine templates with fellow educators.</p>
+                  <a class="rw-card-btn" href="#detail-community">Learn More</a>
+                </div>
+              </div>
+            </div>
+            <div class="rw-indicators" id="rw-indicators"></div>
+          </div>
+
+          <!-- Feature Details -->
+          <section class="rw-details" aria-label="Feature details">
+            <div id="detail-generator" class="rw-detail-card left">
+              <img src="/public/hero-bg.jpg" alt="Report Generator Screenshot" class="rw-detail-img" />
+              <div class="rw-detail-text">
+                <h3>Report Generator</h3>
+                <p>Use the default templates to create professionally written reports on your students in minutes. Report on their personality, provide ratings for performance areas, and include suggestions for improvement to deliver comprehensive feedback.</p>
+                <ul>
+                  <li>Generate detailed, structured student evaluations quickly</li>
+                  <li>Include personality insights and performance ratings</li>
+                  <li>AI editing ensures consistent tone and clarity</li>
+                  <li>Export-ready outputs for school systems</li>
+                </ul>
+              </div>
+            </div>
+            <div id="detail-improvement" class="rw-detail-card right">
+              <div class="rw-detail-text">
+                <h3>Areas for Improvement</h3>
+                <p>Use the AI interface to automatically detect practical ideas for how students can improve their performance based on your report input. Turn teacher observations into targeted next steps.</p>
+                <ul>
+                  <li>Automatic generation of specific, actionable improvements</li>
+                  <li>Context-aware suggestions aligned to your rubric</li>
+                  <li>Editable phrasing to match your voice and policy</li>
+                  <li>Track goals over time and measure progress</li>
+                </ul>
+              </div>
+              <img src="/public/hero-bg.jpg" alt="Areas for Improvement Screenshot" class="rw-detail-img" />
+            </div>
+            <div id="detail-template" class="rw-detail-card left">
+              <img src="/public/hero-bg.jpg" alt="Template Builder Screenshot" class="rw-detail-img" />
+              <div class="rw-detail-text">
+                <h3>Template Builder</h3>
+                <p>Build a template from scratch, including your own ratings and performance criteria, to be used in the Report Generator for bespoke reports in your area of education.</p>
+                <ul>
+                  <li>Define custom performance areas and rating scales</li>
+                  <li>Reuse templates across classes and terms</li>
+                  <li>Design systems with consistent language and structure</li>
+                  <li>Align criteria to curriculum standards</li>
+                </ul>
+              </div>
+            </div>
+            <div id="detail-community" class="rw-detail-card right">
+              <div class="rw-detail-text">
+                <h3>Community Sharing</h3>
+                <p>Share templates with the community, collaborate with colleagues, and duplicate or edit other peopleâ€™s templates. Build a shared library of best practice resources.</p>
+                <ul>
+                  <li>Private or public sharing with colleagues</li>
+                  <li>Duplicate community templates and customize them</li>
+                  <li>Discover subjectâ€‘specific exemplars</li>
+                  <li>Accelerate onboarding for new staff</li>
+                </ul>
+              </div>
+              <img src="/public/hero-bg.jpg" alt="Community Sharing Screenshot" class="rw-detail-img" />
+            </div>
+          </section>
 
          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
           <a href="app.html" class="flex items-center justify-center btn-primary text-center text-sm sm:text-base w-full max-w-xs sm:w-auto sm:px-8">
@@ -245,6 +428,7 @@
         </div>
 
         </div>
+        
       </section>
     </main>
 
@@ -263,8 +447,193 @@
       if (y) y.textContent = new Date().getFullYear();
     });
   </script>
+  <script>
+    // --- 3D Carousel logic (scoped) ---
+    document.addEventListener('DOMContentLoaded', () => {
+      const carousel = document.getElementById('rw-carousel');
+      if (!carousel) return;
+      const cards = Array.from(carousel.querySelectorAll('.rw-card'));
+      const total = cards.length;
+      let curr = 0;
+      const indicatorsEl = document.getElementById('rw-indicators');
+      if (indicatorsEl) {
+        indicatorsEl.innerHTML = '';
+        for (let i = 0; i < total; i++) {
+          const ind = document.createElement('div');
+          ind.className = 'rw-indicator';
+          ind.onclick = () => { curr = i; if (window.matchMedia('(max-width: 640px)').matches) { const el = cards[i]; if (el) carousel.scrollTo({ left: el.offsetLeft - 8, behavior: 'smooth' }); } update(); };
+          indicatorsEl.appendChild(ind);
+        }
+      }
+
+            function update(){
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  if (isMobile) {
+    cards.forEach((card,i)=>{
+      const isActive = i === curr;
+      const scale = isActive ? 1 : 0.9;
+      const z = isActive ? 0 : -260;
+      card.style.transform = 'translateX(0px) translateZ(' + z + 'px) rotateY(0deg) scale(' + scale + ')';
+      card.style.opacity = String(isActive ? 1 : 0);
+      card.style.filter = 'none';
+      card.style.zIndex = String(isActive ? 100 : 0);
+      card.style.pointerEvents = isActive ? 'all' : 'none';
+    });
+    if (indicatorsEl) Array.from(indicatorsEl.children).forEach((ind, i)=>{
+      ind.classList.toggle('active', i === curr);
+    });
+    return;
+  }
+  cards.forEach((card,i)=>{
+    let offset = i - curr;
+    if(offset > total/2) offset -= total;
+    if(offset < -total/2) offset += total;
+    const abs = Math.abs(offset);
+    const sign = offset === 0 ? 0 : offset/abs;
+
+    const rotY = sign * 40;
+    const transZ = -(abs * 260);
+    const transX = sign * abs * 240;
+    let opacity = 1 - abs*0.25;
+    let scale = 1 - abs*0.12;
+    const blur = abs > 0 ? 3 : 0;
+    if (abs >= 2) { opacity = 0; scale = 0.6; }
+
+    card.style.transform = 'translateX(' + transX + 'px) translateZ(' + transZ + 'px) rotateY(' + rotY + 'deg) scale(' + scale + ')';
+    card.style.opacity = String(opacity);
+    card.style.filter = 'blur(' + blur + 'px)';
+    card.style.zIndex = String(100 - abs);
+    card.style.pointerEvents = offset === 0 ? 'all' : 'none';
+  });
+  if (indicatorsEl) Array.from(indicatorsEl.children).forEach((ind, i)=>{
+    ind.classList.toggle('active', i === curr);
+  });
+}
+
+      const isMobileView = () => window.matchMedia('(max-width: 640px)').matches;
+      function scrollToCard(i){ const el = cards[i]; if(!el) return; const left = el.offsetLeft - 8; carousel.scrollTo({ left, behavior: 'smooth' }); }
+
+      window.rwNext = () => { curr = (curr + 1) % total; if (isMobileView()) { scrollToCard(curr); if (indicatorsEl) Array.from(indicatorsEl.children).forEach((ind, i)=> ind.classList.toggle('active', i === curr)); } else { update(); } };
+      window.rwPrev = () => { curr = (curr - 1 + total) % total; if (isMobileView()) { scrollToCard(curr); if (indicatorsEl) Array.from(indicatorsEl.children).forEach((ind, i)=> ind.classList.toggle('active', i === curr)); } else { update(); } };
+
+      window.addEventListener('resize', ()=> update());
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'ArrowRight') window.rwNext();
+        if(e.key === 'ArrowLeft') window.rwPrev();
+      });
+
+      // Touch + mouse drag
+      let startX = 0, isDragging = false;
+      carousel.addEventListener('touchstart',(e)=>{ startX = e.touches[0].clientX; isDragging = true; }, {passive:true});
+      carousel.addEventListener('touchend',(e)=>{
+        if(!isDragging) return; const endX = e.changedTouches[0].clientX;
+        if(startX - endX > 50) window.rwNext();
+        if(endX - startX > 50) window.rwPrev();
+        isDragging = false;
+      });
+      let mouseStartX = 0, isMouseDragging = false;
+      carousel.addEventListener('mousedown',(e)=>{ mouseStartX = e.clientX; isMouseDragging = true; });
+      document.addEventListener('mouseup',(e)=>{
+        if(!isMouseDragging) return; const diff = mouseStartX - e.clientX;
+        if(Math.abs(diff) > 50){ diff > 0 ? window.rwNext() : window.rwPrev(); }
+        isMouseDragging = false;
+      });
+
+      carousel.addEventListener('scroll', () => {
+        if (!isMobileView()) return;
+        const center = carousel.scrollLeft + carousel.clientWidth/2;
+        let nearest = 0, best = Infinity;
+        cards.forEach((el,i)=>{ const mid = el.offsetLeft + el.clientWidth/2; const d = Math.abs(mid-center); if (d < best) { best = d; nearest = i; } });
+        curr = nearest;
+        if (indicatorsEl) Array.from(indicatorsEl.children).forEach((ind, i)=> ind.classList.toggle('active', i === curr));
+      }, { passive: true });
+
+      update();
+
+      // Detail card reveal (re-trigger on each enter/leave)
+      const detailCards = Array.from(document.querySelectorAll('.rw-detail-card'));
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach((entry)=>{
+          const el = entry.target;
+          const index = detailCards.indexOf(el);
+          el.style.setProperty('--stagger', (index*140)+'ms');
+          if (entry.isIntersecting) {
+            el.classList.add('visible');
+          } else {
+            el.classList.remove('visible');
+          }
+        });
+      },{ threshold: 0.15 });
+      detailCards.forEach(el=>io.observe(el));
+      // --- Parallax + tilt effects ---
+      const supportsHover = window.matchMedia('(hover: hover)').matches;
+      // Info card subtle tilt
+      if (supportsHover) {
+        const info = document.querySelector('.rw-info-card');
+        if (info) {
+          info.addEventListener('mousemove', (e) => {
+            const r = info.getBoundingClientRect();
+            const nx = (e.clientX - r.left) / r.width - 0.5; // -0.5..0.5
+            const ny = (e.clientY - r.top) / r.height - 0.5;
+            const rx = ny * -6; // deg
+            const ry = nx * 8;  // deg
+            info.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+          });
+          info.addEventListener('mouseleave', () => {
+            info.style.transform = 'rotateX(0deg) rotateY(0deg)';
+          });
+        }
+      }
+
+      // Detail cards: scroll parallax + slight mouse float
+      const dCards = Array.from(document.querySelectorAll('.rw-detail-card'));
+      let ticking = false;
+      function updateDetailScroll(){
+        const vh = window.innerHeight || 800;
+        dCards.forEach(card=>{
+          const img = card.querySelector('.rw-detail-img');
+          const txt = card.querySelector('.rw-detail-text');
+          if (!img || !txt) return;
+          const r = card.getBoundingClientRect();
+          const center = r.top + r.height/2;
+          let norm = (center - vh/2) / (vh/2); // -1..1
+          if (norm < -1) norm = -1; if (norm > 1) norm = 1;
+          const imgShift = (-norm) * 14; // px
+          const txtShift = (-norm) * 7;  // px
+          img.style.setProperty('--sy', `${imgShift}px`);
+          txt.style.setProperty('--sy', `${txtShift}px`);
+        });
+        ticking = false;
+      }
+      function onScroll(){ if (!ticking) { window.requestAnimationFrame(updateDetailScroll); ticking = true; } }
+      window.addEventListener('scroll', onScroll, {passive:true});
+      updateDetailScroll();
+
+      if (supportsHover) {
+        dCards.forEach(card=>{
+          const img = card.querySelector('.rw-detail-img');
+          const txt = card.querySelector('.rw-detail-text');
+          if (!img || !txt) return;
+          card.addEventListener('mousemove', (e)=>{
+            const r = card.getBoundingClientRect();
+            const nx = (e.clientX - r.left)/r.width - 0.5;
+            const ny = (e.clientY - r.top)/r.height - 0.5;
+            img.style.setProperty('--tx', `${nx*10}px`);
+            img.style.setProperty('--ty', `${ny*10}px`);
+            txt.style.setProperty('--tx', `${nx*6}px`);
+            txt.style.setProperty('--ty', `${ny*6}px`);
+          });
+          card.addEventListener('mouseleave', ()=>{
+            [img,txt].forEach(el=>{ el.style.setProperty('--tx','0px'); el.style.setProperty('--ty','0px'); });
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
+
+
 
 
 
