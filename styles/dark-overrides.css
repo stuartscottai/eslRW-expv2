@@ -1,0 +1,49 @@
+/* Dark mode targeted overrides for dropdowns and chat section */
+
+/* Map gray utility colors in dark for consistency */
+html[data-theme="dark"] .bg-gray-50 { background-color: #111a2e !important; color: var(--text) !important; }
+html[data-theme="dark"] .border-gray-200,
+html[data-theme="dark"] .border-gray-300 { border-color: var(--border) !important; }
+
+/* Multiselect (Character / Areas) containers */
+html[data-theme="dark"] .selectBox { background: #17315c !important; color: #ffffff !important; border-color: #274873 !important; }
+html[data-theme="dark"] .checkboxes { background: #0f172a !important; color: #ffffff !important; border-color: #274873 !important; }
+
+/* Multiselect item hover uses subtle grey/blue, matching dark scheme */
+html[data-theme="dark"] #characterOptions label:hover,
+html[data-theme="dark"] #areasOptions label:hover {
+  background-color: #102647 !important; /* same grey as dark selects */
+  color: #ffffff !important;
+}
+
+/* Inputs and selects */
+html[data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+  background-color: #102647 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+/* Edit with AI (chat) section */
+html[data-theme="dark"] #chat-section {
+  background-color: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+html[data-theme="dark"] #chat-target-toggle .inline-flex {
+  background-color: #17315c !important;
+  border-color: #274873 !important;
+  color: #e5e7eb !important;
+}
+html[data-theme="dark"] #chat-target-toggle button:hover { background-color: #1d3b6d !important; }
+html[data-theme="dark"] #chat-messages {
+  background-color: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+html[data-theme="dark"] #chat-input {
+  background-color: #102647 !important;
+  border-color: #274873 !important;
+  color: #ffffff !important;
+}

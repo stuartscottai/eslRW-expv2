@@ -59,7 +59,8 @@ export function populateMultiselect(container, optionsArray, updateDisplayFn) {
   container.innerHTML = "";
   optionsArray.forEach(optionValue => {
     const label = document.createElement("label");
-    label.className = "flex items-center space-x-2 p-2 hover:bg-sky-50 rounded-md cursor-pointer";
+    // Use slate hover (light mode) and rely on dark CSS override for dark mode
+    label.className = "flex items-center space-x-2 p-2 hover:bg-slate-100 rounded-md cursor-pointer";
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
