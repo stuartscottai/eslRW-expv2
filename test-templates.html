@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -59,8 +59,8 @@
       const stats = getTemplateStats();
 
       document.getElementById('status').innerHTML = `
-        <p>✅ Template system initialized</p>
-        <p>📊 Total templates: ${all.length}</p>
+        <p>âœ… Template system initialized</p>
+        <p>ðŸ“Š Total templates: ${all.length}</p>
       `;
 
       document.getElementById('active-template').innerHTML = `
@@ -83,7 +83,7 @@
     window.resetTemplates = function() {
       if (confirm('Reset to default template only?')) {
         resetToDefaults();
-        alert('✅ Templates reset!');
+        alert('âœ… Templates reset!');
         updateDisplay();
       }
     };
@@ -110,3 +110,7 @@
   </script>
 </body>
 </html>
+
+
+
+

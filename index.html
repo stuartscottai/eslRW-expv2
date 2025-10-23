@@ -21,8 +21,8 @@
     .rw-card-btn{display:block;text-align:center;text-decoration:none;width:calc(100% - 72px);padding:14px 16px;border-radius:12px;border:1px solid var(--accent);background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 3px 8px rgba(245, 158, 11, .3);transition:transform .2s ease,box-shadow .2s ease;background-clip:padding-box;z-index:10;position:absolute;bottom:10px;left:50%;transform:translateX(-50%)}
     .rw-card-btn:hover{transform:translateX(-50%) translateY(-2px);box-shadow:0 8px 20px rgba(245, 158, 11, .45);background:linear-gradient(180deg,var(--accent),#ea580c)}
     .rw-nav{position:absolute;width:100%;display:flex;justify-content:space-between;top:50%;transform:translateY(-50%);pointer-events:none;z-index:200}
-    .rw-nav-btn{width:52px;height:52px;border:none;border-radius:999px;pointer-events:all;cursor:pointer;background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(245, 158, 11, .4);transition:transform .2s ease;outline:none}
-    .rw-nav-btn:hover{transform:scale(1.06);box-shadow:0 10px 26px rgba(245, 158, 11, .5)}
+    .rw-nav-btn{width:36px;height:36px;border:none;border-radius:999px;pointer-events:all;cursor:pointer;background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(245, 158, 11, .28);transition:transform .15s ease,opacity .15s ease;outline:none;opacity:.85}
+    .rw-nav-btn:hover{transform:scale(1.03);box-shadow:0 6px 18px rgba(245, 158, 11, .35);opacity:1}
     .rw-indicators{display:flex;justify-content:center;gap:10px;margin-top:18px}
     .rw-indicator{height:10px;width:26px;border-radius:999px;background:#e5e7eb;border:1px solid var(--border);cursor:pointer;transition:all .3s ease}
     .rw-indicator.active{width:40px;background:linear-gradient(180deg,#f4b860,var(--accent))}
@@ -33,22 +33,57 @@
     .rw-detail-card:hover{box-shadow:0 14px 34px rgba(15,23,42,.10)}
     .rw-detail-card.visible{opacity:1;transform:perspective(1000px) translateY(0) rotateX(0) translateZ(0) scaleY(1) scaleX(1)}
     .rw-detail-img{width:50%;height:280px;border-radius:14px;object-fit:cover;background:#f1f5f9;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);box-shadow:0 10px 22px rgba(2,6,23,.10);transition:transform 120ms ease;transform:translate3d(var(--tx,0px), calc(var(--ty,0px) + var(--sy,0px)), 0)}
+    /* Inline gallery for detail cards */
+    .rw-gallery{position:relative;width:50%;height:420px;overflow:hidden}
+    /* Gallery arrows are subtle and only visible on hover */
+    .rw-gal-btn{position:absolute;top:50%;transform:translateY(-50%);width:28px;height:28px;border:none;border-radius:999px;cursor:pointer;background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(245,158,11,.3);opacity:0;transition:opacity .15s ease, transform .15s ease;z-index:500}
+    .rw-gallery:hover .rw-gal-btn{opacity:.85}
+    .rw-gal-btn:hover{transform:translateY(-50%) scale(1.03);opacity:1}
+    .rw-gal-prev{left:8px}
+    .rw-gal-next{right:8px}
+    /* Enlarge overlay button */
+    .rw-enlarge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;border:none;border-radius:6px;background:#17315c;color:#ffffff;box-shadow:0 4px 12px rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;opacity:0;cursor:pointer;z-index:510;transition:opacity .15s ease, transform .15s ease}
+    .rw-gallery:hover .rw-enlarge{opacity:.9}
+    .rw-enlarge:hover{transform:translate(-50%,-50%) scale(1.05)}
+    .rw-stack{position:relative;width:100%;height:100%}
+    .rw-stack-item{position:absolute;inset:0;transition:transform .28s ease,opacity .28s ease;will-change:transform,opacity}
+    .rw-gallery .rw-detail-img{width:100%;height:auto;object-fit:contain;display:block}
+
+    /* Make gallery images indicate interactivity */
+    .rw-gallery .rw-detail-img{cursor:default}
+
+    /* Lightbox viewer */
+    .rw-lightbox{position:fixed;inset:0;z-index:9999;display:none}
+    .rw-lightbox[aria-hidden="false"]{display:block}
+    .rw-lb-backdrop{position:absolute;inset:0;background:var(--overlay)}
+    .rw-lb-frame{position:relative;inset:auto;margin:0;display:flex;flex-direction:column;gap:8px;max-height:100vh}
+    .rw-lb-toolbar{position:absolute;top:12px;right:12px;display:flex;gap:6px;z-index:2}
+    .rw-lb-btn{width:32px;height:32px;border:none;border-radius:999px;cursor:pointer;background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(245,158,11,.28);opacity:.9}
+    .rw-lb-btn:hover{opacity:1}
+    .rw-lb-nav{position:absolute;top:50%;transform:translateY(-50%);display:flex;gap:0;width:100%;justify-content:space-between;padding:0 10px;z-index:2}
+    .rw-lb-nav .rw-lb-btn{width:28px;height:28px}
+    .rw-lb-canvas{position:absolute;inset:32px 48px;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 36px rgba(0,0,0,.25);overflow:auto}
+    .rw-lb-img{display:block;max-width:none;height:auto}
+    .rw-lb-footer{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;background:color-mix(in srgb, var(--surface) 92%, transparent);border:1px solid var(--border);border-radius:999px;padding:6px 10px;z-index:2}
+    .rw-lb-zoom-btn{width:28px;height:28px;border:none;border-radius:8px;background:#17315c;color:#fff;cursor:pointer}
+    .rw-lb-zoom-btn:hover{background:#1d3b6d}
+    .rw-lb-counter{font-size:12px;color:var(--text)}
     .rw-detail-text{width:50%;transition:transform 120ms ease;transform:translate3d(var(--tx,0px), calc(var(--ty,0px) + var(--sy,0px)), 0)}
     .rw-detail-text h3{font-size:1.375rem;margin-bottom:.5rem;color:var(--text);font-weight:700;letter-spacing:-.01em}
     .rw-detail-text p,.rw-detail-text li{font-size:1rem;line-height:1.75;color:var(--muted);text-align:justify}
     .rw-detail-text ul{margin-top:.75rem;padding-left:1.25rem;list-style:disc}
     .rw-detail-text li{margin:.35rem 0}
     .rw-detail-text li::marker{color:var(--primary)}
-    .rw-detail-card.left .rw-detail-img{order:0}
-    .rw-detail-card.right .rw-detail-img{order:1}
+    .rw-detail-card.left .rw-gallery{order:0}
+    .rw-detail-card.right .rw-gallery{order:1}
     .rw-detail-card.left .rw-detail-text{order:1}
     .rw-detail-card.right .rw-detail-text{order:0}
     @media (max-width: 900px){
       .rw-carousel-wrapper{height:520px}
       .rw-card{height:460px}
       .rw-detail-card{flex-direction:column;text-align:center;min-height:unset}
-      .rw-detail-img,.rw-detail-text{width:100%}
-      .rw-detail-img{height:220px}
+      .rw-gallery,.rw-detail-text{width:100%}
+      .rw-gallery{height:360px}
     }
     /* Mobile tweaks */
       @media (max-width: 640px){
@@ -77,12 +112,12 @@
     }
   </style>
 </head>
-<body class="bg-blue-50 text-slate-800">
+<body class="text-slate-800">
 
   <!-- Top nav -->
   <header class="site-header relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-center">
-      <button type="button" class="nav-toggle fixed top-3 left-4 z-40" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
+      <button type="button" class="nav-toggle fixed top-3 left-4 z-40" style="left: max(1rem, calc(50vw - 36rem + 1rem));" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
         <span class="sr-only">Toggle navigation</span>
         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
@@ -91,7 +126,7 @@
       <a href="index.html" class="flex items-center">
         <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
       </a>
-      <div class="fixed top-3 right-4 z-40 flex items-center gap-2" data-auth-header>
+      <div class="fixed top-3 right-4 z-40 flex items-center gap-2" style="right: max(1rem, calc(50vw - 36rem + 1rem));" data-auth-header>
         <div class="flex items-center gap-2" data-auth-when="signed-out">
           <button class="nav-toggle" aria-haspopup="true" aria-expanded="false" data-auth-open="login" title="User">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -185,11 +220,11 @@
           <form data-auth-form="login" data-auth-tab="login" class="space-y-3">
             <div class="space-y-1">
               <label class="text-sm font-medium text-slate-700" for="header-login-email">Email</label>
-              <input id="header-login-email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              <input id="header-login-email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200">
             </div>
             <div class="space-y-1">
               <label class="text-sm font-medium text-slate-700" for="header-login-password">Password</label>
-              <input id="header-login-password" name="password" type="password" autocomplete="current-password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              <input id="header-login-password" name="password" type="password" autocomplete="current-password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200">
             </div>
             <button type="submit" class="w-full inline-flex justify-center btn-primary btn-compact text-sm font-semibold">Sign in</button>
             <div class="pt-2 text-center">
@@ -257,28 +292,35 @@
       </span>
     </a>
   </nav>
-
-  <!-- Hero -->
-  <section class="relative z-0">
-    <img src="/public/hero-bg.jpg" alt="Hero"
-         class="w-full h-[260px] md:h-[320px] object-cover object-center">
-    <div class="absolute inset-0 bg-slate-900/40"></div>
-
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-      <img src="/public/logo.png" alt="ESL Report Writer Logo"
-           class="h-24 md:h-32 w-auto drop-shadow-lg">
-      <div class="mt-3 text-white text-lg md:text-xl font-medium drop-shadow">
-        Create polished ESL reports in minutes
+  <!-- Hero (mascot right, logo left aligned) -->
+  <section class="relative z-0" style="background: var(--bg);">
+    <div class="max-w-6xl mx-auto px-4 py-10 md:py-16 relative">
+      <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-6">
+        <!-- Left: logo and tagline -->
+        <div class="text-left">
+          <div class="relative inline-block">
+            <img src="/public/logo.png" alt="ESL Report Writer Logo" class="h-20 md:h-24 w-auto">
+            <div class="pointer-events-none absolute left-[5%] md:left-[4%] -bottom-1 md:-bottom-1.5 h-2 md:h-2.5 w-[28%] md:w-[26%] rounded-full" style="background: radial-gradient(ellipse at center, rgba(15,23,42,0.30) 0%, rgba(15,23,42,0.20) 45%, rgba(15,23,42,0) 75%); filter: blur(1.5px);"></div>
+          </div>
+          <div class="mt-3 text-slate-800 text-lg md:text-xl font-medium">
+            Create polished ESL reports in minutes
+          </div>
+        </div>
+        <!-- Right: mascot, aligned with left text and with ground shadow -->
+        <div class="relative h-[9.6rem] md:h-48 lg:h-[14.4rem]">
+          <div class="absolute right-0 bottom-[12px] md:bottom-[16px] lg:bottom-[20px] z-20 select-none pointer-events-none">
+            <div class="pointer-events-none absolute left-1/2 -translate-x-1/2 translate-y-[-24px] md:translate-y-[-26px] lg:translate-y-[-28px] bottom-0 h-2 md:h-2.5 lg:h-3 w-32 md:w-40 lg:w-48 z-10" style="background: radial-gradient(ellipse at center, rgba(15,23,42,0.35) 0%, rgba(15,23,42,0.22) 45%, rgba(15,23,42,0) 75%); filter: blur(2px);"></div>
+            <img src="/public/mascot/mascot-thumbsup.png" alt="Mascot giving thumbs up" class="h-[9.6rem] md:h-48 lg:h-[14.4rem] w-auto block relative z-20">
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-
-  <!-- Welcome card -->
+  </section><!-- Welcome card -->
   <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
     <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
       <div class="flex items-center justify-between border-b border-slate-200 pb-4">
         <div class="flex items-center gap-3">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500"></span>
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-teal-500"></span>
           <span class="text-slate-800 font-semibold">Welcome</span>
         </div>
       </div>
@@ -365,7 +407,9 @@
           <!-- Feature Details -->
           <section class="rw-details" aria-label="Feature details">
             <div id="detail-generator" class="rw-detail-card left">
-              <img src="/public/hero-bg.jpg" alt="Report Generator Screenshot" class="rw-detail-img" />
+              <div class="rw-gallery" data-images="/public/screenshots/report-builder1.png,/public/screenshots/report-builder2.png,/public/screenshots/generated-student-report.png,/public/screenshots/generated-student-report-edited.png">
+                <img src="/public/screenshots/report-builder1.png" alt="Report Generator Screenshot" class="rw-detail-img" />
+              </div>
               <div class="rw-detail-text">
                 <h3>Report Generator</h3>
                 <p>Use the default templates to create professionally written reports on your students in minutes. Report on their personality, provide ratings for performance areas, and include suggestions for improvement to deliver comprehensive feedback.</p>
@@ -388,10 +432,14 @@
                   <li>Track goals over time and measure progress</li>
                 </ul>
               </div>
-              <img src="/public/hero-bg.jpg" alt="Areas for Improvement Screenshot" class="rw-detail-img" />
+              <div class="rw-gallery" data-images="/public/screenshots/improvement-strategies.png,/public/screenshots/edit-with-ai.png,/public/screenshots/edit-with.ai-request.png">
+                <img src="/public/screenshots/improvement-strategies.png" alt="Areas for Improvement Screenshot" class="rw-detail-img" />
+              </div>
             </div>
             <div id="detail-template" class="rw-detail-card left">
-              <img src="/public/hero-bg.jpg" alt="Template Builder Screenshot" class="rw-detail-img" />
+              <div class="rw-gallery" data-images="/public/screenshots/template-builder.png,/public/screenshots/template-manager.png">
+                <img src="/public/screenshots/template-builder.png" alt="Template Builder Screenshot" class="rw-detail-img" />
+              </div>
               <div class="rw-detail-text">
                 <h3>Template Builder</h3>
                 <p>Build a template from scratch, including your own ratings and performance criteria, to be used in the Report Generator for bespoke reports in your area of education.</p>
@@ -591,7 +639,7 @@
       function updateDetailScroll(){
         const vh = window.innerHeight || 800;
         dCards.forEach(card=>{
-          const img = card.querySelector('.rw-detail-img');
+          const img = card.querySelector('.rw-gallery .rw-detail-img.is-active') || card.querySelector('.rw-detail-img');
           const txt = card.querySelector('.rw-detail-text');
           if (!img || !txt) return;
           const r = card.getBoundingClientRect();
@@ -611,7 +659,7 @@
 
       if (supportsHover) {
         dCards.forEach(card=>{
-          const img = card.querySelector('.rw-detail-img');
+          const img = card.querySelector('.rw-gallery .rw-detail-img.is-active') || card.querySelector('.rw-detail-img');
           const txt = card.querySelector('.rw-detail-text');
           if (!img || !txt) return;
           card.addEventListener('mousemove', (e)=>{
@@ -630,8 +678,219 @@
       }
     });
   </script>
+  <div id="rw-lightbox" class="rw-lightbox" aria-hidden="true">
+    <div class="rw-lb-backdrop"></div>
+    <div class="rw-lb-frame">
+      <div class="rw-lb-toolbar">
+        <button type="button" class="rw-lb-btn" data-lb-close aria-label="Close">&times;</button>
+      </div>
+      <div class="rw-lb-nav">
+        <button type="button" class="rw-lb-btn" data-lb-prev aria-label="Previous">&#10094;</button>
+        <button type="button" class="rw-lb-btn" data-lb-next aria-label="Next">&#10095;</button>
+      </div>
+      <div class="rw-lb-canvas">
+        <img class="rw-lb-img" alt="Preview" />
+      </div>
+      <div class="rw-lb-footer">
+        <button type="button" class="rw-lb-zoom-btn" data-zoom="-">-</button>
+        <button type="button" class="rw-lb-zoom-btn" data-zoom="fit">Fit</button>
+        <button type="button" class="rw-lb-zoom-btn" data-zoom="+">+</button>
+        <span class="rw-lb-counter" data-lb-counter>1 / 1</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Lightweight lightbox viewer for gallery images
+    document.addEventListener('DOMContentLoaded', () => {
+      const lb = document.getElementById('rw-lightbox');
+      if (!lb) return;
+      const imgEl = lb.querySelector('.rw-lb-img');
+      const btnClose = lb.querySelector('[data-lb-close]');
+      const btnPrev = lb.querySelector('[data-lb-prev]');
+      const btnNext = lb.querySelector('[data-lb-next]');
+      const counter = lb.querySelector('[data-lb-counter]');
+      const canvas = lb.querySelector('.rw-lb-canvas');
+      let sources = [];
+      let idx = 0;
+      let baseW = 0, baseH = 0;
+      let zoom = 1;
+
+      function updateCounter(){ if (counter) counter.textContent = `${idx+1} / ${sources.length || 1}`; }
+      function setSrc(src){ imgEl.src = src; }
+      function applyZoom(){ if (!baseW) return; imgEl.style.width = Math.max(100, Math.round(baseW * zoom)) + 'px'; imgEl.style.height = 'auto'; }
+      function fitZoom(){ if (!baseW || !baseH) return; const vb = canvas.getBoundingClientRect(); const m = 16; const maxW = vb.width - m*2; const maxH = vb.height - m*2; const z = Math.min(maxW/baseW, maxH/baseH); zoom = Math.max(0.25, Math.min(4, z)); applyZoom(); }
+      function open(galEl){
+        // Build source list robustly: prefer data-images, else read from DOM imgs
+        const fromAttr = (galEl.getAttribute('data-images')||'').split(',').map(s=>s.trim()).filter(Boolean);
+        const fromDom = Array.from(galEl.querySelectorAll('img.rw-detail-img')).map(im=>im.getAttribute('src')||'').filter(Boolean);
+        sources = fromAttr.length ? fromAttr : fromDom;
+        // Find active index by matching the active image element if present
+        const actEl = galEl.querySelector('.rw-detail-img.is-active') || galEl.querySelector('.rw-detail-img');
+        const actSrc = actEl ? (actEl.getAttribute('src')||'') : '';
+        const norm = (s)=> s.replace(/^https?:\/\/[^/]+/,'');
+        idx = Math.max(0, sources.findIndex(s => norm(s) === norm(actSrc)));
+        setSrc(sources[idx]);
+        lb.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        updateCounter();
+      }
+      function close(){ lb.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; sources=[]; idx=0; zoom=1; imgEl.style.width=''; }
+      function next(){ if(!sources.length) return; idx=(idx+1)%sources.length; setSrc(sources[idx]); updateCounter(); }
+      function prev(){ if(!sources.length) return; idx=(idx-1+sources.length)%sources.length; setSrc(sources[idx]); updateCounter(); }
+
+      // Wire triggers: click on small enlarge button overlay
+      document.addEventListener('click', (e)=>{
+        const t = e.target;
+        if (!(t instanceof Element)) return;
+        const btn = t.closest('.rw-enlarge');
+        if (btn) {
+          const gal = btn.closest('.rw-gallery');
+          if (gal) { open(gal); }
+        }
+      });
+
+      // Image load to set base dimensions and fit
+      imgEl.addEventListener('load', ()=>{
+        baseW = imgEl.naturalWidth; baseH = imgEl.naturalHeight; zoom = 1; fitZoom(); canvas.scrollTop = 0; canvas.scrollLeft = 0;
+        // Hide nav if single image
+        const multi = sources.length > 1; btnPrev.style.display = multi ? '' : 'none'; btnNext.style.display = multi ? '' : 'none';
+      });
+
+      // Buttons
+      btnClose.addEventListener('click', close);
+      btnNext.addEventListener('click', next);
+      btnPrev.addEventListener('click', prev);
+      lb.querySelectorAll('.rw-lb-zoom-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const mode = btn.getAttribute('data-zoom');
+          if (mode === '+') { zoom = Math.min(4, zoom + 0.25); applyZoom(); }
+          else if (mode === '-') { zoom = Math.max(0.25, zoom - 0.25); applyZoom(); }
+          else { fitZoom(); }
+        });
+      });
+
+      // Close on backdrop click
+      lb.addEventListener('click', (e)=>{ if (e.target === lb || e.target.classList.contains('rw-lb-backdrop')) close(); });
+      // Keys
+      document.addEventListener('keydown', (e)=>{
+        if (lb.getAttribute('aria-hidden') === 'true') return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowRight') next();
+        else if (e.key === 'ArrowLeft') prev();
+      });
+    });
+  </script>
+  <script>
+    // Initialize stacked, variable-height galleries
+    document.addEventListener('DOMContentLoaded', () => {
+      const galleries = Array.from(document.querySelectorAll('.rw-gallery'));
+      galleries.forEach(gal => {
+        const sources = (gal.getAttribute('data-images') || '').split(',').map(s => s.trim()).filter(Boolean);
+        if (!sources.length) return;
+
+        // Build stack structure
+        const stack = document.createElement('div');
+        stack.className = 'rw-stack';
+        const existingImg = gal.querySelector('img.rw-detail-img');
+        if (existingImg) existingImg.remove();
+
+        const items = sources.map(src => {
+          const wrap = document.createElement('div');
+          wrap.className = 'rw-stack-item';
+          const img = document.createElement('img');
+          img.className = 'rw-detail-img';
+          img.src = src;
+          wrap.appendChild(img);
+          stack.appendChild(wrap);
+          return wrap;
+        });
+        gal.insertBefore(stack, gal.firstChild);
+
+        let idx = 0;
+        const n = items.length;
+
+        function layout(activeIndex){
+          // Compute container height from active image natural size
+          const activeImg = items[activeIndex].querySelector('img');
+          const size = () => {
+            const fixedH = window.matchMedia('(max-width: 900px)').matches ? 360 : 420;
+            gal.style.height = fixedH + 'px';
+            gal.style.overflowY = 'hidden';
+          };
+          size();
+
+          // Stack transforms: top 0..3 visible
+          items.forEach((wrap, i) => {
+            const imgEl = wrap.querySelector('img');
+            if (imgEl) imgEl.classList.toggle('is-active', i === activeIndex);
+            const rel = (i - activeIndex + n) % n;
+            if (rel === 0) {
+              wrap.style.opacity = '1';
+              wrap.style.zIndex = String(100);
+              wrap.style.transform = 'translateY(0px) scale(1)';
+              wrap.style.pointerEvents = 'auto';
+            } else if (rel <= 3) {
+              const dy = rel * 12; // px
+              const sc = 1 - rel * 0.04;
+              wrap.style.opacity = '1';
+              wrap.style.zIndex = String(100 - rel);
+              wrap.style.transform = `translateY(${dy}px) scale(${sc})`;
+              wrap.style.pointerEvents = 'none';
+            } else {
+              wrap.style.opacity = '0';
+              wrap.style.zIndex = '0';
+              wrap.style.transform = 'translateY(0px) scale(0.9)';
+              wrap.style.pointerEvents = 'none';
+            }
+          });
+        }
+
+        const clamp = (i) => (i + n) % n;
+        const go = (i) => { idx = clamp(i); layout(idx); };
+
+        // Arrows
+        if (n > 1) {
+          const mkBtn = (cls, label, onClick) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = `rw-gal-btn ${cls}`;
+            b.setAttribute('aria-label', label);
+            b.innerHTML = cls.includes('prev') ? '&#10094;' : '&#10095;';
+            b.addEventListener('click', (e) => { e.stopPropagation(); onClick(); });
+            return b;
+          };
+          gal.appendChild(mkBtn('rw-gal-prev', 'Previous screenshot', () => go(idx - 1)));
+          gal.appendChild(mkBtn('rw-gal-next', 'Next screenshot', () => go(idx + 1)));
+        }
+        // Add enlarge overlay button
+        const enlarge = document.createElement('button');
+        enlarge.type = 'button';
+        enlarge.className = 'rw-enlarge';
+        enlarge.setAttribute('aria-label','Enlarge');
+        enlarge.innerHTML = '<svg viewBox=\'0 0 24 24\' width=\'16\' height=\'16\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M4 9V4h5\'/><path d=\'M20 15v5h-5\'/><path d=\'M20 9V4h-5\'/><path d=\'M4 15v5h5\'/></svg>';
+        gal.appendChild(enlarge);
+
+        // Resize handling for variable heights
+        const ro = new ResizeObserver(() => layout(idx));
+        ro.observe(gal);
+        window.addEventListener('resize', () => layout(idx));
+
+        // Initial layout after first image loads
+        const firstImg = items[0].querySelector('img');
+        if (firstImg && !firstImg.complete) firstImg.addEventListener('load', () => layout(0), { once:true });
+        layout(0);
+      });
+    });
+  </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 

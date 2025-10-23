@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,11 +9,11 @@
   <link rel="stylesheet" href="/styles/style.css">
   <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
 </head>
-<body class="bg-blue-50 text-slate-800">
+<body class="text-slate-800">
   <!-- Header / navigation copied for continuity -->
   <header class="site-header relative z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-center">
-      <button type="button" class="nav-toggle fixed top-3 left-4 z-40" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
+      <button type="button" class="nav-toggle fixed top-3 left-4 z-40" style="left: max(1rem, calc(50vw - 36rem + 1rem));" aria-expanded="false" aria-controls="primary-navigation" data-nav-toggle>
         <span class="sr-only">Toggle navigation</span>
         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
@@ -22,7 +22,7 @@
       <a href="index.html" class="flex items-center">
         <img src="/public/logo-icon.png" alt="ESL Report Writer Icon" class="h-10 w-10">
       </a>
-      <div class="fixed top-3 right-4 z-40 flex items-center gap-2" data-auth-header>
+      <div class="fixed top-3 right-4 z-40 flex items-center gap-2" style="right: max(1rem, calc(50vw - 36rem + 1rem));" data-auth-header>
         <div class="flex items-center gap-2" data-auth-when="signed-out">
           <button class="nav-toggle" aria-haspopup="true" aria-expanded="false" data-auth-open="login" title="User">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -104,19 +104,18 @@
                   <span class="account-menu-desc">Log out of this account.</span>
                 </span>
               </button>
-            </nav>
-          </div>
+            </nav></div>
         </div>
         <div class="absolute right-0 mt-2 w-[min(92vw,320px)] rounded-xl border border-slate-200 bg-white shadow-lg p-4 hidden z-50" data-auth-dropdown>
           <div class="flex items-center mb-3"><button class="ml-auto text-slate-400 hover:text-slate-600" data-auth-close>&times;</button></div>
           <form data-auth-form="login" data-auth-tab="login" class="space-y-3">
             <div class="space-y-1">
               <label class="text-sm font-medium text-slate-700" for="header-login-email">Email</label>
-              <input id="header-login-email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              <input id="header-login-email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200">
             </div>
             <div class="space-y-1">
               <label class="text-sm font-medium text-slate-700" for="header-login-password">Password</label>
-              <input id="header-login-password" name="password" type="password" autocomplete="current-password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200">
+              <input id="header-login-password" name="password" type="password" autocomplete="current-password" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200">
             </div>
             <button type="submit" class="w-full inline-flex justify-center btn-primary btn-compact text-sm font-semibold">Sign in</button>
             <div class="pt-2 text-center">
@@ -184,15 +183,32 @@
       </span>
     </a>
   </nav>
-
-  <section class="relative z-0">
-    <img src="/public/hero-bg.jpg" alt="Hero" class="w-full h-[220px] md:h-[280px] object-cover object-center">
-    <div class="absolute inset-0 bg-slate-900/40"></div>
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-      <img src="/public/logo.png" alt="ESL Report Writer Logo" class="h-20 md:h-28 w-auto drop-shadow-lg">
-      <div class="mt-2 text-white text-lg md:text-xl font-medium drop-shadow">Usage report</div>
+  <!-- Hero (mascot right, logo left aligned) -->
+  <section class="relative z-0" style="background: var(--bg);">
+    <div class="max-w-6xl mx-auto px-4 py-10 md:py-16 relative">
+      <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-6">
+        <!-- Left: logo and tagline -->
+        <div class="text-left">
+          <div class="relative inline-block">
+            <img src="/public/logo.png" alt="ESL Report Writer Logo" class="h-20 md:h-24 w-auto">
+            <div class="pointer-events-none absolute left-[5%] md:left-[4%] -bottom-1 md:-bottom-1.5 h-2 md:h-2.5 w-[28%] md:w-[26%] rounded-full" style="background: radial-gradient(ellipse at center, rgba(15,23,42,0.30) 0%, rgba(15,23,42,0.20) 45%, rgba(15,23,42,0) 75%); filter: blur(1.5px);"></div>
+          </div>
+          <div class="mt-3 text-slate-800 text-lg md:text-xl font-medium">
+            Create polished ESL reports in minutes
+          </div>
+        </div>
+        <!-- Right: mascot, aligned with left text and with ground shadow -->
+        <div class="relative h-[9.6rem] md:h-48 lg:h-[14.4rem]">
+          <div class="absolute right-0 bottom-[12px] md:bottom-[16px] lg:bottom-[20px] z-20 select-none pointer-events-none">
+            <div class="pointer-events-none absolute left-1/2 -translate-x-1/2 translate-y-[-24px] md:translate-y-[-26px] lg:translate-y-[-28px] bottom-0 h-2 md:h-2.5 lg:h-3 w-32 md:w-40 lg:w-48 z-10" style="background: radial-gradient(ellipse at center, rgba(15,23,42,0.35) 0%, rgba(15,23,42,0.22) 45%, rgba(15,23,42,0) 75%); filter: blur(2px);"></div>
+            <img src="/public/mascot/mascot-thumbsup.png" alt="Mascot giving thumbs up" class="h-[9.6rem] md:h-48 lg:h-[14.4rem] w-auto block relative z-20">
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+
+  
 
   <div class="max-w-4xl mx-auto px-4 -mt-10 relative z-10">
     <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-6">
@@ -222,6 +238,13 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
