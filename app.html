@@ -9,6 +9,25 @@
   <link rel="stylesheet" href="/styles/style.css">
   <link rel="stylesheet" href="/styles/dark-overrides.css">
   <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+  <style>
+    /* Test: add matching soft top/bottom ground shadows to the main card (page-local) */
+    .dual-shadow-card{ position: relative; }
+    .dual-shadow-card::before,
+    .dual-shadow-card::after{
+      content: "";
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      height: 14px;
+      border-radius: 999px;
+      background: radial-gradient(ellipse at center, rgba(15,23,42,0.30) 0%, rgba(15,23,42,0.18) 45%, rgba(15,23,42,0) 75%);
+      filter: blur(3px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .dual-shadow-card::before{ top: -8px; }
+    .dual-shadow-card::after{ bottom: -8px; }
+  </style>
 </head>
 <body class="text-slate-800">
 
@@ -231,7 +250,7 @@
 
   <!-- Card -->
   <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
-    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
+    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8 dual-shadow-card">
       <div class="flex justify-end pt-1">
         <div class="flex items-center gap-3">
           <span class="text-sm text-slate-600">View:</span>
@@ -247,7 +266,7 @@
   <h2 class="text-xl font-semibold text-slate-800">Pre-report criteria</h2>
 
   <form id="pre-form" class="space-y-8">
-    <div class="border border-slate-200 rounded-lg p-6 bg-pastel-teal shadow-sm">
+    <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
       <div class="space-y-6">
 
         <!-- NEW: Template Selector Row -->
@@ -345,7 +364,7 @@
 
         <!-- We put Step 2 inputs inside #student-form so clearing only resets these -->
 <form id="student-form">
-  <div class="border border-slate-200 rounded-lg p-6 bg-pastel-teal shadow-sm">
+  <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
     <div class="space-y-6">
 
       <!-- NEW: Name + Gender row (before ratings) -->
@@ -412,7 +431,7 @@
             </button>
           </div>
             <textarea id="report-output"
-              class="w-full min-h-[120px] p-4 border border-slate-200 rounded-lg bg-pastel-teal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0f766e]"
+              class="w-full min-h-[120px] p-4 border border-slate-200 rounded-lg bg-slate-50 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0f766e]"
               placeholder="Your AI-generated student report will appear here..."></textarea>
             <div class="mt-3 flex flex-col sm:flex-row justify-between items-center gap-3">
               <div class="flex gap-3 w-full sm:w-auto">
@@ -437,7 +456,7 @@
           <section id="strategies-section" class="hidden">
             <h2 class="text-xl font-semibold text-slate-800 mb-3">Suggested Improvement Strategies</h2>
             <textarea id="strategies-output"
-              class="w-full min-h-[100px] p-4 border border-slate-200 rounded-lg bg-pastel-teal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0f766e]"
+              class="w-full min-h-[100px] p-4 border border-slate-200 rounded-lg bg-slate-50 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0f766e]"
               placeholder="AI-generated improvement strategies will appear here..."></textarea>
             <div class="mt-3 flex flex-col sm:flex-row justify-between items-center gap-3">
               <div class="flex gap-3 w-full sm:w-auto">
