@@ -25,8 +25,8 @@ Track outstanding tasks by area. Check items off as completed.
 - [x] Adjust “Generate Report” animation: current green cloud is hard to see; improve contrast/visibility.
 
 ## API Instructions
-- [ ] Ensure generated reports exclude greetings (e.g., “It gives me pleasure…”, “Dear…”) and sign-offs (e.g., “Yours…”).
-- [ ] Prioritize text from the “Custom instructions” input in the report template over generic rules. If custom instructions specify a salutation or pattern, they override the default “no greeting” guidance.
+- [x] Ensure generated reports exclude greetings (e.g., “It gives me pleasure…”, “Dear…”) and sign-offs (e.g., “Yours…”).
+- [x] Prioritize text from the “Custom instructions” input in the report template over generic rules. If custom instructions specify a salutation or pattern, they override the default “no greeting” guidance.
 
 ## Register
 - [ ] Remove “Register” subheading and the horizontal line.
@@ -36,3 +36,7 @@ Track outstanding tasks by area. Check items off as completed.
 
 ## Emails
 - [ ] Ensure brand name appears in all auth emails and messages: confirmation, Google sign-in, and password reset.
+
+## Sitewide
+- [ ] Update dark mode color scheme to better match the new teal theme and improve cohesion.
+- [ ] Verify and refine mobile layout across all pages for consistency and usability.

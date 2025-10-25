@@ -10,24 +10,30 @@
   <link rel="stylesheet" href="/styles/dark-overrides.css">
   <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
   <style>
-    /* Test: add matching soft top/bottom ground shadows to the main card (page-local) */
-    .dual-shadow-card{ position: relative; }
-    .dual-shadow-card::before,
-    .dual-shadow-card::after{
-      content: "";
-      position: absolute;
-      left: 6%;
-      right: 6%;
-      height: 14px;
-      border-radius: 999px;
-      background: radial-gradient(ellipse at center, rgba(15,23,42,0.30) 0%, rgba(15,23,42,0.18) 45%, rgba(15,23,42,0) 75%);
-      filter: blur(3px);
-      pointer-events: none;
-      z-index: 0;
+    /* Page-local: Range slider thumb = dark green (match buttons) */
+    input[type="range"] { accent-color: #0f766e; }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 18px; height: 18px; border-radius: 9999px;
+      background: #0f766e; border: 2px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(15,118,110,0.3);
+      cursor: pointer; margin-top: -8px; /* align with 8px track (h-2) */
     }
-    .dual-shadow-card::before{ top: -8px; }
-    .dual-shadow-card::after{ bottom: -8px; }
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 8px; border-radius: 9999px;
+      background: #e2e8f0; /* slate-200 to match bg-slate-200 */
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 18px; height: 18px; border-radius: 9999px;
+      background: #0f766e; border: 2px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(15,118,110,0.3);
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-track {
+      height: 8px; border-radius: 9999px; background: #e2e8f0;
+    }
   </style>
+  
 </head>
 <body class="text-slate-800">
 
@@ -250,7 +256,7 @@
 
   <!-- Card -->
   <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
-    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8 dual-shadow-card">
+    <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
       <div class="flex justify-end pt-1">
         <div class="flex items-center gap-3">
           <span class="text-sm text-slate-600">View:</span>

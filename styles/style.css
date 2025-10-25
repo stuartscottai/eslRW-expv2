@@ -562,10 +562,10 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
     content: counter(step);
     position: absolute; left: 0; top: 0.15rem;
     width: 2rem; height: 2rem; border-radius: 9999px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
+    background: #0f766e; /* match dark button green */
     color: #ffffff; font-weight: 600;
     display: inline-flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 18px rgba(20, 184, 166, 0.18);
+    box-shadow: 0 8px 18px rgba(15, 118, 110, 0.25);
 }
 .step-list li + li { margin-top: 0.75rem; }
 
