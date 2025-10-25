@@ -161,3 +161,32 @@ html[data-theme="dark"] .input-wrapper input:focus { border-bottom-color: var(--
   z-index: 10;
 }
 .close-login:hover { background: rgba(13,148,136,0.25); border-color: rgba(20,184,166,0.6); }
+
+/* --- ESL Report Writer: sign-in tweaks (override) --- */
+.brand-logo img { width: 96px; height:auto; }
+.login-card { padding: 36px 28px 28px; }
+.login-header { margin-bottom: 24px; }
+.form-group { margin-bottom: 18px; }
+.divider { margin: 18px 0; }
+.social-login { margin-bottom: 18px; }
+
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  .login-card { padding: 24px 18px 18px; }
+  .brand-logo img { width: 84px; }
+}
+
+@media (max-height: 700px) {
+  .login-card { padding: 24px 18px 18px; }
+  .login-header { margin-bottom: 18px; }
+  .brand-logo img { width: 84px; }
+  .form-group { margin-bottom: 14px; }
+  .divider { margin: 14px 0; }
+}
+
+@media (max-height: 600px) {
+  .login-container { max-width: 360px; }
+  .login-card { padding: 18px 16px; }
+  .login-header h2 { font-size: 1.25rem; }
+  .login-header p { font-size: 13px; }
+}

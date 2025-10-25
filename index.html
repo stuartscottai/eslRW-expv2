@@ -13,13 +13,15 @@
     .rw-section-title{letter-spacing:-.02em}
     .rw-carousel-wrapper{position:relative;width:100%;height:560px;display:flex;justify-content:center;align-items:center}
     .rw-carousel{position:relative;width:900px;max-width:100%;height:520px;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1)}
-    .rw-card{position:absolute;width:380px;max-width:86vw;height:500px;background:radial-gradient(120% 120% at 0% 0%, var(--surface) 0%, #f3f4f6 60%, var(--surface) 100%);border-radius:22px;padding:36px 36px 96px 36px;box-shadow:0 12px 36px rgba(15,23,42,.08),0 2px 8px rgba(15,23,42,.05);border:1px solid var(--border);cursor:grab;transition:all .5s cubic-bezier(.4,0,.2,1);backdrop-filter:blur(10px) saturate(120%);transform-style:preserve-3d;left:50%;top:50%;margin-left:-190px;margin-top:-250px;display:flex;flex-direction:column;justify-content:flex-start;color:var(--text)}
-    .rw-card:hover{transform:translateZ(24px);border-color:#cbd5e1}
+    .rw-card{position:absolute;width:380px;max-width:86vw;height:500px;background:radial-gradient(120% 120% at 0% 0%, var(--surface) 0%, #f3f4f6 60%, var(--surface) 100%);border-radius:22px;padding:36px 36px 96px 36px;box-shadow:0 12px 36px rgba(15,23,42,.08),0 2px 8px rgba(15,23,42,.05);border:1px solid var(--border);cursor:grab;transition:all .5s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;left:50%;top:50%;margin-left:-190px;margin-top:-250px;display:flex;flex-direction:column;justify-content:flex-start;color:var(--text)}
+    /* Removed hover lift to avoid color/overlay effect on background card */
+    .rw-card:hover{transform:none;border-color:var(--border)}
     .rw-card-icon{width:72px;height:72px;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 18px;color:var(--accent)}
     .rw-card-title{font-weight:700;color:var(--text);letter-spacing:-.3px;text-align:center}
-    .rw-card-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:12px;font-weight:500;text-align:center}
-    .rw-card-btn{display:block;text-align:center;text-decoration:none;width:calc(100% - 72px);padding:14px 16px;border-radius:12px;border:1px solid var(--accent);background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 3px 8px rgba(245, 158, 11, .3);transition:transform .2s ease,box-shadow .2s ease;background-clip:padding-box;z-index:10;position:absolute;bottom:10px;left:50%;transform:translateX(-50%)}
-    .rw-card-btn:hover{transform:translateX(-50%) translateY(-2px);box-shadow:0 8px 20px rgba(245, 158, 11, .45);background:linear-gradient(180deg,var(--accent),#ea580c)}
+    .rw-card-desc{font-size:16px;color:var(--muted);line-height:1.7;margin-bottom:12px;font-weight:500;text-align:center}
+    .rw-card-mascot{display:block;margin:10px auto 0 auto;width:72%;max-height:170px;object-fit:contain}
+    .rw-card-btn{display:block;text-align:center;text-decoration:none;width:calc(100% - 72px);padding:14px 16px;border-radius:12px;border:1px solid #0f766e;background:linear-gradient(180deg,#0f766e,#0d9488);color:#fff;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 3px 8px rgba(15,118,110,.28);transition:transform .2s ease,box-shadow .2s ease;background-clip:padding-box;z-index:10;position:absolute;bottom:10px;left:50%;transform:translateX(-50%)}
+    .rw-card-btn:hover{transform:translateX(-50%);box-shadow:0 8px 20px rgba(15,118,110,.45);background:linear-gradient(180deg,#0d9488,#115e59)}
     .rw-nav{position:absolute;width:100%;display:flex;justify-content:space-between;top:50%;transform:translateY(-50%);pointer-events:none;z-index:200}
     .rw-nav-btn{width:36px;height:36px;border:none;border-radius:999px;pointer-events:all;cursor:pointer;background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(245, 158, 11, .28);transition:transform .15s ease,opacity .15s ease;outline:none;opacity:.85}
     .rw-nav-btn:hover{transform:scale(1.03);box-shadow:0 6px 18px rgba(245, 158, 11, .35);opacity:1}
@@ -28,13 +30,14 @@
     .rw-indicator.active{width:40px;background:linear-gradient(180deg,#f4b860,var(--accent))}
     /* Detail cards */
     .rw-details{display:flex;flex-direction:column;gap:28px;margin-top:34px}
-    .rw-detail-card{opacity:0;transform:perspective(1000px) translateY(24px) rotateX(10deg) translateZ(-60px) scaleY(.98) scaleX(.995);transition:transform 700ms cubic-bezier(.2,.8,.2,1),opacity 600ms ease-out,box-shadow .2s ease,border-color .2s ease;transition-delay:var(--stagger,0ms);display:flex;align-items:center;gap:40px;background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.98));padding:28px;border-radius:18px;box-shadow:0 10px 26px rgba(15,23,42,.08);position:relative;min-height:280px;border:1px solid color-mix(in srgb, var(--border) 70%, transparent)}
-    .rw-detail-card::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;border-radius:18px 18px 0 0;background:linear-gradient(90deg, var(--primary), var(--accent));opacity:.9}
+    .rw-detail-card{opacity:0;transform:perspective(1000px) translateY(24px) rotateX(10deg) translateZ(-60px) scaleY(.98) scaleX(.995);transition:transform 700ms cubic-bezier(.2,.8,.2,1),opacity 600ms ease-out,box-shadow .2s ease,border-color .2s ease;transition-delay:var(--stagger,0ms);display:flex;flex-direction:column;align-items:stretch;gap:18px;background:color-mix(in srgb, var(--surface) 92%, var(--primary) 8%);padding:28px;border-radius:18px;box-shadow:0 10px 26px rgba(15,23,42,.08);position:relative;min-height:280px;border:1px solid color-mix(in srgb, var(--primary) 20%, var(--border) 80%);scroll-margin-top: 96px}
+    .rw-detail-card::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;border-radius:18px 18px 0 0;background:linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 55%, #67e8f9));opacity:.9}
     .rw-detail-card:hover{box-shadow:0 14px 34px rgba(15,23,42,.10)}
     .rw-detail-card.visible{opacity:1;transform:perspective(1000px) translateY(0) rotateX(0) translateZ(0) scaleY(1) scaleX(1)}
-    .rw-detail-img{width:50%;height:280px;border-radius:14px;object-fit:cover;background:#f1f5f9;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);box-shadow:0 10px 22px rgba(2,6,23,.10);transition:transform 120ms ease;transform:translate3d(var(--tx,0px), calc(var(--ty,0px) + var(--sy,0px)), 0)}
+    .rw-detail-img{width:100%;height:300px;border-radius:14px;object-fit:cover;background:#f1f5f9;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);box-shadow:0 10px 22px rgba(2,6,23,.10);transition:transform 120ms ease;transform:translate3d(var(--tx,0px), calc(var(--ty,0px) + var(--sy,0px)), 0)}
     /* Inline gallery for detail cards */
-    .rw-gallery{position:relative;width:50%;height:420px;overflow:hidden}
+    .rw-gallery{position:relative;width:100%;height:320px;overflow:hidden;order:2}
+    .rw-detail-text{order:1}
     /* Gallery arrows are subtle and only visible on hover */
     .rw-gal-btn{position:absolute;top:50%;transform:translateY(-50%);width:28px;height:28px;border:none;border-radius:999px;cursor:pointer;background:linear-gradient(180deg,#f4b860,var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(245,158,11,.3);opacity:0;transition:opacity .15s ease, transform .15s ease;z-index:500}
     .rw-gallery:hover .rw-gal-btn{opacity:.85}
@@ -68,7 +71,7 @@
     .rw-lb-zoom-btn{width:28px;height:28px;border:none;border-radius:8px;background:#17315c;color:#fff;cursor:pointer}
     .rw-lb-zoom-btn:hover{background:#1d3b6d}
     .rw-lb-counter{font-size:12px;color:var(--text)}
-    .rw-detail-text{width:50%;transition:transform 120ms ease;transform:translate3d(var(--tx,0px), calc(var(--ty,0px) + var(--sy,0px)), 0)}
+    .rw-detail-text{width:100%;transition:transform 120ms ease;transform:translate3d(var(--tx,0px), calc(var(--ty,0px) + var(--sy,0px)), 0)}
     .rw-detail-text h3{font-size:1.375rem;margin-bottom:.5rem;color:var(--text);font-weight:700;letter-spacing:-.01em}
     .rw-detail-text p,.rw-detail-text li{font-size:1rem;line-height:1.75;color:var(--muted);text-align:justify}
     .rw-detail-text ul{margin-top:.75rem;padding-left:1.25rem;list-style:disc}
@@ -78,6 +81,9 @@
     .rw-detail-card.right .rw-gallery{order:1}
     .rw-detail-card.left .rw-detail-text{order:1}
     .rw-detail-card.right .rw-detail-text{order:0}
+    /* Force single-column order: text first, gallery second */
+    .rw-detail-card .rw-detail-text{order:1 !important; width:100%}
+    .rw-detail-card .rw-gallery{order:2 !important; width:100%}
     @media (max-width: 900px){
       .rw-carousel-wrapper{height:520px}
       .rw-card{height:460px}
@@ -318,25 +324,16 @@
   </section><!-- Welcome card -->
   <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
     <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
-      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
-        <div class="flex items-center gap-3">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-teal-500"></span>
-          <span class="text-slate-800 font-semibold">Welcome</span>
-        </div>
-      </div>
 
       <section class="space-y-10">
-        <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm rw-info-card">
-          <h1 class="text-2xl font-bold text-slate-800 mb-2">Welcome to ESL Report Writer</h1>
+        <div class="rw-info-card">
           <p class="text-slate-700 leading-relaxed">
-            Writing student reports can be tiring, repetitive and time consuming, especially is you have to write them in another language. 
-            This Report Writer tool helps ESL teachers produce high-quality, consistent written reports fast.
-            Choose a tone, set the student details, rate key areas, and generate a full report. You can also ask the built-in editor to adjust style, length, or emphasis,
-            and get improvement ideas for each student, based on your ratings and comments.  The ESL Report Writer is the essential tool for teachers working in the TEFL world!
+            Writing reports can be tiring, repetitive, and time‑consuming - especially if you need to write them in another language. AI Report Writer helps teachers and educators produce high‑quality, consistent reports fast. Choose a tone, add student details, rate key areas, and generate a full report. Use the built‑in editor to adjust style, length, or emphasis, and get targeted improvement ideas for each student based on your ratings and comments. Browse the default report templates or create your own with the template builder to deliver a truly personalized output. AI Report Writer is an essential tool for teachers across all areas of education - give it a try now.
           </p>
           
           <!-- 3D Feature Carousel -->
           <div class="mt-8">
+            <h2 class="text-center text-2xl md:text-3xl font-extrabold text-slate-800 mb-4">Site Features</h2>
             <div class="rw-carousel-wrapper">
                             <div class="rw-nav">
                 <button class="rw-nav-btn" onclick="rwPrev()" aria-label="Previous feature">
@@ -360,6 +357,7 @@
                   </div>
                   <h3 class="rw-card-title text-lg">Report Generator</h3>
                   <p class="rw-card-desc">Generate polished student reports in minutes with AI-assisted templates.</p>
+                  <img class="rw-card-mascot" src="/public/mascot/mascot-up.png" alt="Chippy looking up" />
                   <a class="rw-card-btn" href="#detail-generator">Learn More</a>
                 </div>
                 <div class="rw-card" data-index="1">
@@ -372,18 +370,26 @@
                   </div>
                   <h3 class="rw-card-title text-lg">Areas for Improvement</h3>
                   <p class="rw-card-desc">Turn feedback into action with precise, AI-generated next steps.</p>
+                  <img class="rw-card-mascot" src="/public/mascot/mascot-left.png" alt="Chippy looking left" />
                   <a class="rw-card-btn" href="#detail-improvement">Learn More</a>
                 </div>
                 <div class="rw-card" data-index="2">
                   <div class="rw-card-icon" aria-hidden="true">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M8 3h4a2 2 0 1 1 0 4H8v4H4V7a4 4 0 0 1 4-4z"/>
-                      <path d="M16 21h-4a2 2 0 1 1 0-4h4v-4h4v4a4 4 0 0 1-4 4z"/>
-                      <path d="M8 11h4v2a2 2 0 1 0 4 0v-2h4"/>
+                    <!-- Bricks / puzzle-like icon -->
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <!-- Row 1 -->
+                      <rect x="3" y="5" width="6" height="4" rx="0.8"/>
+                      <rect x="11" y="5" width="10" height="4" rx="0.8"/>
+                      <!-- Row 2 (staggered) -->
+                      <rect x="3" y="11" width="10" height="4" rx="0.8"/>
+                      <rect x="15" y="11" width="6" height="4" rx="0.8"/>
+                      <!-- Row 3 -->
+                      <rect x="7" y="17" width="10" height="4" rx="0.8"/>
                     </svg>
                   </div>
                   <h3 class="rw-card-title text-lg">Template Builder</h3>
                   <p class="rw-card-desc">Create bespoke templates with custom criteria and ratings.</p>
+                  <img class="rw-card-mascot" src="/public/mascot/mascot-right.png" alt="Chippy looking right" />
                   <a class="rw-card-btn" href="#detail-template">Learn More</a>
                 </div>
                 <div class="rw-card" data-index="3">
@@ -397,6 +403,7 @@
                   </div>
                   <h3 class="rw-card-title text-lg">Community Sharing</h3>
                   <p class="rw-card-desc">Share, duplicate, and refine templates with fellow educators.</p>
+                  <img class="rw-card-mascot" src="/public/mascot/mascot-crossarms.png" alt="Chippy with crossed arms" />
                   <a class="rw-card-btn" href="#detail-community">Learn More</a>
                 </div>
               </div>
@@ -498,6 +505,21 @@
   <script>
     // --- 3D Carousel logic (scoped) ---
     document.addEventListener('DOMContentLoaded', () => {
+      // Smooth-scroll Learn More links with header offset
+      const headerEl = document.querySelector('.site-header');
+      const offset = (headerEl ? headerEl.offsetHeight : 80) + 12;
+      document.querySelectorAll('.rw-card-btn[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          const href = a.getAttribute('href');
+          if (!href) return;
+          const target = document.querySelector(href);
+          if (!target) return;
+          e.preventDefault();
+          const top = window.pageYOffset + target.getBoundingClientRect().top - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        });
+      });
+
       const carousel = document.getElementById('rw-carousel');
       if (!carousel) return;
       const cards = Array.from(carousel.querySelectorAll('.rw-card'));
@@ -613,8 +635,8 @@
         });
       },{ threshold: 0.15 });
       detailCards.forEach(el=>io.observe(el));
-      // --- Parallax + tilt effects ---
-      const supportsHover = window.matchMedia('(hover: hover)').matches;
+      // --- Parallax + tilt effects (disabled) ---
+      const supportsHover = false; // disable hover-driven tilt/mouse-float
       // Info card subtle tilt
       if (supportsHover) {
         const info = document.querySelector('.rw-info-card');
@@ -636,7 +658,9 @@
       // Detail cards: scroll parallax + slight mouse float
       const dCards = Array.from(document.querySelectorAll('.rw-detail-card'));
       let ticking = false;
+      const enableScrollParallax = false; // disable scroll-driven parallax
       function updateDetailScroll(){
+        if (!enableScrollParallax) return;
         const vh = window.innerHeight || 800;
         dCards.forEach(card=>{
           const img = card.querySelector('.rw-gallery .rw-detail-img.is-active') || card.querySelector('.rw-detail-img');
@@ -654,8 +678,10 @@
         ticking = false;
       }
       function onScroll(){ if (!ticking) { window.requestAnimationFrame(updateDetailScroll); ticking = true; } }
-      window.addEventListener('scroll', onScroll, {passive:true});
-      updateDetailScroll();
+      if (enableScrollParallax) {
+        window.addEventListener('scroll', onScroll, {passive:true});
+        updateDetailScroll();
+      }
 
       if (supportsHover) {
         dCards.forEach(card=>{

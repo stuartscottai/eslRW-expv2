@@ -13,18 +13,18 @@ body { font-family: 'Inter', sans-serif; background-color: var(--bg); }
   --overlay: rgba(15,23,42,0.4);
   --shadow: 0 18px 40px rgba(15,23,42,0.18), 0 4px 12px rgba(15,23,42,0.08);
   --ai-loader-duration: 4200ms;
-  --ai-loader-crayon: var(--primary);
-  --ai-loader-color-01: #fff4e6;
-  --ai-loader-color-02: #ffe6c7;
-  --ai-loader-color-03: #ffd8a8;
-  --ai-loader-color-04: #ffca89;
-  --ai-loader-color-05: #ffbc6b;
-  --ai-loader-color-06: #ffae4c;
-  --ai-loader-color-07: #ffa02e;
-  --ai-loader-color-08: #ff9210;
-  --ai-loader-color-09: #f57f00;
-  --ai-loader-color-10: #e96d00;
-  --ai-loader-color-11: #d35f00;
+  --ai-loader-crayon: #0f766e; /* darker teal for contrast */
+  --ai-loader-color-01: #e6fffb;
+  --ai-loader-color-02: #c8fff5;
+  --ai-loader-color-03: #aafcf0;
+  --ai-loader-color-04: #8df3e7;
+  --ai-loader-color-05: #6de8dd;
+  --ai-loader-color-06: #4fd8cf;
+  --ai-loader-color-07: #2dd4bf; /* teal-400 */
+  --ai-loader-color-08: #14b8a6; /* teal-500 */
+  --ai-loader-color-09: #0fa5a0;
+  --ai-loader-color-10: #0f8f8b;
+  --ai-loader-color-11: #0b766f;
   --ai-loader-bg-01-a: no-repeat left 0% top / 11% 0% linear-gradient(to right, var(--ai-loader-color-01), var(--ai-loader-color-02));
   --ai-loader-bg-01-b: no-repeat left 0% top / 11% 100% linear-gradient(to right, var(--ai-loader-color-01), var(--ai-loader-color-02));
   --ai-loader-bg-02-a: no-repeat left 11.11% bottom / 11% 0% linear-gradient(to right, var(--ai-loader-color-02), var(--ai-loader-color-03));
@@ -65,6 +65,9 @@ body { background: var(--bg) !important; color: var(--text) !important; }
 .mobile-nav-panel { background: var(--surface) !important; border-color: var(--border) !important; color: var(--text) !important; box-shadow: var(--shadow) !important; }
 [data-auth-dropdown], [data-auth-dropdown-account] { background: var(--surface) !important; border-color: var(--border) !important; box-shadow: var(--shadow) !important; color: var(--text) !important; }
 .toast { background-color: color-mix(in srgb, var(--surface) 92%, var(--primary) 8%) !important; color: var(--text) !important; border-color: var(--border) !important; }
+
+/* Pastel teal background utility for inputs/areas */
+.bg-pastel-teal { background-color: color-mix(in srgb, var(--surface) 92%, var(--primary) 8%) !important; }
 
 /* Dark theme overrides for common Tailwind utility colors used as cards */
 html[data-theme="dark"] .bg-white { background-color: var(--surface) !important; color: var(--text) !important; }
@@ -477,17 +480,17 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: var(--primary);
+    background-color: #0f766e; /* darker green */
     color: #ffffff;
     padding: 0.65rem 1.5rem;
     border-radius: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.01em;
-    box-shadow: 0 12px 32px rgba(20, 184, 166, 0.18);
+    box-shadow: 0 12px 32px rgba(15, 118, 110, 0.22);
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
-.btn-primary:hover { background-color: #0d9488; box-shadow: 0 10px 24px rgba(20, 184, 166, 0.25); }
-.btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.35); }
+.btn-primary:hover { background-color: #115e59; box-shadow: 0 10px 24px rgba(17, 94, 89, 0.28); }
+.btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(17, 94, 89, 0.35); }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; }
 
 .btn-secondary {
@@ -495,16 +498,35 @@ html[data-theme="dark"] [data-auth-dropdown] button { color: #e5e7eb !important;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: #FFF4E6;
-    color: #111827;
+    background-color: #0f766e; /* match primary darker green */
+    color: #ffffff;
     padding: 0.65rem 1.5rem;
     border-radius: 0.75rem;
     font-weight: 600;
-    border: 1px solid #f4b860;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    border: 1px solid #0f766e;
+    box-shadow: 0 12px 32px rgba(15, 118, 110, 0.22);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
-.btn-secondary:hover { background-color: #FFE9CC; border-color: #f2ae45; }
-.btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(244, 184, 96, 0.35); }
+.btn-secondary:hover { background-color: #115e59; box-shadow: 0 10px 24px rgba(17, 94, 89, 0.28); }
+.btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(17, 94, 89, 0.35); }
+
+/* Dark blue CTA variant (for stepper controls) */
+.btn-blue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #305a99;
+    color: #ffffff;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    box-shadow: 0 12px 32px rgba(48, 90, 153, 0.18);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-blue:hover { background-color: #264a7e; box-shadow: 0 10px 24px rgba(38, 74, 126, 0.24); }
+.btn-blue:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(48, 90, 153, 0.35); }
 
 .btn-tertiary {
     display: inline-flex;

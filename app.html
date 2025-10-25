@@ -219,7 +219,7 @@
         <div class="relative h-[9.6rem] md:h-48 lg:h-[14.4rem]">
           <div class="absolute right-0 bottom-[12px] md:bottom-[16px] lg:bottom-[20px] z-20 select-none pointer-events-none">
             <div class="pointer-events-none absolute left-1/2 -translate-x-1/2 translate-y-[-24px] md:translate-y-[-26px] lg:translate-y-[-28px] bottom-0 h-2 md:h-2.5 lg:h-3 w-32 md:w-40 lg:w-48 z-10" style="background: radial-gradient(ellipse at center, rgba(15,23,42,0.35) 0%, rgba(15,23,42,0.22) 45%, rgba(15,23,42,0) 75%); filter: blur(2px);"></div>
-            <img src="/public/mascot/mascot-thumbsup.png" alt="Mascot giving thumbs up" class="h-[9.6rem] md:h-48 lg:h-[14.4rem] w-auto block relative z-20">
+            <img src="/public/mascot/mascot-up.png" alt="Mascot looking up" class="h-[9.6rem] md:h-48 lg:h-[14.4rem] w-auto block relative z-20">
           </div>
         </div>
       </div>
@@ -232,17 +232,12 @@
   <!-- Card -->
   <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-10">
     <main class="bg-white p-6 sm:p-8 rounded-xl shadow-xl space-y-8">
-      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
-        <div class="flex items-center gap-3">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-sky-500 flex-shrink-0"></span>
-          <span class="text-slate-800 font-semibold">Report Builder</span>
-        </div>
+      <div class="flex justify-end pt-1">
         <div class="flex items-center gap-3">
           <span class="text-sm text-slate-600">View:</span>
-          <button id="mode-steps" class="px-3 py-1.5 rounded-md text-sm font-semibold text-white shadow bg-[#305a99]">Step by step</button>
-          <button id="mode-single" class="px-3 py-1.5 rounded-md text-sm font-semibold text-[#305a99] border border-[#d5ddea] bg-white">Single page</button>
+          <button id="mode-steps" class="btn-primary btn-compact text-sm">Step by step</button>
+          <button id="mode-single" class="btn-secondary btn-compact text-sm">Single page</button>
         </div>
-
       </div>
 
       <!-- Builder -->
@@ -252,7 +247,7 @@
   <h2 class="text-xl font-semibold text-slate-800">Pre-report criteria</h2>
 
   <form id="pre-form" class="space-y-8">
-    <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+    <div class="border border-slate-200 rounded-lg p-6 bg-pastel-teal shadow-sm">
       <div class="space-y-6">
 
         <!-- NEW: Template Selector Row -->
@@ -261,7 +256,7 @@
             <label for="template-selector" class="block font-medium text-slate-700 mb-1">
               Report Template:
             </label>
-            <select id="template-selector" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#305a99] focus:border-[#305a99] bg-white">
+            <select id="template-selector" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#0f766e] focus:border-[#0f766e] bg-white">
               <!-- Options populated by JavaScript -->
             </select>
             <p class="text-xs text-slate-500 mt-1" id="template-description">
@@ -303,7 +298,7 @@
 
           <div>
             <label for="report-tone" class="block font-medium text-slate-700 mb-1">Report Tone:</label>
-            <select id="report-tone" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+            <select id="report-tone" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#0f766e]">
               <option value="Neutral">Neutral (Standard)</option>
               <option value="FriendlyConstructive">Friendly &amp; Constructive</option>
               <option value="EmpatheticSupportive">Empathetic &amp; Supportive</option>
@@ -317,7 +312,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label for="report-perspective" class="block font-medium text-slate-700 mb-1">Perspective:</label>
-            <select id="report-perspective" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+            <select id="report-perspective" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#0f766e]">
               <option value="I + 2nd person">I + 2nd person</option>
               <option value="I + 3rd person">I + 3rd person</option>
               <option value="We + 2nd person">We + 2nd person</option>
@@ -327,7 +322,7 @@
 
           <div>
             <label for="output-length" class="block font-medium text-slate-700 mb-1">Output length:</label>
-            <select id="output-length" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500">
+            <select id="output-length" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#0f766e]">
               <option value="1 paragraph">1 paragraph</option>
               <option value="2 paragraphs" selected>2 paragraphs</option>
               <option value="3 paragraphs">3 paragraphs</option>
@@ -350,7 +345,7 @@
 
         <!-- We put Step 2 inputs inside #student-form so clearing only resets these -->
 <form id="student-form">
-  <div class="border border-slate-200 rounded-lg p-6 bg-slate-50 shadow-sm">
+  <div class="border border-slate-200 rounded-lg p-6 bg-pastel-teal shadow-sm">
     <div class="space-y-6">
 
       <!-- NEW: Name + Gender row (before ratings) -->
@@ -382,19 +377,19 @@
 
           <div class="flex flex-col sm:flex-row justify-center pt-3 gap-3">
             <button type="button" id="generate-report-button"
-              class="w-full sm:w-auto flex items-center justify-center gap-2 btn-primary text-sm sm:text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#305a99] disabled:opacity-60 disabled:cursor-not-allowed">
+              class="w-full sm:w-auto flex items-center justify-center gap-2 btn-primary text-sm sm:text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0f766e] disabled:opacity-60 disabled:cursor-not-allowed">
               <span id="generate-report-button-text">Generate Full Report</span>
               <div id="loading-spinner-report" class="loader hidden ml-2"></div>
             </button>
 
             <button type="button" id="get-strategies-button"
-              class="w-full sm:w-auto flex items-center justify-center gap-2 btn-secondary text-sm sm:text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c6d1e3] disabled:opacity-60 disabled:cursor-not-allowed">
+              class="w-full sm:w-auto flex items-center justify-center gap-2 btn-secondary text-sm sm:text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0f766e] disabled:opacity-60 disabled:cursor-not-allowed">
               <span id="get-strategies-button-text">Get Improvement Ideas</span>
               <div id="loading-spinner-strategies" class="loader hidden ml-2"></div>
             </button>
 
             <button type="button" id="clear-form-button"
-              class="w-full sm:w-auto btn-tertiary text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c6d1e3]">
+              class="w-full sm:w-auto btn-tertiary text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0f766e]">
               Clear Form &amp; Start New
             </button>
           </div>
@@ -417,7 +412,7 @@
             </button>
           </div>
             <textarea id="report-output"
-              class="w-full min-h-[120px] p-4 border border-slate-200 rounded-lg bg-slate-50 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+              class="w-full min-h-[120px] p-4 border border-slate-200 rounded-lg bg-pastel-teal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0f766e]"
               placeholder="Your AI-generated student report will appear here..."></textarea>
             <div class="mt-3 flex flex-col sm:flex-row justify-between items-center gap-3">
               <div class="flex gap-3 w-full sm:w-auto">
@@ -442,7 +437,7 @@
           <section id="strategies-section" class="hidden">
             <h2 class="text-xl font-semibold text-slate-800 mb-3">Suggested Improvement Strategies</h2>
             <textarea id="strategies-output"
-              class="w-full min-h-[100px] p-4 border border-slate-200 rounded-lg bg-slate-50 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+              class="w-full min-h-[100px] p-4 border border-slate-200 rounded-lg bg-pastel-teal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0f766e]"
               placeholder="AI-generated improvement strategies will appear here..."></textarea>
             <div class="mt-3 flex flex-col sm:flex-row justify-between items-center gap-3">
               <div class="flex gap-3 w-full sm:w-auto">
@@ -482,19 +477,19 @@
 
             <div id="chat-messages" class="h-64 overflow-y-auto p-4 bg-white rounded-lg border border-gray-200 mb-4 flex flex-col space-y-3"></div>
             <div class="flex items-center space-x-2">
-              <textarea id="chat-input" rows="1" placeholder="Type your edit instructions here..." class="flex-grow p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#305a99]"></textarea>
-              <button id="send-chat-button" class="btn-primary rounded-full px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#305a99] flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed">Send</button>
+            <textarea id="chat-input" rows="1" placeholder="Type your edit instructions here..." class="flex-grow p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#0f766e]"></textarea>
+              <button id="send-chat-button" class="btn-primary rounded-full px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0f766e] flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed">Send</button>
             </div>
           </section>
         </section>
       </div>
 
       <div id="stepper-controls" class="hidden pt-2 flex items-center justify-between">
-        <button id="step-prev" class="inline-flex items-center gap-2 btn-secondary text-sm font-semibold">
+        <button id="step-prev" class="inline-flex items-center gap-2 btn-blue text-sm font-semibold">
           Previous
         </button>
         <div class="text-sm text-slate-500"><span id="step-indicator">Step 1 of 3</span></div>
-        <button id="step-next" class="inline-flex items-center gap-2 btn-primary text-sm font-semibold">
+        <button id="step-next" class="inline-flex items-center gap-2 btn-blue text-sm font-semibold">
           Next
         </button>
       </div>
